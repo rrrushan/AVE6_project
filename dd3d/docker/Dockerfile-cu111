@@ -103,7 +103,8 @@ RUN pip install \
     seaborn==0.11.2 \
     tenacity==8.0.1 \
     tqdm==4.62.2 \
-    wandb==0.12.0
+    wandb==0.12.0 \
+    wheel
 
 RUN pip install numba==0.54.0 Cython==0.29.24 pycocotools==2.0.2 nuscenes-devkit==1.1.7
 
