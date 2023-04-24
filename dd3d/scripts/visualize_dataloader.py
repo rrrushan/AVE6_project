@@ -8,7 +8,7 @@ import cv2
 import hydra
 from tqdm import tqdm
 import sys
-sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
+sys.path.append('/home/carla/admt_student/team3_ss23/AVE6_project/dd3d')
 
 from detectron2.data import MetadataCatalog
 
@@ -50,7 +50,7 @@ def main(cfg):
         for k in range(len(batch)):
             gt_viz = mosaic(list(viz_images[k].values()))
             cv2.imshow("dataloader", gt_viz[:, :, ::-1])
-            cv2.imwrite("/home/carla/admt_student/team3_ss23/dd3d/outputs/vis_img.png", gt_viz[:, :, ::-1])
+            cv2.imwrite("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/vis_img_nus.png", gt_viz[:, :, ::-1])
             if cv2.waitKey(0) & 0xFF == ord('q'):
                 sys.exit()
 

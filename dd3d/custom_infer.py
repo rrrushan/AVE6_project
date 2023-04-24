@@ -34,7 +34,9 @@ from tridet.visualizers import get_dataloader_visualizer, get_predictions_visual
 
 class DD3D:
     def __init__(self, cfg):
-        # Create model architecture
+        # Create model 
+        cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = 0.1
+        cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = 0.3
         self.model = build_model(cfg)
         checkpoint_file = cfg.MODEL.CKPT
         
@@ -48,14 +50,34 @@ class DD3D:
         self.model.eval() # Inference mode
 
         # Camera Intrinsic Matrix -> Using KiTTi's default values here
+        # self.cam_intrinsic_mtx = torch.FloatTensor([
+        #     [738.9661,   0.0000, 624.2830],
+        #     [  0.0000, 738.8547, 177.0025],
+        #     [  0.0000,   0.0000,   1.0000]
+        # ])
         self.cam_intrinsic_mtx = torch.FloatTensor([
-            [738.9661,   0.0000, 624.2830],
-            [  0.0000, 738.8547, 177.0025],
+            [1676.625,   0.0000, 968.0],
+            [  0.0000, 1676.625, 732.0],
             [  0.0000,   0.0000,   1.0000]
         ])
+
+        # Params for cropping and rescaling
+        self.ORIG_IMG_HEIGHT = 1436
+        self.ORIG_IMG_WIDTH = 1936
+        self.TARGET_AR_RATIO = 1242 / 375 # 3.312
+        self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
+        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 460
+        self.TARGET_RESIZE_WIDTH = 1920
+
+        self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
+        self.pre_resize_height = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
+        self.pre_resize_width = self.required_pad_left_right*2 + self.ORIG_IMG_WIDTH
+
+        # Adapting intrinsic mtx
+        expected_height = self.TARGET_RESIZE_WIDTH / self.TARGET_AR_RATIO
         self.cam_intrinsic_mtx = torch.FloatTensor([
-            [1440.0,   0.0000, 720.0],
-            [  0.0000, 1440.0, 540.0],
+            [self.TARGET_FOCUS_SCALING*self.TARGET_RESIZE_WIDTH,   0.0000, self.TARGET_RESIZE_WIDTH/2],
+            [  0.0000, self.TARGET_FOCUS_SCALING*self.TARGET_RESIZE_WIDTH, expected_height/2],
             [  0.0000,   0.0000,   1.0000]
         ])
 
@@ -70,7 +92,35 @@ class DD3D:
             5: ((0, 0, 0), "Unknown")        # Unknown: Black
         }
 
-    def visualize(self, batched_images, batched_model_output, mode="3D"):
+    def transform_img(self, img):
+        # Crop from top
+        img = img[self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP:img.shape[0], :]
+
+        # Pad black boxes along the width
+        img = cv2.copyMakeBorder(img, 0, 0, self.required_pad_left_right, self.required_pad_left_right, cv2.BORDER_CONSTANT, None, value = 0)
+
+        # Aspect-Ratio aware resize to required resolution
+        img = cv2.resize(img, (self.TARGET_RESIZE_WIDTH, int(self.TARGET_RESIZE_WIDTH * self.pre_resize_height/self.pre_resize_width)))
+
+        return img
+
+    def rescale_boxes(self, boxes):
+        """Rescale boxes after cropping and padding
+
+        Args:
+            boxes (np.array): 3D boxes. Shape: [Batchsize, 8, 2]
+
+        Returns:
+            final_box_points (np.array): Modified 3D boxes. Shape: [Batchsize, 8, 2]
+        """
+        remove_resize_x, remove_resize_y = boxes[:, :, 0] * self.pre_resize_width / self.TARGET_RESIZE_WIDTH, boxes[:, :, 1] * self.pre_resize_height / int(self.TARGET_RESIZE_WIDTH * self.pre_resize_height/self.pre_resize_width)
+        remove_resize_x = remove_resize_x - self.required_pad_left_right
+        remove_resize_y = remove_resize_y + self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
+        final_box_points = np.dstack((remove_resize_x, remove_resize_y)).astype(int)
+
+        return final_box_points
+    
+    def visualize(self, batched_images, batched_model_output, mode="3D", rescale=True):
         """Draws the bounding box along with the class name and confidence score
         on the given images. The list in input and output refers to batching of data.
 
@@ -102,6 +152,9 @@ class DD3D:
             # Convert the homogeneous 2D points to non-homogeneous coordinates
             pred_bbox3d_img = points_2d_homogeneous[:, :, :2] / points_2d_homogeneous[:, :, 2:]
 
+            if rescale:
+                pred_bbox3d_img = self.rescale_boxes(pred_bbox3d_img)
+
             if mode == "3D":
                 # Define the edges of the bounding box.
                 edges = [
@@ -112,6 +165,9 @@ class DD3D:
                 img_alpha = image.copy()
 
                 for box, classID, conf_score in zip(pred_bbox3d_img, pred_classes, pred_scores):
+                    if classID > 1: # Only car and pedestrian class
+                        continue
+
                     class_color = self.color_mapping[int(classID)][0]
                     class_name = self.color_mapping[int(classID)][1]
 
@@ -194,6 +250,7 @@ class DD3D:
             output (list[Instance]): 
                 Each item in the list has type Instance. Has all detected data
         """
+        # image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
         transformed_img = torch.from_numpy(image)
         
         # Transposing: [H, W, C] -> [C, H, W] (KiTTi: [3, 375, 1242])
@@ -201,35 +258,46 @@ class DD3D:
     
         output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
         return output
-    
+
+
 @hydra.main(config_path="configs/", config_name="defaults")
 def main(cfg):
     dd3d = DD3D(cfg)
-
+ 
     # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
-    IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
-    # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/phone_pics"
+    # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
+    IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual"
+    # RESIZE_IMG = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_test.png"
     total_files = len(os.listdir(IMG_FOLDER_PATH))
     for file_num, file in enumerate(os.listdir(IMG_FOLDER_PATH)):
         print(f"Visualizing file: {file_num}/{total_files}")
+        
         image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
-        image = cv2.resize(image, (1080, 1440))
-        predictions = dd3d.inference_on_single_image(image)
-        print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-        print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-        exit()
+        transformed_img = dd3d.transform_img(image)
+        # image = cv2.imread(RESIZE_IMG)
+        # image = cv2.resize(image, (1080, 1440))
+        # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
+        predictions = dd3d.inference_on_single_image(transformed_img)
+        # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
+        # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
+        # exit()
         final_image = dd3d.visualize([image], predictions)[0]
-        cv2.imwrite(f"outputs/test_phone/{file}", final_image)
+        # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
+        cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_v99_resize_01_02/{file}", final_image)
+        # cv2.imwrite(f"outputs/testing_output/{file}", final_image)
 
 if __name__ == '__main__':
     ## Uncomment for the required model
     # OmniML
-    sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
-    sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
+    # sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
+    # sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
     
-    # DLA34cam_intrinsic_mtx
+    # DLA34
+    # sys.argv.append('+experiments=dd3d_kitti_dla34')
+    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34.pth')
+
     # V99
-    # sys.argv.append('+experiments=dd3d_kitti_v99')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
+    sys.argv.append('+experiments=dd3d_kitti_v99')
+    sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
     
     main()  # pylint: disable=no-value-for-parameter

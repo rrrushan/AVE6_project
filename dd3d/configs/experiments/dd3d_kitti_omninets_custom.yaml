@@ -25,9 +25,9 @@ FE:
 DD3D:
   FCOS2D:
     NORM: BN
-    INFERENCE:
-      PRE_NMS_THRESH: 0.15
-      NMS_THRESH: 0.5
+    # INFERENCE:
+    #   PRE_NMS_THRESH: 0.15
+    #   NMS_THRESH: 0.5
 
   FCOS3D:
     NORM: FrozenBN
