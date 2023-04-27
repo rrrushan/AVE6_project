@@ -87,6 +87,12 @@ def do_train(cfg, model):
     model.train()
     optimizer = build_optimizer(cfg, model)
     scheduler = build_lr_scheduler(cfg, optimizer)
+    start_iter = 0
+    if cfg.MODEL.RELOAD_CKPT:
+        ckpt = torch.load(cfg.MODEL.CKPT)
+        optimizer.load_state_dict(ckpt["optimizer"])
+        scheduler.load_state_dict(ckpt["scheduler"])
+        start_iter = ckpt["iteration"]
 
     checkpointer = Checkpointer(model, './', optimizer=optimizer, scheduler=scheduler)
     max_iter = cfg.SOLVER.MAX_ITER
@@ -116,7 +122,7 @@ def do_train(cfg, model):
     # For logging, this stores losses aggregated from all workers in distributed training.
     batch_loss_dict = defaultdict(float)
     optimizer.zero_grad()
-    for data, iteration in zip(dataloader, range(max_iter * accumulate_grad_batches)):
+    for data, iteration in zip(dataloader, range(start_iter, max_iter * accumulate_grad_batches)):
         iteration += 1
         # this assumes drop_last=True, so all workers has the same size of batch.
         num_images_seen += len(data) * d2_comm.get_world_size()
