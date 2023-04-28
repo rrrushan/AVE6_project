@@ -32,7 +32,8 @@ SYNC_OUTPUT_DIR_S3:
   # How frequently (in training steps) to sync the working directory.
   PERIOD: 1000
 
-DATASET_ROOT: /home/carla/admt_student/team3_ss23/data/
+# DATASET_ROOT: /home/carla/admt_student/team3_ss23/data/
+DATASET_ROOT: /media/mobilitylabextreme002/Data1/Videos/
 TMP_DIR: /tmp/
 
 hydra:

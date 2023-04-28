@@ -9,7 +9,9 @@ defaults:
 MODEL:
   META_ARCHITECTURE: NuscenesDD3D
   # from-coco, IODA-pretrained.
-  CKPT: https://tri-ml-public.s3.amazonaws.com/github/dd3d/pretrained/depth_pretrained_dla34-y1urdmir-20210422_165446-model_final-remapped.pth
+  # CKPT: https://tri-ml-public.s3.amazonaws.com/github/dd3d/pretrained/depth_pretrained_dla34-y1urdmir-20210422_165446-model_final-remapped.pth
+  CKPT: /home/mobilitylabextreme002/Desktop/AutomatedDrivingProjekt/AVE6_project/dd3d/outputs/2023-04-24/16-22-50/model_0003999.pth
+  RELOAD_CKPT: True
 
 FE:
   BACKBONE:
@@ -66,10 +68,9 @@ DATALOADER:
   TRAIN:
     NUM_WORKERS: 12
     SAMPLER: RepeatFactorTrainingSampler
-    REPEAT_THRESHOLD: 0.8
   TEST:
     SAMPLER: InferenceGroupSampler
     NUM_IMAGES_PER_GROUP: ${DATASETS.TEST.NUM_IMAGES_PER_SAMPLE}
 
 WANDB:
-  TAGS: [nusc-val, v2-99, bn]
+  TAGS: [nusc-val, dla_custom, bn]
