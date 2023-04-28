@@ -1,0 +1,8 @@
+prefix=/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/devel
+
+Name: my_robot_controller
+Description: Description of my_robot_controller
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

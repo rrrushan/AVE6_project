@@ -1,0 +1,2 @@
+my_robot_controller
+-DCATKIN_DEVEL_PREFIX=/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/devel -DCMAKE_INSTALL_PREFIX=/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/install -G Unix Makefiles

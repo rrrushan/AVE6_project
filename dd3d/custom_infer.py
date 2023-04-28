@@ -55,31 +55,43 @@ class DD3D:
         #     [  0.0000, 738.8547, 177.0025],
         #     [  0.0000,   0.0000,   1.0000]
         # ])
-        self.cam_intrinsic_mtx = torch.FloatTensor([
+        self.orig_cam_intrinsic_mtx = torch.FloatTensor([
             [1676.625,   0.0000, 968.0],
             [  0.0000, 1676.625, 732.0],
             [  0.0000,   0.0000,   1.0000]
         ])
 
         # Params for cropping and rescaling
-        self.ORIG_IMG_HEIGHT = 1436
+        self.ORIG_IMG_HEIGHT = 1464
         self.ORIG_IMG_WIDTH = 1936
         self.TARGET_AR_RATIO = 1242 / 375 # 3.312
-        self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
+        # self.TARGET_AR_RATIO = 1600 / 900
+        # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
         self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 460
         self.TARGET_RESIZE_WIDTH = 1920
+        
 
         self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
+        # print(self.required_pad_left_right); exit()
         self.pre_resize_height = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
         self.pre_resize_width = self.required_pad_left_right*2 + self.ORIG_IMG_WIDTH
+        self.CAM_SCALE_RESIZE = self.TARGET_RESIZE_WIDTH / self.pre_resize_width
 
         # Adapting intrinsic mtx
         expected_height = self.TARGET_RESIZE_WIDTH / self.TARGET_AR_RATIO
+        # self.cam_intrinsic_mtx = torch.FloatTensor([
+        #     [self.TARGET_FOCUS_SCALING*self.TARGET_RESIZE_WIDTH,   0.0000, self.TARGET_RESIZE_WIDTH/2],
+        #     [  0.0000, self.TARGET_FOCUS_SCALING* (1+(self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP/self.ORIG_IMG_HEIGHT)) *self.TARGET_RESIZE_WIDTH, expected_height/2],
+        #     [  0.0000,   0.0000,   1.0000]
+        # ])
+        #A_scale_resize = TARGET_RESIZE_WIDTH / pre_resize_width
+
         self.cam_intrinsic_mtx = torch.FloatTensor([
-            [self.TARGET_FOCUS_SCALING*self.TARGET_RESIZE_WIDTH,   0.0000, self.TARGET_RESIZE_WIDTH/2],
-            [  0.0000, self.TARGET_FOCUS_SCALING*self.TARGET_RESIZE_WIDTH, expected_height/2],
-            [  0.0000,   0.0000,   1.0000]
+            [self.orig_cam_intrinsic_mtx[0][0] * self.CAM_SCALE_RESIZE, 0.000, (self.orig_cam_intrinsic_mtx[0][2] + self.required_pad_left_right) * self.CAM_SCALE_RESIZE],
+            [0.000, self.orig_cam_intrinsic_mtx[1][1] * self.CAM_SCALE_RESIZE, (self.orig_cam_intrinsic_mtx[1][2] - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) * self.CAM_SCALE_RESIZE],
+            [0.000, 0.000, 1.000]
         ])
+
 
         # Color code for visualizing each class
         # BGR (inverted RGB) color values for classes
@@ -91,6 +103,67 @@ class DD3D:
             4: ((255, 255, 0), "Truck"),     # Truck: Turquoise Blue
             5: ((0, 0, 0), "Unknown")        # Unknown: Black
         }
+
+    def output2MarkerArray(self, predictions):
+        """Converts model outputs to marker array format for RVIZ
+
+        Args:
+            predictions (list[Instance]): 
+                Each item in the list has type Instance. Has all detected data
+        Returns:
+            marker_list (list): List of Markers for RVIZ
+        """
+        
+        def get_quaternion_from_euler(roll, pitch, yaw):
+            """
+            Convert an Euler angle to a quaternion.
+
+            Input
+                :param roll: The roll (rotation around x-axis) angle in radians.
+                :param pitch: The pitch (rotation around y-axis) angle in radians.
+                :param yaw: The yaw (rotation around z-axis) angle in radians.
+
+            Output
+                :return qx, qy, qz, qw: The orientation in quaternion [x,y,z,w] format
+            """
+            qx = np.sin(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) - np.cos(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+            qy = np.cos(roll/2) * np.sin(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.cos(pitch/2) * np.sin(yaw/2)
+            qz = np.cos(roll/2) * np.cos(pitch/2) * np.sin(yaw/2) - np.sin(roll/2) * np.sin(pitch/2) * np.cos(yaw/2)
+            qw = np.cos(roll/2) * np.cos(pitch/2) * np.cos(yaw/2) + np.sin(roll/2) * np.sin(pitch/2) * np.sin(yaw/2)
+            
+            return qx, qy, qz, qw
+
+        bboxes_per_image = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
+        classes_per_image = predictions[0]["instances"].pred_classes.detach().cpu().numpy()
+        marker_list = []
+
+        for single_bbox, single_class in zip(bboxes_per_image, classes_per_image):
+            # BBOX is stored as (8, 3) -> where last_index is (y, z, x)
+            min_x, max_x = np.min(single_bbox[:, 2]), np.max(single_bbox[:, 2])
+            min_y, max_y = np.min(single_bbox[:, 0]), np.max(single_bbox[:, 0])
+            min_z, max_z = np.min(single_bbox[:, 1]), np.max(single_bbox[:, 1])
+
+            # Center points of BBOX along each axis
+            cx = (min_x + max_x) / 2
+            cy = (min_y + max_y) / 2
+            cz = (min_z + max_z) / 2
+
+            # Size of BBOX along each axis
+            scale_x = max_x - min_x
+            scale_y = max_y - min_y
+            scale_z = max_z - min_z
+
+            # Rotation of BBOX along each axis
+            yaw_angle = np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))
+            roll_angle = np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
+            pitch_angle = np.math.atan2((single_bbox[4, 2] - single_bbox[0, 2]), (single_bbox[4, 1] - single_bbox[0, 1])) + 1.578
+            
+            # TODO:marker_list Right now appending values to a list, 
+            # later insert values in right places in marker array. DON'T forget class output !!
+            qx, qy, qz, qw = get_quaternion_from_euler(roll_angle, pitch_angle, yaw_angle)
+            marker_list.append((cx, cy, cz, scale_x, scale_y, scale_z, qx, qy, qz, qw))
+
+        return marker_list
 
     def transform_img(self, img):
         # Crop from top
@@ -179,6 +252,12 @@ class DD3D:
                             image, start_point, end_point, 
                             class_color, 2, cv2.LINE_AA
                         )
+
+                    # DEBUG Display points
+                    # for index, point in enumerate(box):
+                    #     point_xy = (int(point[0]), int(point[1]))
+                    #     text = f"{index}"
+                    #     cv2.putText(image, text, point_xy, cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (255, 255, 255))
                     
                     # Plot class name and score
                     baseLabel = f'{class_name} {round(conf_score*100)}%'
@@ -257,6 +336,7 @@ class DD3D:
         transformed_img = transformed_img.permute(2, 0, 1)
     
         output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
+        # output = self.model({"image": transformed_img[None, :], "intrinsics": [self.cam_intrinsic_mtx]})
         return output
 
 
@@ -271,6 +351,8 @@ def main(cfg):
     total_files = len(os.listdir(IMG_FOLDER_PATH))
     for file_num, file in enumerate(os.listdir(IMG_FOLDER_PATH)):
         print(f"Visualizing file: {file_num}/{total_files}")
+        # if not file_num == 60:
+        #     continue
         
         image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
         transformed_img = dd3d.transform_img(image)
@@ -278,14 +360,25 @@ def main(cfg):
         # image = cv2.resize(image, (1080, 1440))
         # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
         predictions = dd3d.inference_on_single_image(transformed_img)
+        # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
+        # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
+        # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
+        # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
+        
+        # np.save("../sample_bbox.npy", bbox_3d)
+        # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
         # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
         # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-        # exit()
+        
+        marker_list = dd3d.output2MarkerArray(predictions)
+        # np.save("outputs/marker_list_30.npy", np.array(marker_list))
         final_image = dd3d.visualize([image], predictions)[0]
+        # print(marker_list)
+        # print(file)
         # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-        cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_v99_resize_01_02/{file}", final_image)
-        # cv2.imwrite(f"outputs/testing_output/{file}", final_image)
-
+        cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_v99_evgresize/{file}", final_image)
+        # cv2.imwrite(f"outputs/test_bbox_2.png", final_image)
+        # exit()
 if __name__ == '__main__':
     ## Uncomment for the required model
     # OmniML
@@ -299,5 +392,8 @@ if __name__ == '__main__':
     # V99
     sys.argv.append('+experiments=dd3d_kitti_v99')
     sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
-    
+
+    # DLA34 Nuscenes
+    # sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
+    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step4000.pth')
     main()  # pylint: disable=no-value-for-parameter
