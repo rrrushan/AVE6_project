@@ -334,7 +334,7 @@ class NuscenesDD3D(DD3D):
         # NOTE: NuScenes evaluator allows max. 500 detections per sample.
         self.max_num_dets_per_sample = cfg.DD3D.NUSC.INFERENCE.MAX_NUM_DETS_PER_SAMPLE
 
-    def forward(self,  batched_images, batched_intrinsic_mtx):
+    def _forward(self,  batched_images, batched_intrinsic_mtx):
         images = [x.to(self.device) for x in batched_images]
         images = [self.preprocess_image(x) for x in images]
 
@@ -457,7 +457,7 @@ class NuscenesDD3D(DD3D):
 
             return processed_results
         
-    def forward_orig(self, batched_inputs):
+    def forward(self, batched_inputs):
         images = [x["image"].to(self.device) for x in batched_inputs]
         images = [self.preprocess_image(x) for x in images]
 
