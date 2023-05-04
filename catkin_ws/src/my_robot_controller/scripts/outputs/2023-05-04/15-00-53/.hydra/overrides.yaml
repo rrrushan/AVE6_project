@@ -1,0 +1,2 @@
+- +experiments=dd3d_kitti_dla34
+- MODEL.CKPT=trained_final_weights/dla34.pth

@@ -1,3 +1,15 @@
+#!/usr/bin/env python3
+
+import rospy
+from sensor_msgs.msg import CameraInfo, Image
+from visualization_msgs.msg import MarkerArray, Marker
+from geometry_msgs.msg import Pose, Vector3
+from std_msgs.msg import ColorRGBA
+
+import numpy as np
+from cv_bridge import CvBridge
+import cv2
+
 import os
 import hydra
 import torch
@@ -15,9 +27,9 @@ from detectron2.evaluation import DatasetEvaluators, inference_on_dataset
 from detectron2.modeling import build_model
 from detectron2.solver import build_lr_scheduler, build_optimizer
 from detectron2.utils.events import CommonMetricPrinter, get_event_storage
-
+import omegaconf
 import sys
-sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
+sys.path.append('/home/carla/admt_student/team3_ss23/AVE6_project/dd3d')
 import tridet.modeling  # pylint: disable=unused-import
 import tridet.utils.comm as comm
 from tridet.data import build_test_dataloader, build_train_dataloader
@@ -65,10 +77,10 @@ class DD3D:
         self.ORIG_IMG_HEIGHT = 1464
         self.ORIG_IMG_WIDTH = 1936
         self.TARGET_AR_RATIO = 1242 / 375 # 3.312
-        self.TARGET_AR_RATIO = 1600 / 900
+        # self.TARGET_AR_RATIO = 1600 / 900
         # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
-        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 300 # 460
-        self.TARGET_RESIZE_WIDTH = 1920
+        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 460
+        self.TARGET_RESIZE_WIDTH = 1280
         
 
         self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
@@ -104,7 +116,7 @@ class DD3D:
             5: ((0, 0, 0), "Unknown")        # Unknown: Black
         }
 
-    def output2MarkerArray(self, predictions):
+    def output2MarkerArray(self, predictions, header):
         """Converts model outputs to marker array format for RVIZ
 
         Args:
@@ -135,9 +147,15 @@ class DD3D:
 
         bboxes_per_image = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
         classes_per_image = predictions[0]["instances"].pred_classes.detach().cpu().numpy()
-        marker_list = []
+        marker_list = MarkerArray() # []
+        
 
-        for single_bbox, single_class in zip(bboxes_per_image, classes_per_image):
+        for index, (single_bbox, single_class) in enumerate(zip(bboxes_per_image, classes_per_image)):
+            class_id = int(single_class)
+            if class_id > 1:
+                continue
+
+            marker_msg = Marker()
             # BBOX is stored as (8, 3) -> where last_index is (y, z, x)
             min_x, max_x = np.min(single_bbox[:, 2]), np.max(single_bbox[:, 2])
             min_y, max_y = np.min(single_bbox[:, 0]), np.max(single_bbox[:, 0])
@@ -147,7 +165,7 @@ class DD3D:
             cx = (min_x + max_x) / 2
             cy = (min_y + max_y) / 2
             cz = (min_z + max_z) / 2
-
+            
             # Size of BBOX along each axis
             scale_x = max_x - min_x
             scale_y = max_y - min_y
@@ -161,7 +179,34 @@ class DD3D:
             # TODO:marker_list Right now appending values to a list, 
             # later insert values in right places in marker array. DON'T forget class output !!
             qx, qy, qz, qw = get_quaternion_from_euler(roll_angle, pitch_angle, yaw_angle)
-            marker_list.append((cx, cy, cz, scale_x, scale_y, scale_z, qx, qy, qz, qw))
+            
+
+            marker_msg.type = Marker.CUBE
+            marker_msg.header.stamp = header.stamp
+            marker_msg.header.frame_id = "ego_vehicle"
+            
+            marker_msg.pose.position.x = cx + 4
+            marker_msg.pose.position.y = -cy
+            marker_msg.pose.position.z = cz
+            marker_msg.pose.orientation.x = qx
+            marker_msg.pose.orientation.y = qy
+            marker_msg.pose.orientation.z = qz
+            marker_msg.pose.orientation.w = qw
+            
+            marker_msg.scale.x = scale_x
+            marker_msg.scale.y = scale_y
+            marker_msg.scale.z = scale_z
+
+            color = self.color_mapping[class_id][0]
+            marker_msg.color.r = color[2]
+            marker_msg.color.g = color[1]
+            marker_msg.color.b = color[0]
+            marker_msg.color.a = 0.5
+            marker_msg.id = index
+
+            marker_msg.lifetime = rospy.Duration(0, 10E7)
+            
+            marker_list.markers.append(marker_msg)
 
         return marker_list
 
@@ -335,65 +380,60 @@ class DD3D:
         # Transposing: [H, W, C] -> [C, H, W] (KiTTi: [3, 375, 1242])
         transformed_img = transformed_img.permute(2, 0, 1)
     
-        output = self.model._forward(transformed_img[None, :], [self.cam_intrinsic_mtx])
+        output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
         # output = self.model._forward({"image": transformed_img[None, :], "intrinsics": [self.cam_intrinsic_mtx]})
         return output
 
+class obj_detection:
+    def __init__(self):
+        rospy.init_node("img_subscriber")
+        sys.argv.append('+experiments=dd3d_kitti_dla34')
+        sys.argv.append('MODEL.CKPT=/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth')
 
-@hydra.main(config_path="configs/", config_name="defaults")
-def main(cfg):
-    dd3d = DD3D(cfg)
+        cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla.yaml")
+        cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth"
+        
+        # cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml")
+        # cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"
+        self.dd3d = DD3D(cfg)
+        
+        sub_info = rospy.Subscriber("/carla/ego_vehicle/rgb_front/camera_info", CameraInfo, callback=self.callback_camInfo)
+        sub_image = rospy.Subscriber("/carla/ego_vehicle/rgb_front/image", Image, callback=self.callback_image)
+        self.marker_pub = rospy.Publisher("rgb_front/markers", MarkerArray, queue_size=10)
+        self.vis_image_pub = rospy.Publisher("rgb_front/vis_image", Image, queue_size=10)
+        rospy.loginfo("img_sub has been created")
+        
+        self.cam_intrinsic_mtx = None
+        self.cvbridge = CvBridge()
 
-    # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
-    # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
-    IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual"
-    # RESIZE_IMG = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_test.png"
-    total_files = len(os.listdir(IMG_FOLDER_PATH))
-    for file_num, file in enumerate(os.listdir(IMG_FOLDER_PATH)):
-        print(f"Visualizing file: {file_num}/{total_files}")
-        # if not file_num == 60:
-        #     continue
-        
-        image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
-        transformed_img = dd3d.transform_img(image)
-        # image = cv2.imread(RESIZE_IMG)
-        # image = cv2.resize(image, (1080, 1440))
-        # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
-        predictions = dd3d.inference_on_single_image(transformed_img)
-        # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
-        # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
-        # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
-        # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
-        
-        # np.save("../sample_bbox.npy", bbox_3d)
-        # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-        # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-        # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-        
-        marker_list = dd3d.output2MarkerArray(predictions)
-        # np.save("outputs/marker_list_30.npy", np.array(marker_list))
-        final_image = dd3d.visualize([image], predictions)[0]
-        # print(marker_list)
-        # print(file)
-        # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-        cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
-        # cv2.imwrite(f"outputs/test_bbox_2.png", final_image)
-        # exit()
+        rospy.spin()
+
+
+    def callback_camInfo(self, msg: CameraInfo):
+        """Update camera intrinsic matrix
+
+        Args:
+            msg (CameraInfo): camera info from carla
+        """
+        self.cam_intrinsic_mtx = np.reshape(np.array(msg.K), (3,3))
+
+    def callback_image(self, msg: Image):
+        # rospy.loginfo(type(msg))
+        header_info = msg.header
+        cv_image = self.cvbridge.imgmsg_to_cv2(msg, "bgr8")
+        transform_img = self.dd3d.transform_img(cv_image)
+        predictions = self.dd3d.inference_on_single_image(transform_img)
+        final_image = self.dd3d.visualize([cv_image], predictions)[0]
+
+        marker_list = self.dd3d.output2MarkerArray(predictions, header_info)
+        ros_img = self.cvbridge.cv2_to_imgmsg(final_image)
+
+        self.marker_pub.publish(marker_list)
+        self.vis_image_pub.publish(ros_img)
+        rospy.loginfo("IT WORKSSSSS")
+        # cv2.imshow("test", final_image)
+        # cv2.waitKey(10)
+
+
 if __name__ == '__main__':
-    ## Uncomment for the required model
-    # OmniML
-    # sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
-    
-    # DLA34
-    # sys.argv.append('+experiments=dd3d_kitti_dla34')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34.pth')
-
-    # V99
-    # sys.argv.append('+experiments=dd3d_kitti_v99')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
-
-    # DLA34 Nuscenes
-    sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
-    sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step6k.pth')
-    main()  # pylint: disable=no-value-for-parameter
+    random_obj = obj_detection()
