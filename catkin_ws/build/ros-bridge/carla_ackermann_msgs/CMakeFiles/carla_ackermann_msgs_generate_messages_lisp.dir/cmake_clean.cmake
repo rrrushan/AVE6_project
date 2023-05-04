@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlCurrent.lisp"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlInfo.lisp"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlMaxima.lisp"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlStatus.lisp"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlTarget.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlCurrent.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlInfo.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlMaxima.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlStatus.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_ackermann_msgs/msg/EgoVehicleControlTarget.lisp"
   "CMakeFiles/carla_ackermann_msgs_generate_messages_lisp"
 )
 

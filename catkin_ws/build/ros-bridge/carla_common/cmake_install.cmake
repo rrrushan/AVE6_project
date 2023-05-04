@@ -1,8 +1,8 @@
-# Install script for directory: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_common
+# Install script for directory: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_common
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/carla/carla-ros-bridge/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/carla/AVE6_project/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,25 +38,25 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_common/catkin_generated/safe_execute_install.cmake")
+  include("/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_common/catkin_generated/safe_execute_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/carla_common.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/carla_common.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_common/cmake" TYPE FILE FILES
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/carla_commonConfig.cmake"
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/carla_commonConfig-version.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/carla_commonConfig.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/carla_commonConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_common" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_common/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_common" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_common/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/carla_common" TYPE PROGRAM FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/transforms.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/carla_common" TYPE PROGRAM FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_common/catkin_generated/installspace/transforms.py")
 endif()
 

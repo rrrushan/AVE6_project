@@ -1,31 +1,31 @@
 {
-	"BUILD_DIR" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen",
-	"CMAKE_BINARY_DIR" : "/home/carla/carla-ros-bridge/catkin_ws/build",
-	"CMAKE_CURRENT_BINARY_DIR" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin",
-	"CMAKE_CURRENT_SOURCE_DIR" : "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin",
+	"BUILD_DIR" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen",
+	"CMAKE_BINARY_DIR" : "/home/carla/AVE6_project/catkin_ws/build",
+	"CMAKE_CURRENT_BINARY_DIR" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin",
+	"CMAKE_CURRENT_SOURCE_DIR" : "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin",
 	"CMAKE_EXECUTABLE" : "/usr/bin/cmake",
-	"CMAKE_SOURCE_DIR" : "/home/carla/carla-ros-bridge/catkin_ws/src",
+	"CMAKE_SOURCE_DIR" : "/home/carla/AVE6_project/catkin_ws/src",
 	"HEADERS" : 
 	[
 		[
-			"/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h",
+			"/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h",
 			"Mu",
 			"UVLADIE3JM/moc_carla_control_panel.cpp"
 		],
 		[
-			"/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h",
+			"/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h",
 			"Mu",
 			"UVLADIE3JM/moc_drive_widget.cpp"
 		],
 		[
-			"/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h",
+			"/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h",
 			"Mu",
 			"UVLADIE3JM/moc_indicator_widget.cpp"
 		]
 	],
 	"HEADER_EXTENSIONS" : [ "h", "hh", "h++", "hm", "hpp", "hxx", "in", "txx" ],
-	"INCLUDE_DIR" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/include",
-	"MOC_COMPILATION_FILE" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/mocs_compilation.cpp",
+	"INCLUDE_DIR" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/include",
+	"MOC_COMPILATION_FILE" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/mocs_compilation.cpp",
 	"MOC_DEFINITIONS" : 
 	[
 		"QT_CORE_LIB",
@@ -46,7 +46,7 @@
 	],
 	"MOC_INCLUDES" : 
 	[
-		"/home/carla/carla-ros-bridge/catkin_ws/devel/include",
+		"/home/carla/AVE6_project/catkin_ws/devel/include",
 		"/opt/ros/noetic/include",
 		"/opt/ros/noetic/include/xmlrpcpp",
 		"/usr/include/eigen3",
@@ -76,28 +76,28 @@
 		"-c",
 		"/usr/share/cmake-3.16/Modules/CMakeCXXCompilerABI.cpp"
 	],
-	"MOC_PREDEFS_FILE" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/moc_predefs.h",
+	"MOC_PREDEFS_FILE" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/moc_predefs.h",
 	"MOC_RELAXED_MODE" : false,
 	"MOC_SKIP" : [],
 	"MULTI_CONFIG" : false,
 	"PARALLEL" : 8,
-	"PARSE_CACHE_FILE" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin_autogen.dir/ParseCache.txt",
+	"PARSE_CACHE_FILE" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin_autogen.dir/ParseCache.txt",
 	"QT_MOC_EXECUTABLE" : "/usr/lib/qt5/bin/moc",
 	"QT_UIC_EXECUTABLE" : "",
 	"QT_VERSION_MAJOR" : 5,
-	"SETTINGS_FILE" : "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin_autogen.dir/AutogenUsed.txt",
+	"SETTINGS_FILE" : "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin_autogen.dir/AutogenUsed.txt",
 	"SOURCES" : 
 	[
 		[
-			"/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.cpp",
+			"/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.cpp",
 			"Mu"
 		],
 		[
-			"/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.cpp",
+			"/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.cpp",
 			"Mu"
 		],
 		[
-			"/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.cpp",
+			"/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.cpp",
 			"Mu"
 		]
 	],

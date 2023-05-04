@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "rospy".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "carla_spawn_objects"
-PROJECT_SPACE_DIR = "/home/carla/carla-ros-bridge/catkin_ws/devel"
+PROJECT_SPACE_DIR = "/home/carla/AVE6_project/catkin_ws/devel"
 PROJECT_VERSION = "0.0.0"

@@ -7,12 +7,15 @@ ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_drive_widget.cpp
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_indicator_widget.cpp
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/mocs_compilation.cpp
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleControl.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleStatus.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaStatus.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleControl.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleStatus.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaStatus.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenario.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioList.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioRunnerStatus.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /opt/ros/noetic/include/geometry_msgs/Accel.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /opt/ros/noetic/include/geometry_msgs/Point.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /opt/ros/noetic/include/geometry_msgs/Pose.h
@@ -262,14 +265,20 @@ ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/rviz_carla_plugin_autogen/mocs_compilation.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h
 
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaControl.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleControl.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleStatus.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaStatus.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.cpp
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaControl.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleControl.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleStatus.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaStatus.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenario.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioList.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioRunnerStatus.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenario.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenarioRequest.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenarioResponse.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.cpp
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /opt/ros/noetic/include/class_loader/class_loader.hpp
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /opt/ros/noetic/include/class_loader/class_loader_core.hpp
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /opt/ros/noetic/include/class_loader/exceptions.hpp
@@ -638,8 +647,8 @@ ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/carla_control_panel.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h
 
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.cpp
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.cpp
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qalgorithms.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic.h
@@ -749,8 +758,8 @@ ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.c
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qtwidgetsglobal.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/drive_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtWidgets/qwidget.h
 
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.cpp
-ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.cpp
+ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qalgorithms.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qarraydata.h
 ros-bridge/rviz_carla_plugin/CMakeFiles/rviz_carla_plugin.dir/src/indicator_widget.cpp.o: /usr/include/x86_64-linux-gnu/qt5/QtCore/qatomic.h

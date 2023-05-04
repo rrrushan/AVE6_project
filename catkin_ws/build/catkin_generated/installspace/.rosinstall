@@ -1,2 +1,2 @@
 - setup-file:
-    local-name: /home/carla/carla-ros-bridge/catkin_ws/install/setup.sh
+    local-name: /home/carla/AVE6_project/catkin_ws/install/setup.sh

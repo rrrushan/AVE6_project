@@ -1,4 +1,4 @@
-prefix=/home/carla/carla-ros-bridge/catkin_ws/install
+prefix=/home/carla/AVE6_project/catkin_ws/install
 
 Name: carla_msgs
 Description: Description of carla_msgs

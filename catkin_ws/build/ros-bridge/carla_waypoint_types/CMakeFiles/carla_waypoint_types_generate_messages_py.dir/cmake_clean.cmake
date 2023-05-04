@@ -1,9 +1,9 @@
 file(REMOVE_RECURSE
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/msg/_CarlaWaypoint.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/msg/__init__.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/srv/_GetActorWaypoint.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/srv/_GetWaypoint.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/srv/__init__.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/msg/_CarlaWaypoint.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/msg/__init__.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/srv/_GetActorWaypoint.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/srv/_GetWaypoint.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types/srv/__init__.py"
   "CMakeFiles/carla_waypoint_types_generate_messages_py"
 )
 

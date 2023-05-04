@@ -1,8 +1,8 @@
 file(REMOVE_RECURSE
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenario.h"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioList.h"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioRunnerStatus.h"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenario.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenario.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioList.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioRunnerStatus.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenario.h"
   "CMakeFiles/carla_ros_scenario_runner_types_generate_messages_cpp"
 )
 

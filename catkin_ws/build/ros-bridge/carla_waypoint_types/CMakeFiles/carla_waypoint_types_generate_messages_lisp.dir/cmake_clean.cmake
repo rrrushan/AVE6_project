@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types/msg/CarlaWaypoint.lisp"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types/srv/GetActorWaypoint.lisp"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types/srv/GetWaypoint.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types/msg/CarlaWaypoint.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types/srv/GetActorWaypoint.lisp"
+  "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types/srv/GetWaypoint.lisp"
   "CMakeFiles/carla_waypoint_types_generate_messages_lisp"
 )
 

@@ -1,8 +1,8 @@
-# Install script for directory: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_twist_to_control
+# Install script for directory: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_twist_to_control
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/carla/carla-ros-bridge/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/carla/AVE6_project/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,29 +38,29 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/safe_execute_install.cmake")
+  include("/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/safe_execute_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_control.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_control.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_twist_to_control/cmake" TYPE FILE FILES
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_controlConfig.cmake"
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_controlConfig-version.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_controlConfig.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_controlConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_twist_to_control" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_twist_to_control/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_twist_to_control" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_twist_to_control/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/carla_twist_to_control" TYPE PROGRAM FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_control.py")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/carla_twist_to_control" TYPE PROGRAM FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_twist_to_control/catkin_generated/installspace/carla_twist_to_control.py")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_twist_to_control/launch" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_twist_to_control/launch/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_twist_to_control/launch" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_twist_to_control/launch/")
 endif()
 

@@ -1,10 +1,10 @@
 file(REMOVE_RECURSE
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/_CarlaScenario.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/_CarlaScenarioList.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/_CarlaScenarioRunnerStatus.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/__init__.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/srv/_ExecuteScenario.py"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/srv/__init__.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/_CarlaScenario.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/_CarlaScenarioList.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/_CarlaScenarioRunnerStatus.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/msg/__init__.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/srv/_ExecuteScenario.py"
+  "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_ros_scenario_runner_types/srv/__init__.py"
   "CMakeFiles/carla_ros_scenario_runner_types_generate_messages_py"
 )
 

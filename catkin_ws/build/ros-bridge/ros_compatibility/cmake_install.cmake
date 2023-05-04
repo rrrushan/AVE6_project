@@ -1,8 +1,8 @@
-# Install script for directory: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/ros_compatibility
+# Install script for directory: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/ros_compatibility
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/carla/carla-ros-bridge/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/carla/AVE6_project/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,21 +38,21 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  include("/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/safe_execute_install.cmake")
+  include("/home/carla/AVE6_project/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/safe_execute_install.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/installspace/ros_compatibility.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/installspace/ros_compatibility.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ros_compatibility/cmake" TYPE FILE FILES
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/installspace/ros_compatibilityConfig.cmake"
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/installspace/ros_compatibilityConfig-version.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/installspace/ros_compatibilityConfig.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/ros_compatibility/catkin_generated/installspace/ros_compatibilityConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ros_compatibility" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/ros_compatibility/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/ros_compatibility" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/ros_compatibility/package.xml")
 endif()
 

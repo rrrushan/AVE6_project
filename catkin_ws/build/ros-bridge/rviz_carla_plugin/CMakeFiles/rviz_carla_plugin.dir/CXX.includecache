@@ -6,41 +6,41 @@
 
 #IncludeRegexTransform: 
 
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/qrc_rviz_carla_plugin.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/qrc_rviz_carla_plugin.cpp
 
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_carla_control_panel.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_carla_control_panel.cpp
 ../../../../../src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_drive_widget.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_drive_widget.cpp
 ../../../../../src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_indicator_widget.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_indicator_widget.cpp
 ../../../../../src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
 QtCore/qbytearray.h
 -
 QtCore/qmetatype.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/mocs_compilation.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/mocs_compilation.cpp
 UVLADIE3JM/moc_carla_control_panel.cpp
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_carla_control_panel.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_carla_control_panel.cpp
 UVLADIE3JM/moc_drive_widget.cpp
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_drive_widget.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_drive_widget.cpp
 UVLADIE3JM/moc_indicator_widget.cpp
-/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_indicator_widget.cpp
+/home/carla/AVE6_project/catkin_ws/build/ros-bridge/rviz_carla_plugin/rviz_carla_plugin_autogen/UVLADIE3JM/moc_indicator_widget.cpp
 
-/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaControl.h
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaControl.h
 string
 -
 vector
@@ -56,7 +56,7 @@ ros/builtin_message_traits.h
 ros/message_operations.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleControl.h
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleControl.h
 string
 -
 vector
@@ -74,7 +74,7 @@ ros/message_operations.h
 std_msgs/Header.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleStatus.h
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaEgoVehicleStatus.h
 string
 -
 vector
@@ -98,7 +98,7 @@ geometry_msgs/Quaternion.h
 carla_msgs/CarlaEgoVehicleControl.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_msgs/CarlaStatus.h
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_msgs/CarlaStatus.h
 string
 -
 vector
@@ -114,7 +114,83 @@ ros/builtin_message_traits.h
 ros/message_operations.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.cpp
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenario.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioList.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+carla_ros_scenario_runner_types/CarlaScenario.h
+-
+
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/CarlaScenarioRunnerStatus.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenario.h
+ros/service_traits.h
+-
+carla_ros_scenario_runner_types/ExecuteScenarioRequest.h
+-
+carla_ros_scenario_runner_types/ExecuteScenarioResponse.h
+-
+
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenarioRequest.h
+
+/home/carla/AVE6_project/catkin_ws/devel/include/carla_ros_scenario_runner_types/ExecuteScenarioResponse.h
+string
+-
+vector
+-
+memory
+-
+ros/types.h
+-
+ros/serialization.h
+-
+ros/builtin_message_traits.h
+-
+ros/message_operations.h
+-
+
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.cpp
 QCheckBox
 -
 QComboBox
@@ -166,15 +242,15 @@ rviz/view_manager.h
 rviz/visualization_manager.h
 -
 carla_control_panel.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
 drive_widget.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
 indicator_widget.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
 pluginlib/class_list_macros.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/carla_control_panel.h
 OgreCamera.h
 -
 carla_msgs/CarlaEgoVehicleStatus.h
@@ -192,29 +268,11 @@ ros/ros.h
 rviz/panel.h
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.cpp
-math.h
--
-stdio.h
--
-QMouseEvent
--
-QPainter
--
-drive_widget.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
-
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/drive_widget.h
 QWidget
 -
 
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.cpp
-indicator_widget.h
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
-QPainter
--
-
-/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
+/home/carla/AVE6_project/catkin_ws/src/ros-bridge/rviz_carla_plugin/src/indicator_widget.h
 QWidget
 -
 
@@ -3501,10 +3559,6 @@ qicon.h
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qicon.h
 
 /usr/include/x86_64-linux-gnu/qt5/QtGui/QList
-qevent.h
-/usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h
-
-/usr/include/x86_64-linux-gnu/qt5/QtGui/QMouseEvent
 qevent.h
 /usr/include/x86_64-linux-gnu/qt5/QtGui/qevent.h
 

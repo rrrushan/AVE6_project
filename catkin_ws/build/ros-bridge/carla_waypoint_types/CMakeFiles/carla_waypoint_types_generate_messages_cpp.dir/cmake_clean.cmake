@@ -1,7 +1,7 @@
 file(REMOVE_RECURSE
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_waypoint_types/CarlaWaypoint.h"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_waypoint_types/GetActorWaypoint.h"
-  "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_waypoint_types/GetWaypoint.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_waypoint_types/CarlaWaypoint.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_waypoint_types/GetActorWaypoint.h"
+  "/home/carla/AVE6_project/catkin_ws/devel/include/carla_waypoint_types/GetWaypoint.h"
   "CMakeFiles/carla_waypoint_types_generate_messages_cpp"
 )
 

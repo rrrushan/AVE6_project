@@ -1,4 +1,4 @@
-prefix=/home/carla/carla-ros-bridge/catkin_ws/devel
+prefix=/home/carla/AVE6_project/catkin_ws/devel
 
 Name: carla_manual_control
 Description: Description of carla_manual_control

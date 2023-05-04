@@ -1,8 +1,8 @@
-prefix=/home/carla/carla-ros-bridge/catkin_ws/devel
+prefix=/home/carla/AVE6_project/catkin_ws/devel
 
 Name: carla_ackermann_msgs
 Description: Description of carla_ackermann_msgs
 Version: 1.0.0
-Cflags: -I/home/carla/carla-ros-bridge/catkin_ws/devel/include
+Cflags: -I/home/carla/AVE6_project/catkin_ws/devel/include
 Libs: -L${prefix}/lib 
 Requires: message_runtime std_msgs carla_msgs

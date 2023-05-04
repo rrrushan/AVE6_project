@@ -1,0 +1,3 @@
+rosbag record /carla/ego_vehicle/rgb_front/camera_info /carla/ego_vehicle/rgb_front/image /carla/ego_vehicle/lidar_ouster_os1 /tf
+
+

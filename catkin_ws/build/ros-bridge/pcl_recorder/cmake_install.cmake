@@ -1,8 +1,8 @@
-# Install script for directory: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/pcl_recorder
+# Install script for directory: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/pcl_recorder
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/carla/carla-ros-bridge/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/carla/AVE6_project/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -38,18 +38,18 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING)
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/pcl_recorder/catkin_generated/installspace/pcl_recorder.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/pcl_recorder/catkin_generated/installspace/pcl_recorder.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_recorder/cmake" TYPE FILE FILES
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/pcl_recorder/catkin_generated/installspace/pcl_recorderConfig.cmake"
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/pcl_recorder/catkin_generated/installspace/pcl_recorderConfig-version.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/pcl_recorder/catkin_generated/installspace/pcl_recorderConfig.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/pcl_recorder/catkin_generated/installspace/pcl_recorderConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_recorder" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/pcl_recorder/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_recorder" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/pcl_recorder/package.xml")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
@@ -59,7 +59,7 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
          FILE "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/pcl_recorder/pcl_recorder_node"
          RPATH "")
   endif()
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pcl_recorder" TYPE EXECUTABLE FILES "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/pcl_recorder/pcl_recorder_node")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pcl_recorder" TYPE EXECUTABLE FILES "/home/carla/AVE6_project/catkin_ws/devel/lib/pcl_recorder/pcl_recorder_node")
   if(EXISTS "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/pcl_recorder/pcl_recorder_node" AND
      NOT IS_SYMLINK "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}/lib/pcl_recorder/pcl_recorder_node")
     file(RPATH_CHANGE
@@ -73,6 +73,6 @@ if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_recorder/launch" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/pcl_recorder/launch/")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/pcl_recorder/launch" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/pcl_recorder/launch/")
 endif()
 

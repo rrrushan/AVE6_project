@@ -1,8 +1,8 @@
-# Install script for directory: /home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_waypoint_types
+# Install script for directory: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/carla/carla-ros-bridge/catkin_ws/install")
+  set(CMAKE_INSTALL_PREFIX "/home/carla/AVE6_project/catkin_ws/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -39,59 +39,59 @@ endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/srv" TYPE FILE FILES
-    "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
-    "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
+    "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
+    "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/msg" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/msg" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/cmake" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_types-msg-paths.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/cmake" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_types-msg-paths.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/devel/include/carla_waypoint_types")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/include" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/devel/include/carla_waypoint_types")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/devel/share/roseus/ros/carla_waypoint_types")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/roseus/ros" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/devel/share/roseus/ros/carla_waypoint_types")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/common-lisp/ros" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/devel/share/common-lisp/ros/carla_waypoint_types")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/devel/share/gennodejs/ros/carla_waypoint_types")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/gennodejs/ros" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_waypoint_types")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types")
+  execute_process(COMMAND "/usr/bin/python3" -m compileall "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/carla/carla-ros-bridge/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/python3/dist-packages" TYPE DIRECTORY FILES "/home/carla/AVE6_project/catkin_ws/devel/lib/python3/dist-packages/carla_waypoint_types")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_types.pc")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_types.pc")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/cmake" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_types-msg-extras.cmake")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/cmake" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_types-msg-extras.cmake")
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types/cmake" TYPE FILE FILES
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_typesConfig.cmake"
-    "/home/carla/carla-ros-bridge/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_typesConfig-version.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_typesConfig.cmake"
+    "/home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_waypoint_types/catkin_generated/installspace/carla_waypoint_typesConfig-version.cmake"
     )
 endif()
 
 if("x${CMAKE_INSTALL_COMPONENT}x" STREQUAL "xUnspecifiedx" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types" TYPE FILE FILES "/home/carla/carla-ros-bridge/catkin_ws/src/ros-bridge/carla_waypoint_types/package.xml")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/carla_waypoint_types" TYPE FILE FILES "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/package.xml")
 endif()
 

@@ -1,4 +1,4 @@
-prefix=/home/carla/carla-ros-bridge/catkin_ws/devel
+prefix=/home/carla/AVE6_project/catkin_ws/devel
 
 Name: carla_spawn_objects
 Description: Description of carla_spawn_objects
