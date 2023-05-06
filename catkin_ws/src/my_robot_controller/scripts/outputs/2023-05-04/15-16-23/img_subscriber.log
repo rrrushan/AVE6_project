@@ -1,0 +1,3 @@
+[2023-05-04 15:16:23,568][rospy.core][INFO] - signal_shutdown [atexit]
+[2023-05-04 15:16:23,569][rospy.internal][INFO] - topic[/rosout] removing connection to /rosout
+[2023-05-04 15:16:23,570][rospy.impl.masterslave][INFO] - atexit

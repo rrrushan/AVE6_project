@@ -1,11 +1,14 @@
 #!/usr/bin/env python3
 
 import rospy
+import platform
+import pandas as pd
 
 if __name__ == '__main__':
     rospy.init_node("test_node")
 
     rospy.loginfo("Test node has started")
+    rospy.loginfo(platform.sys.version)
 
     rate = rospy.Rate(10)
 

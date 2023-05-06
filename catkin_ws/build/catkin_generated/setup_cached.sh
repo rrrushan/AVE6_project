@@ -7,4 +7,5 @@
 # new environment variables
 
 # modified environment variables
+export PKG_CONFIG_PATH="/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/devel/lib/pkgconfig:$PKG_CONFIG_PATH"
 export PWD='/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/build'

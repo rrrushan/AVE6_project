@@ -1,0 +1,586 @@
+[2023-05-04 15:03:15,863][rospy.internal][INFO] - topic[/rosout] adding connection to [/rosout], count 0
+[2023-05-04 15:03:18,882][rosout][INFO] - img_sub has been created
+[2023-05-04 15:03:18,885][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/image] adding connection to [http://carla2:37229/], count 0
+[2023-05-04 15:03:18,885][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/camera_info] adding connection to [http://carla2:37229/], count 0
+[2023-05-04 15:03:18,966][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,011][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,030][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,111][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,162][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,214][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,261][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,296][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,349][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,399][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,448][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,498][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,559][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,603][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,659][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,702][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,753][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,807][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,860][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,908][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:19,962][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,008][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,057][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,102][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,155][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,209][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,259][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,313][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,360][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,408][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,459][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,507][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,560][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,609][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,662][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,703][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,759][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,806][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,854][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,901][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:20,956][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,002][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,052][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,104][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,154][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,204][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,267][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,284][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,298][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,364][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,409][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,463][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,517][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,565][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,617][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,665][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,726][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,766][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,815][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,865][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,916][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:21,965][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,017][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,065][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,097][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,155][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,217][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,265][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,317][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,365][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,415][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,467][rosout][ERROR] - bad callback: <bound method obj_detection.callback_image of <__main__.obj_detection object at 0x7ff329ac5520>>
+Traceback (most recent call last):
+  File "/opt/ros/noetic/lib/python3/dist-packages/rospy/topics.py", line 750, in _invoke_callback
+    cb(msg)
+  File "/home/carla/admt_student/team3_ss23/AVE6_project/catkin_ws/src/my_robot_controller/scripts/img_subscriber.py", line 383, in callback_image
+    output = self.dd3d_obj.inference_on_single_image(cv_image)
+AttributeError: 'NoneType' object has no attribute 'inference_on_single_image'
+
+[2023-05-04 15:03:22,474][rospy.core][INFO] - signal_shutdown [signal-2]
+[2023-05-04 15:03:22,477][rospy.internal][INFO] - topic[/rosout] removing connection to /rosout
+[2023-05-04 15:03:22,477][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/camera_info] removing connection to http://carla2:37229/
+[2023-05-04 15:03:22,479][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/image] removing connection to http://carla2:37229/
+[2023-05-04 15:03:22,479][rospy.impl.masterslave][INFO] - signal-2
+[2023-05-04 15:03:23,110][rospy.core][INFO] - signal_shutdown [atexit]

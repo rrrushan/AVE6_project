@@ -26,6 +26,13 @@ Using CARLA and ROS1 Noetic
     ```bash
     ffmpeg -i /home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_v99_evgresize/%01d.png -r 30 -c:v h264_nvenc out_v99_evg.mp4
     ```
+- ROS commands: 
+    ```bash
+    roscore
+    rosbag play ~/admt_student/team3_ss23/ROS_1/bags/2023-04-14-21-04-50.bag -r 0.1 -l
+    rosrun rviz rviz
+    rosrun my_robot_controller img_subscriber.py
+    ```
 
 ## Reference
 [DD3D Original Repo](https://github.com/TRI-ML/dd3d)

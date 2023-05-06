@@ -1,0 +1,11 @@
+[2023-05-04 15:06:01,699][rospy.internal][INFO] - topic[/rosout] adding connection to [/rosout], count 0
+[2023-05-04 15:06:04,726][rosout][INFO] - None
+[2023-05-04 15:06:04,730][rosout][INFO] - img_sub has been created
+[2023-05-04 15:06:04,733][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/image] adding connection to [http://carla2:37229/], count 0
+[2023-05-04 15:06:04,733][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/camera_info] adding connection to [http://carla2:37229/], count 0
+[2023-05-04 15:08:26,554][rospy.core][INFO] - signal_shutdown [signal-2]
+[2023-05-04 15:08:26,560][rospy.internal][INFO] - topic[/rosout] removing connection to /rosout
+[2023-05-04 15:08:26,560][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/camera_info] removing connection to http://carla2:37229/
+[2023-05-04 15:08:26,562][rospy.internal][INFO] - topic[/carla/ego_vehicle/rgb_front/image] removing connection to http://carla2:37229/
+[2023-05-04 15:08:26,567][rospy.impl.masterslave][INFO] - signal-2
+[2023-05-04 15:08:27,158][rospy.core][INFO] - signal_shutdown [atexit]
