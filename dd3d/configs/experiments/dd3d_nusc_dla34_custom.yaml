@@ -10,7 +10,7 @@ MODEL:
   META_ARCHITECTURE: NuscenesDD3D
   # from-coco, IODA-pretrained.
   # CKPT: https://tri-ml-public.s3.amazonaws.com/github/dd3d/pretrained/depth_pretrained_dla34-y1urdmir-20210422_165446-model_final-remapped.pth
-  CKPT: /home/mobilitylabextreme002/Desktop/AutomatedDrivingProjekt/AVE6_project/dd3d/outputs/2023-04-29/16-37-02/model_0003999.pth
+  CKPT: /home/mobilitylabextreme002/Desktop/AutomatedDrivingProjekt/AVE6_project/dd3d/outputs/2023-05-02/13-44-42/model_0007999.pth
   RELOAD_CKPT: True
 
 FE:
@@ -46,14 +46,14 @@ INPUT:
     MAX_SIZE_TEST: 100000
 
 SOLVER:
-  IMS_PER_BATCH: 8 # need at least 128 GPU mem (with fp16).
+  IMS_PER_BATCH: 6 # need at least 128 GPU mem (with fp16).
   BASE_LR: 0.002
   MAX_ITER: 120000
   STEPS: [100000, 115000]
   WARMUP_ITERS: 2000
   MIXED_PRECISION_ENABLED: True
   CHECKPOINT_PERIOD: 2000
-  ACCUMULATE_GRAD_BATCHES: 8
+  ACCUMULATE_GRAD_BATCHES: 7
 
 TEST:
   IMS_PER_BATCH: 12 # 6 * 16 (must be multiple of 6 x #GPUs.)
