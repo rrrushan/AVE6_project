@@ -28,8 +28,8 @@ if os.path.exists(file_path):
 
 
 def main():
-    # client = carla.Client('10.116.80.2', 2000)
-    client = carla.Client('localhost', 2000)
+    client = carla.Client('10.116.80.2', 2000)
+    # client = carla.Client('localhost', 2000)
     client.set_timeout(10.0)
 
     world = client.get_world()
@@ -59,8 +59,8 @@ def main():
         # # ego_cam = world.spawn_actor(cam_bp,cam_transform,attach_to=vehicle, attachment_type=carla.AttachmentType.Rigid)
         # vehicle = world.get_actor(47)
 
-        locations = np.load('/home/carla/AVE6_project/calibration/Carla/locations.npy', allow_pickle=True) # -y, x, z?
-        rotations = np.load('/home/carla/AVE6_project/calibration/Carla/rotations.npy', allow_pickle=True) # -y, x, z
+        locations = np.load('/home/carla/AVE6_project/calibration/Carla/locations_2.npy', allow_pickle=True) 
+        rotations = np.load('/home/carla/AVE6_project/calibration/Carla/rotations_2.npy', allow_pickle=True) 
 
         for i in world.get_actors():
             if i.type_id == 'vehicle.tesla.model3':
@@ -72,7 +72,7 @@ def main():
         if vehicle_bp.has_attribute('color'):
             vehicle_bp.set_attribute('color', color)
 
-        vehicle_transform = carla.Transform(carla.Location(-47.5, -30, 0.6), carla.Rotation(yaw=90))
+        vehicle_transform = carla.Transform(carla.Location(-47.5, 5, 0.6), carla.Rotation(yaw=90))
         vehicle_tesla = world.spawn_actor(vehicle_bp,vehicle_transform)
         time.sleep(5)
 
@@ -93,13 +93,14 @@ def main():
             loc = locations[i]
             R = rotations[i]
 
-            cam_location = carla.Location(x=loc[1]+2, y=-loc[0], z=loc[2]+2)
-            cam_rotation = carla.Rotation(roll=-R[1], pitch=R[0], yaw=R[2]) # pitch, yaw, roll
+            cam_location = carla.Location(x=loc[1]+2.8, y=loc[0], z=loc[2]+2.5)
+            cam_rotation = carla.Rotation(roll=R[1], pitch=R[0], yaw=R[2]) # pitch, yaw, roll
             cam_transform = carla.Transform(cam_location,cam_rotation)
             
             ego_cam = world.spawn_actor(cam_bp,cam_transform,attach_to=vehicle_tesla, attachment_type=carla.AttachmentType.Rigid)
        
             ego_cam.listen(lambda image: image.save_to_disk(file_path + '/%.6d.png' % image.frame))
+            # time.sleep(0.2)
             time.sleep(1)
             ego_cam.stop()
 
