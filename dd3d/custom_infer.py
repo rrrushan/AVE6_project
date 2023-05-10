@@ -6,7 +6,7 @@ from tqdm import tqdm
 from torchinfo import summary
 import numpy as np
 import cv2
-from time import time
+from time import time, perf_counter
 import sys
 
 import detectron2.utils.comm as d2_comm
@@ -16,6 +16,7 @@ from detectron2.modeling import build_model
 from detectron2.solver import build_lr_scheduler, build_optimizer
 from detectron2.utils.events import CommonMetricPrinter, get_event_storage
 
+from tqdm import tqdm
 import sys
 sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
 import tridet.modeling  # pylint: disable=unused-import
@@ -65,7 +66,7 @@ class DD3D:
         self.ORIG_IMG_HEIGHT = 1464
         self.ORIG_IMG_WIDTH = 1936
         self.TARGET_AR_RATIO = 1242 / 375 # 3.312
-        self.TARGET_AR_RATIO = 1600 / 900
+        # self.TARGET_AR_RATIO = 1600 / 900
         # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
         self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 300 # 460
         self.TARGET_RESIZE_WIDTH = 1920
@@ -334,8 +335,10 @@ class DD3D:
         
         # Transposing: [H, W, C] -> [C, H, W] (KiTTi: [3, 375, 1242])
         transformed_img = transformed_img.permute(2, 0, 1)
-    
-        output = self.model._forward(transformed_img[None, :], [self.cam_intrinsic_mtx])
+
+        with torch.cuda.amp.autocast():
+            output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
+        # output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
         # output = self.model._forward({"image": transformed_img[None, :], "intrinsics": [self.cam_intrinsic_mtx]})
         return output
 
@@ -346,11 +349,11 @@ def main(cfg):
 
     # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
     # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
-    IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual"
+    IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
     # RESIZE_IMG = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_test.png"
-    total_files = len(os.listdir(IMG_FOLDER_PATH))
-    for file_num, file in enumerate(os.listdir(IMG_FOLDER_PATH)):
-        print(f"Visualizing file: {file_num}/{total_files}")
+    # total_files = len(os.listdir(IMG_FOLDER_PATH))
+    for file in tqdm(os.listdir(IMG_FOLDER_PATH)):
+        # print(f"Visualizing file: {file_num}/{total_files}")
         # if not file_num == 60:
         #     continue
         
@@ -360,6 +363,16 @@ def main(cfg):
         # image = cv2.resize(image, (1080, 1440))
         # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
         predictions = dd3d.inference_on_single_image(transformed_img)
+        # Benchmark        
+        # t_total = []
+        # for i in tqdm(range(100)):
+        #     t_start = perf_counter()
+        #     predictions = dd3d.inference_on_single_image(transformed_img)
+        #     t_end = perf_counter()
+        #     if i > 4:
+        #         t_total.append(t_end - t_start)
+        # print(np.mean(t_total))
+        # exit()
         # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
         # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
         # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
@@ -376,8 +389,8 @@ def main(cfg):
         # print(marker_list)
         # print(file)
         # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-        cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
-        # cv2.imwrite(f"outputs/test_bbox_2.png", final_image)
+        # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
+        cv2.imwrite(f"outputs/fp32_v99/{file}", final_image)
         # exit()
 if __name__ == '__main__':
     ## Uncomment for the required model
@@ -390,10 +403,10 @@ if __name__ == '__main__':
     # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34.pth')
 
     # V99
-    # sys.argv.append('+experiments=dd3d_kitti_v99')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
+    sys.argv.append('+experiments=dd3d_kitti_v99')
+    sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
 
     # DLA34 Nuscenes
-    sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
-    sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step6k.pth')
+    # sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
+    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step6k.pth')
     main()  # pylint: disable=no-value-for-parameter

@@ -14,11 +14,12 @@ import os
 import hydra
 import torch
 
+
 from tqdm import tqdm
 from torchinfo import summary
 import numpy as np
 import cv2
-from time import time
+from time import time, perf_counter
 import sys
 
 import detectron2.utils.comm as d2_comm
@@ -79,8 +80,8 @@ class DD3D:
         self.TARGET_AR_RATIO = 1242 / 375 # 3.312
         # self.TARGET_AR_RATIO = 1600 / 900
         # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
-        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 460
-        self.TARGET_RESIZE_WIDTH = 1280
+        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 100 # 460
+        self.TARGET_RESIZE_WIDTH = 1920
         
 
         self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
@@ -173,8 +174,8 @@ class DD3D:
 
             # Rotation of BBOX along each axis
             yaw_angle = np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))
-            roll_angle = np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
-            pitch_angle = np.math.atan2((single_bbox[4, 2] - single_bbox[0, 2]), (single_bbox[4, 1] - single_bbox[0, 1])) + 1.578
+            roll_angle = 0 # np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
+            pitch_angle = 0 # np.math.atan2((single_bbox[4, 2] - single_bbox[0, 2]), (single_bbox[4, 1] - single_bbox[0, 1])) + 1.578
             
             # TODO:marker_list Right now appending values to a list, 
             # later insert values in right places in marker array. DON'T forget class output !!
@@ -185,7 +186,7 @@ class DD3D:
             marker_msg.header.stamp = header.stamp
             marker_msg.header.frame_id = "ego_vehicle"
             
-            marker_msg.pose.position.x = cx + 4
+            marker_msg.pose.position.x = cx + 3
             marker_msg.pose.position.y = -cy
             marker_msg.pose.position.z = cz
             marker_msg.pose.orientation.x = qx
@@ -379,22 +380,23 @@ class DD3D:
         
         # Transposing: [H, W, C] -> [C, H, W] (KiTTi: [3, 375, 1242])
         transformed_img = transformed_img.permute(2, 0, 1)
-    
-        output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
+
+        with torch.cuda.amp.autocast():
+            output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
         # output = self.model._forward({"image": transformed_img[None, :], "intrinsics": [self.cam_intrinsic_mtx]})
         return output
 
 class obj_detection:
     def __init__(self):
         rospy.init_node("img_subscriber")
-        sys.argv.append('+experiments=dd3d_kitti_dla34')
-        sys.argv.append('MODEL.CKPT=/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth')
+        # sys.argv.append('+experiments=dd3d_kitti_dla34')
+        # sys.argv.append('MODEL.CKPT=/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth')
 
-        cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla.yaml")
-        cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth"
+        # cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla.yaml")
+        # cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth"
         
-        # cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml")
-        # cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"
+        cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml")
+        cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"
         self.dd3d = DD3D(cfg)
         
         sub_info = rospy.Subscriber("/carla/ego_vehicle/rgb_front/camera_info", CameraInfo, callback=self.callback_camInfo)
@@ -420,17 +422,21 @@ class obj_detection:
     def callback_image(self, msg: Image):
         # rospy.loginfo(type(msg))
         header_info = msg.header
+        t_1 = perf_counter()
         cv_image = self.cvbridge.imgmsg_to_cv2(msg, "bgr8")
         transform_img = self.dd3d.transform_img(cv_image)
+        t_2 = perf_counter()
         predictions = self.dd3d.inference_on_single_image(transform_img)
+        t_3 = perf_counter()
         final_image = self.dd3d.visualize([cv_image], predictions)[0]
-
+        t_4 = perf_counter()
         marker_list = self.dd3d.output2MarkerArray(predictions, header_info)
+        t_5 = perf_counter()
         ros_img = self.cvbridge.cv2_to_imgmsg(final_image)
 
         self.marker_pub.publish(marker_list)
         self.vis_image_pub.publish(ros_img)
-        rospy.loginfo("IT WORKSSSSS")
+        rospy.loginfo(f"Time log| Total: {(t_5 - t_1)*1000:.2f}ms, Img_Tf: {(t_2 - t_1)*1000:.2f}ms, Inference: {(t_3 - t_2)*1000:.2f}ms, Vis: {(t_4 - t_3)*1000:.2f}ms, conv_toMarker: {(t_5 - t_4)*1000:.2f}ms")
         # cv2.imshow("test", final_image)
         # cv2.waitKey(10)
 

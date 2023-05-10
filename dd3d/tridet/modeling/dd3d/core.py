@@ -4,7 +4,7 @@ from torch import nn
 
 from detectron2.modeling.meta_arch.build import META_ARCH_REGISTRY
 from detectron2.modeling.postprocessing import detector_postprocess as resize_instances
-from detectron2.structures import Instances
+from detectron2.structures import Instances, Boxes
 
 from tridet.modeling.dd3d.fcos2d import FCOS2DHead, FCOS2DInference, FCOS2DLoss
 from tridet.modeling.dd3d.fcos3d import FCOS3DHead, FCOS3DInference, FCOS3DLoss
@@ -67,6 +67,27 @@ class DD3D(nn.Module):
     def preprocess_image(self, x):
         return (x - self.pixel_mean) / self.pixel_std
 
+    def custom_instance_cast(self, instances, device, dtype):
+        """Custom method to convert Instances object from float32 to float16 for faster inference
+
+        Args:
+            instances (Instances): detectron2 Instances class
+            device (torch.device): PyTorch device -> "cuda" or "cpu"
+            dtype (torch.dtype): torch.float32 or torch.float16
+
+        Returns:
+            ret: List of instances
+        """
+        ret = Instances(instances._image_size)
+        for k, v in instances._fields.items():       
+            if hasattr(v, "to"):
+                if isinstance(v, Boxes):
+                    v = Boxes(v.tensor.to(device=device, dtype=dtype))
+                else:
+                    v = v.to(device=device, dtype=dtype)
+            ret.set(k, v)
+        return ret
+
     def forward(self, batched_images, batched_intrinsic_mtx):     
         images = [x.to(self.device) for x in batched_images]
         images = [self.preprocess_image(x) for x in images]
@@ -111,6 +132,7 @@ class DD3D(nn.Module):
             height = batched_images.shape[2] # input_per_image.get("height", image_size[0])
             width = batched_images.shape[3] # input_per_image.get("width", image_size[1])
             r = resize_instances(results_per_image, height, width)
+            r = self.custom_instance_cast(r, "cuda", torch.float32) # Casting to float32 to make it easy for visualizing
             processed_results.append({"instances": r})
 
         return processed_results
