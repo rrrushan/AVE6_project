@@ -17,20 +17,21 @@ objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
 # cropped, padded and resized images
-images = glob.glob('calibration/Carla/Calibration_Images/23_05_11/*.png')
+images = glob.glob('calibration/Carla/Calibration_Images/11_05_23/*.png')
 # count = 0
 
 for i, fname in enumerate(images):
     img = cv.imread(fname)
     gray = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
     print(f"Processing image {i}", fname)
+
     # Find the chessboard corners
     ret, corners = cv.findChessboardCorners(gray, (points_row, points_col), None)
    
     if ret == True:
         objpoints.append(objp)
-        # corners2 = cv.cornerSubPix(gray,corners, (5,5), (-1,-1), criteria)
-        imgpoints.append(corners)
+        corners2 = cv.cornerSubPix(gray,corners, (5,5), (-1,-1), criteria)
+        imgpoints.append(corners2)
 
         # Draw and display the corners
         cv.drawChessboardCorners(img, (points_row, points_col), corners, ret)
