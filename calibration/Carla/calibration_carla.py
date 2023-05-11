@@ -10,14 +10,14 @@ points_col = 7
 
 objp = np.zeros((points_row * points_col, 3), np.float32)
 objp[:,:2] = np.mgrid[0:points_row, 0:points_col].T.reshape(-1,2)
-objp *= 500
+objp *= 100 # 500
 
 # Arrays to store object points and image points from all the images.
 objpoints = [] # 3d point in real world space
 imgpoints = [] # 2d points in image plane.
 
 # cropped, padded and resized images
-images = glob.glob('calibration/Carla/Calibration_Images/23_05_10/*.png')
+images = glob.glob('calibration/Carla/Calibration_Images/23_05_11/*.png')
 # count = 0
 
 for i, fname in enumerate(images):
@@ -54,5 +54,5 @@ def write_result(file_name, ret, mtx, dist, shape):
         f.write(f'Distortion:\n')
         f.write(f'{dist}')
 
-filename = 'calibration/Carla/07_05_23'
+filename = 'calibration/Carla/23_05_11'
 write_result(filename, ret, mtx, dist, img.shape)
