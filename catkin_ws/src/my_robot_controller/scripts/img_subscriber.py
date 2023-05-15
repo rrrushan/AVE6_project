@@ -68,11 +68,11 @@ class DD3D:
         #     [  0.0000, 738.8547, 177.0025],
         #     [  0.0000,   0.0000,   1.0000]
         # ])
-        self.orig_cam_intrinsic_mtx = torch.FloatTensor([
-            [1676.625,   0.0000, 968.0],
-            [  0.0000, 1676.625, 732.0],
-            [  0.0000,   0.0000,   1.0000]
-        ])
+        # self.orig_cam_intrinsic_mtx = torch.FloatTensor([
+        #     [1676.625,   0.0000, 968.0],
+        #     [  0.0000, 1676.625, 732.0],
+        #     [  0.0000,   0.0000,   1.0000]
+        # ])
 
         # Params for cropping and rescaling
         self.ORIG_IMG_HEIGHT = 1464
@@ -82,21 +82,6 @@ class DD3D:
         # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
         self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 200 # 460
         self.TARGET_RESIZE_WIDTH = 1920
-        
-
-        self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
-        # print(self.required_pad_left_right); exit()
-        self.pre_resize_height = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
-        self.pre_resize_width = self.required_pad_left_right*2 + self.ORIG_IMG_WIDTH
-        self.CAM_SCALE_RESIZE = self.TARGET_RESIZE_WIDTH / self.pre_resize_width
-
-
-        self.cam_intrinsic_mtx = torch.FloatTensor([
-            [self.orig_cam_intrinsic_mtx[0][0] * self.CAM_SCALE_RESIZE, 0.000, (self.orig_cam_intrinsic_mtx[0][2] + self.required_pad_left_right) * self.CAM_SCALE_RESIZE],
-            [0.000, self.orig_cam_intrinsic_mtx[1][1] * self.CAM_SCALE_RESIZE, (self.orig_cam_intrinsic_mtx[1][2] - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) * self.CAM_SCALE_RESIZE],
-            [0.000, 0.000, 1.000]
-        ])
-
 
         # Color code for visualizing each class
         # BGR (inverted RGB) color values for classes
@@ -108,6 +93,27 @@ class DD3D:
             4: ((255, 255, 0), "Truck"),     # Truck: Turquoise Blue
             5: ((0, 0, 0), "Unknown")        # Unknown: Black
         }
+
+    def load_cam_mtx(self, cam_mtx):
+        """Load camera matrix from /camera_info topic and modify with required padding/resizing
+
+        Args:
+            cam_mtx (torch.FloatTensor): Original Camera matrix
+        """
+
+        self.orig_cam_intrinsic_mtx = cam_mtx
+        
+        self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
+        # print(self.required_pad_left_right); exit()
+        self.pre_resize_height = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
+        self.pre_resize_width = self.required_pad_left_right*2 + self.ORIG_IMG_WIDTH
+        self.CAM_SCALE_RESIZE = self.TARGET_RESIZE_WIDTH / self.pre_resize_width
+
+        self.cam_intrinsic_mtx = torch.FloatTensor([
+            [self.orig_cam_intrinsic_mtx[0][0] * self.CAM_SCALE_RESIZE, 0.000, (self.orig_cam_intrinsic_mtx[0][2] + self.required_pad_left_right) * self.CAM_SCALE_RESIZE],
+            [0.000, self.orig_cam_intrinsic_mtx[1][1] * self.CAM_SCALE_RESIZE, (self.orig_cam_intrinsic_mtx[1][2] - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) * self.CAM_SCALE_RESIZE],
+            [0.000, 0.000, 1.000]
+        ])
 
     def output2MarkerArray(self, predictions, header):
         """Converts model outputs to marker array format for RVIZ
@@ -190,7 +196,7 @@ class DD3D:
             marker_msg.header.stamp = header.stamp
             marker_msg.header.frame_id = "ego_vehicle"
             
-            marker_msg.pose.position.x = cx*1.15
+            marker_msg.pose.position.x = cx
             marker_msg.pose.position.y = - cy
             marker_msg.pose.position.z = cz - 0.3
             marker_msg.pose.orientation.x = qx # qx #- 0.5
@@ -460,7 +466,12 @@ class obj_detection:
         cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"
         self.dd3d = DD3D(cfg)
         
-        sub_info = rospy.Subscriber("/carla/ego_vehicle/rgb_front/camera_info", CameraInfo, callback=self.callback_camInfo)
+        # Wait for camera intrinsic data
+        rospy.loginfo("Waiting for /camera_info topic")
+        cam_info_data = rospy.wait_for_message('/carla/ego_vehicle/rgb_front/camera_info', CameraInfo)
+        cam_intrinsic_mtx = np.reshape(np.array(cam_info_data.K), (3,3))
+        self.dd3d.load_cam_mtx(cam_intrinsic_mtx)
+
         sub_image = rospy.Subscriber("/carla/ego_vehicle/rgb_front/image", Image, callback=self.callback_image)
         self.marker_pub = rospy.Publisher("rgb_front/markers", MarkerArray, queue_size=10)
         self.vis_image_pub = rospy.Publisher("rgb_front/vis_image", Image, queue_size=10)
@@ -471,14 +482,6 @@ class obj_detection:
 
         rospy.spin()
 
-
-    def callback_camInfo(self, msg: CameraInfo):
-        """Update camera intrinsic matrix
-
-        Args:
-            msg (CameraInfo): camera info from carla
-        """
-        self.cam_intrinsic_mtx = np.reshape(np.array(msg.K), (3,3))
 
     def callback_image(self, msg: Image):
         # rospy.loginfo(type(msg))

@@ -226,8 +226,8 @@ class DD3D:
             # Convert the homogeneous 2D points to non-homogeneous coordinates
             pred_bbox3d_img = points_2d_homogeneous[:, :, :2] / points_2d_homogeneous[:, :, 2:]
 
-            if rescale:
-                pred_bbox3d_img = self.rescale_boxes(pred_bbox3d_img)
+            # if rescale:
+            #     pred_bbox3d_img = self.rescale_boxes(pred_bbox3d_img)
 
             if mode == "3D":
                 # Define the edges of the bounding box.
@@ -401,7 +401,7 @@ def main(cfg):
             # cv2.imshow("test", final_image)
             # cv2.waitKey(0)
         del dd3d
-        # exit()
+
 if __name__ == '__main__':
     ## Uncomment for the required model
     # OmniML
