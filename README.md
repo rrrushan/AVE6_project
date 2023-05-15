@@ -33,6 +33,31 @@ Using CARLA and ROS1 Noetic
     rosrun rviz rviz
     rosrun my_robot_controller img_subscriber.py
     ```
+## Benchmark
+Time for transform + inference in FP16
+- V99
+Target Img Res: (144, 480, 3), total time: 0.063s, transform time: 0.002s, model time: 0.061s
+Target Img Res: (217, 720, 3), total time: 0.066s, transform time: 0.003s, model time: 0.063s
+Target Img Res: (289, 960, 3), total time: 0.069s, transform time: 0.003s, model time: 0.066s
+Target Img Res: (386, 1280, 3), total time: 0.082s, transform time: 0.003s, model time: 0.079s
+Target Img Res: (483, 1600, 3), total time: 0.101s, transform time: 0.003s, model time: 0.098s
+Target Img Res: (579, 1920, 3), total time: 0.134s, transform time: 0.003s, model time: 0.131s
+
+- DLA34
+Target Img Res: (144, 480, 3), total time: 0.046s, transform time: 0.002s, model time: 0.044s
+Target Img Res: (217, 720, 3), total time: 0.046s, transform time: 0.003s, model time: 0.043s
+Target Img Res: (289, 960, 3), total time: 0.048s, transform time: 0.003s, model time: 0.045s
+Target Img Res: (386, 1280, 3), total time: 0.048s, transform time: 0.003s, model time: 0.045s
+Target Img Res: (483, 1600, 3), total time: 0.049s, transform time: 0.003s, model time: 0.047s
+Target Img Res: (579, 1920, 3), total time: 0.059s, transform time: 0.003s, model time: 0.056s
+
+- OmniML
+Target Img Res: (144, 480, 3), total time: 0.050s, transform time: 0.002s, model time: 0.047s
+Target Img Res: (217, 720, 3), total time: 0.053s, transform time: 0.003s, model time: 0.050s
+Target Img Res: (289, 960, 3), total time: 0.053s, transform time: 0.003s, model time: 0.050s
+Target Img Res: (386, 1280, 3), total time: 0.054s, transform time: 0.003s, model time: 0.052s
+Target Img Res: (483, 1600, 3), total time: 0.056s, transform time: 0.003s, model time: 0.053s
+Target Img Res: (579, 1920, 3), total time: 0.054s, transform time: 0.003s, model time: 0.051s
 
 ## Reference
 [DD3D Original Repo](https://github.com/TRI-ML/dd3d)

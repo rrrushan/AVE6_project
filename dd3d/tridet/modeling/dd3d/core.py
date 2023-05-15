@@ -88,7 +88,7 @@ class DD3D(nn.Module):
             ret.set(k, v)
         return ret
 
-    def forward(self, batched_images, batched_intrinsic_mtx):     
+    def predict(self, batched_images, batched_intrinsic_mtx):     
         images = [x.to(self.device) for x in batched_images]
         images = [self.preprocess_image(x) for x in images]
 
@@ -137,7 +137,7 @@ class DD3D(nn.Module):
 
         return processed_results
 
-    def forward_orig(self, batched_inputs):
+    def forward(self, batched_inputs):
         images = [x["images"].to(self.device) for x in batched_inputs]
         images = [self.preprocess_image(x) for x in images]
 

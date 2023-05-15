@@ -34,7 +34,7 @@ from tridet.utils.wandb import flatten_dict, log_nested_dict
 from tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
 
 class DD3D:
-    def __init__(self, cfg):
+    def __init__(self, cfg, target_img_res):
         # Create model 
         cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = 0.1
         cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = 0.3
@@ -68,8 +68,8 @@ class DD3D:
         self.TARGET_AR_RATIO = 1242 / 375 # 3.312
         # self.TARGET_AR_RATIO = 1600 / 900
         # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
-        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 300 # 460
-        self.TARGET_RESIZE_WIDTH = 1920
+        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 100 # 460
+        self.TARGET_RESIZE_WIDTH = target_img_res # 1920, 1600, 1280
         
 
         self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
@@ -148,7 +148,7 @@ class DD3D:
             cx = (min_x + max_x) / 2
             cy = (min_y + max_y) / 2
             cz = (min_z + max_z) / 2
-
+            print(cx, cy, cz, single_class)
             # Size of BBOX along each axis
             scale_x = max_x - min_x
             scale_y = max_y - min_y
@@ -222,7 +222,7 @@ class DD3D:
 
             ## Project 3D world points to image
             # Multiply the 3D points by the intrinsic matrix to obtain the 2D points
-            points_2d_homogeneous = np.dot(pred_bbox3d, self.cam_intrinsic_mtx.cpu().numpy().T) # intrinsic_matrix.dot(points_3d.T).T
+            points_2d_homogeneous = np.dot(pred_bbox3d, self.orig_cam_intrinsic_mtx.cpu().numpy().T) # intrinsic_matrix.dot(points_3d.T).T
             # Convert the homogeneous 2D points to non-homogeneous coordinates
             pred_bbox3d_img = points_2d_homogeneous[:, :, :2] / points_2d_homogeneous[:, :, 2:]
 
@@ -337,60 +337,70 @@ class DD3D:
         transformed_img = transformed_img.permute(2, 0, 1)
 
         with torch.cuda.amp.autocast():
-            output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
-        # output = self.model(transformed_img[None, :], [self.cam_intrinsic_mtx])
+            output = self.model.predict(transformed_img[None, :], [self.cam_intrinsic_mtx])
+        
+        # output = self.model.predict(transformed_img[None, :], [self.cam_intrinsic_mtx])
         # output = self.model._forward({"image": transformed_img[None, :], "intrinsics": [self.cam_intrinsic_mtx]})
         return output
 
 
 @hydra.main(config_path="configs/", config_name="defaults")
 def main(cfg):
-    dd3d = DD3D(cfg)
+    # 1280, 1600, 1920
+    for img_res in [1920]:
+        dd3d = DD3D(cfg, img_res)
 
-    # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
-    # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
-    IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
-    # RESIZE_IMG = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_test.png"
-    # total_files = len(os.listdir(IMG_FOLDER_PATH))
-    for file in tqdm(os.listdir(IMG_FOLDER_PATH)):
-        # print(f"Visualizing file: {file_num}/{total_files}")
-        # if not file_num == 60:
-        #     continue
+        # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
+        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
+        IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
+        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ave6_main/AVE6_project/vishal/output"
         
-        image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
-        transformed_img = dd3d.transform_img(image)
-        # image = cv2.imread(RESIZE_IMG)
-        # image = cv2.resize(image, (1080, 1440))
-        # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
-        predictions = dd3d.inference_on_single_image(transformed_img)
-        # Benchmark        
-        # t_total = []
-        # for i in tqdm(range(100)):
-        #     t_start = perf_counter()
-        #     predictions = dd3d.inference_on_single_image(transformed_img)
-        #     t_end = perf_counter()
-        #     if i > 4:
-        #         t_total.append(t_end - t_start)
-        # print(np.mean(t_total))
-        # exit()
-        # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
-        # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
-        # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
-        # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
-        
-        # np.save("../sample_bbox.npy", bbox_3d)
-        # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-        # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-        # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-        
-        marker_list = dd3d.output2MarkerArray(predictions)
-        # np.save("outputs/marker_list_30.npy", np.array(marker_list))
-        final_image = dd3d.visualize([image], predictions)[0]
-        # print(marker_list)
-        # print(file)
-        # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-        # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
-        cv2.imwrite(f"outputs/fp32_v99/{file}", final_image)
+        # total_files = len(os.listdir(IMG_FOLDER_PATH))
+        for file in tqdm(os.listdir(IMG_FOLDER_PATH)):
+            # print(f"Visualizing file: {file_num}/{total_files}")
+            # if not file_num == 60:
+            #     continue
+            print(file)
+            image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
+            transformed_img = dd3d.transform_img(image)
+            # print(transformed_img.shape)
+            # image = cv2.imread(RESIZE_IMG)
+            # image = cv2.resize(image, (1080, 1440))
+            # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
+            predictions = dd3d.inference_on_single_image(transformed_img)
+            # Benchmark        
+            # t_total = []
+            # for i in tqdm(range(100)):
+            #     t_start = perf_counter()
+            #     predictions = dd3d.inference_on_single_image(transformed_img)
+            #     t_end = perf_counter()
+            #     if i > 4:
+            #         t_total.append(t_end - t_start)
+            # print(np.mean(t_total))
+            # exit()
+            # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
+            # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
+            # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
+            # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
+            
+            # np.save("../sample_bbox.npy", bbox_3d)
+            # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
+            # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
+            # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
+            
+            marker_list = dd3d.output2MarkerArray(predictions)
+            # np.save("outputs/marker_list_30.npy", np.array(marker_list))
+            final_image = dd3d.visualize([image], predictions)[0]
+            # print(marker_list)
+            # print(file)
+            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
+            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
+            
+            cv2.imwrite(f"outputs/orig_cam/{file[:-4] + '_' + str(img_res) + '.png'}", final_image)
+            # cv2.imwrite(f"{IMG_FOLDER_PATH}/out_{file}", final_image)
+            # cv2.imshow("test", final_image)
+            # cv2.waitKey(0)
+        del dd3d
         # exit()
 if __name__ == '__main__':
     ## Uncomment for the required model
@@ -409,4 +419,4 @@ if __name__ == '__main__':
     # DLA34 Nuscenes
     # sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
     # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step6k.pth')
-    main()  # pylint: disable=no-value-for-parameter
+    main()  # pylint: disable=no-value-for-parameter_description_
