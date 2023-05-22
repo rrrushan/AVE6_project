@@ -24,12 +24,12 @@ add_custom_target(_carla_waypoint_types_generate_messages_check_deps_${_filename
 
 get_filename_component(_filename "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv" NAME_WE)
 add_custom_target(_carla_waypoint_types_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "carla_waypoint_types" "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv" "geometry_msgs/Point:carla_waypoint_types/CarlaWaypoint:geometry_msgs/Quaternion:geometry_msgs/Pose"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "carla_waypoint_types" "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv" "geometry_msgs/Point:geometry_msgs/Quaternion:geometry_msgs/Pose:carla_waypoint_types/CarlaWaypoint"
 )
 
 get_filename_component(_filename "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv" NAME_WE)
 add_custom_target(_carla_waypoint_types_generate_messages_check_deps_${_filename}
-  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "carla_waypoint_types" "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv" "geometry_msgs/Point:carla_waypoint_types/CarlaWaypoint:geometry_msgs/Quaternion:geometry_msgs/Pose"
+  COMMAND ${CATKIN_ENV} ${PYTHON_EXECUTABLE} ${GENMSG_CHECK_DEPS_SCRIPT} "carla_waypoint_types" "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv" "geometry_msgs/Point:geometry_msgs/Quaternion:geometry_msgs/Pose:carla_waypoint_types/CarlaWaypoint"
 )
 
 #
@@ -49,13 +49,13 @@ _generate_msg_cpp(carla_waypoint_types
 _generate_srv_cpp(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/carla_waypoint_types
 )
 _generate_srv_cpp(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gencpp_INSTALL_DIR}/carla_waypoint_types
 )
 
@@ -98,13 +98,13 @@ _generate_msg_eus(carla_waypoint_types
 _generate_srv_eus(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/carla_waypoint_types
 )
 _generate_srv_eus(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${geneus_INSTALL_DIR}/carla_waypoint_types
 )
 
@@ -147,13 +147,13 @@ _generate_msg_lisp(carla_waypoint_types
 _generate_srv_lisp(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/carla_waypoint_types
 )
 _generate_srv_lisp(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genlisp_INSTALL_DIR}/carla_waypoint_types
 )
 
@@ -196,13 +196,13 @@ _generate_msg_nodejs(carla_waypoint_types
 _generate_srv_nodejs(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/carla_waypoint_types
 )
 _generate_srv_nodejs(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${gennodejs_INSTALL_DIR}/carla_waypoint_types
 )
 
@@ -245,13 +245,13 @@ _generate_msg_py(carla_waypoint_types
 _generate_srv_py(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/carla_waypoint_types
 )
 _generate_srv_py(carla_waypoint_types
   "/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/srv/GetActorWaypoint.srv"
   "${MSG_I_FLAGS}"
-  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg"
+  "/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Point.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Quaternion.msg;/opt/ros/noetic/share/geometry_msgs/cmake/../msg/Pose.msg;/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_waypoint_types/msg/CarlaWaypoint.msg"
   ${CATKIN_DEVEL_PREFIX}/${genpy_INSTALL_DIR}/carla_waypoint_types
 )
 

@@ -90,11 +90,11 @@ ros-bridge/carla_msgs/CMakeFiles/carla_msgs_generate_messages_nodejs: /home/carl
 
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleStatus.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleControl.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /opt/ros/noetic/share/geometry_msgs/msg/Accel.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleControl.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleStatus.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/carla/AVE6_project/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Generating Javascript code from carla_msgs/CarlaEgoVehicleStatus.msg"
 	cd /home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleStatus.msg -Icarla_msgs:/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Idiagnostic_msgs:/opt/ros/noetic/share/diagnostic_msgs/cmake/../msg -p carla_msgs -o /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg
 
@@ -106,15 +106,15 @@ ros-bridge/carla_msgs/CMakeFiles/carla_msgs_generate_messages_nodejs: /home/carl
 
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleInfo.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleInfo.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleInfo.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleInfo.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleInfoWheel.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaEgoVehicleInfo.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleInfoWheel.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/carla/AVE6_project/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Generating Javascript code from carla_msgs/CarlaEgoVehicleInfo.msg"
 	cd /home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaEgoVehicleInfo.msg -Icarla_msgs:/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Idiagnostic_msgs:/opt/ros/noetic/share/diagnostic_msgs/cmake/../msg -p carla_msgs -o /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg
 
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaCollisionEvent.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaCollisionEvent.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaCollisionEvent.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaCollisionEvent.js: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaCollisionEvent.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaCollisionEvent.js: /opt/ros/noetic/share/std_msgs/msg/Header.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/carla/AVE6_project/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Generating Javascript code from carla_msgs/CarlaCollisionEvent.msg"
 	cd /home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaCollisionEvent.msg -Icarla_msgs:/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Idiagnostic_msgs:/opt/ros/noetic/share/diagnostic_msgs/cmake/../msg -p carla_msgs -o /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg
 
@@ -152,22 +152,22 @@ ros-bridge/carla_msgs/CMakeFiles/carla_msgs_generate_messages_nodejs: /home/carl
 
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaTrafficLightInfo.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaBoundingBox.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaBoundingBox.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfo.js: /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/carla/AVE6_project/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Generating Javascript code from carla_msgs/CarlaTrafficLightInfo.msg"
 	cd /home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaTrafficLightInfo.msg -Icarla_msgs:/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Idiagnostic_msgs:/opt/ros/noetic/share/diagnostic_msgs/cmake/../msg -p carla_msgs -o /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg
 
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaTrafficLightInfoList.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaBoundingBox.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaTrafficLightInfo.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Vector3.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaBoundingBox.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg/CarlaTrafficLightInfoList.js: /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/carla/AVE6_project/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Generating Javascript code from carla_msgs/CarlaTrafficLightInfoList.msg"
 	cd /home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg/CarlaTrafficLightInfoList.msg -Icarla_msgs:/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Idiagnostic_msgs:/opt/ros/noetic/share/diagnostic_msgs/cmake/../msg -p carla_msgs -o /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/msg
 
@@ -195,10 +195,10 @@ ros-bridge/carla_msgs/CMakeFiles/carla_msgs_generate_messages_nodejs: /home/carl
 
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/lib/gennodejs/gen_nodejs.py
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/srv/SpawnObject.srv
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
+/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/share/diagnostic_msgs/msg/KeyValue.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/share/geometry_msgs/msg/Pose.msg
 /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/share/geometry_msgs/msg/Quaternion.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/share/diagnostic_msgs/msg/KeyValue.msg
-/home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv/SpawnObject.js: /opt/ros/noetic/share/geometry_msgs/msg/Point.msg
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --blue --bold --progress-dir=/home/carla/AVE6_project/catkin_ws/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Generating Javascript code from carla_msgs/SpawnObject.srv"
 	cd /home/carla/AVE6_project/catkin_ws/build/ros-bridge/carla_msgs && ../../catkin_generated/env_cached.sh /usr/bin/python3 /opt/ros/noetic/share/gennodejs/cmake/../../../lib/gennodejs/gen_nodejs.py /home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/srv/SpawnObject.srv -Icarla_msgs:/home/carla/AVE6_project/catkin_ws/src/ros-bridge/carla_msgs/msg -Istd_msgs:/opt/ros/noetic/share/std_msgs/cmake/../msg -Igeometry_msgs:/opt/ros/noetic/share/geometry_msgs/cmake/../msg -Idiagnostic_msgs:/opt/ros/noetic/share/diagnostic_msgs/cmake/../msg -p carla_msgs -o /home/carla/AVE6_project/catkin_ws/devel/share/gennodejs/ros/carla_msgs/srv
 

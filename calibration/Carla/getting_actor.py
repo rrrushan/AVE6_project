@@ -40,8 +40,8 @@ if os.path.exists(file_path):
 
 
 def main():
-    client = carla.Client('10.116.80.2', 2000)
-    # client = carla.Client('localhost', 2000)
+    # client = carla.Client('10.116.80.2', 2000)
+    client = carla.Client('localhost', 2000)
     client.set_timeout(10.0)
 
     world = client.get_world()
@@ -124,11 +124,11 @@ def main():
         # cam_bp.set_attribute("lens_circle_falloff",str(3.0))
         # cam_bp.set_attribute("lens_circle_multiplier",str(3.0))
         #cam_bp.set_attribute("lens_k",str(-5))
-        #cam_bp.set_attribute("lens_kcube",str(-5))c
+        #cam_bp.set_attribute("lens_kcube",str(-5))
         #cam_bp.set_attribute("lens_x_size",str(6))
         #cam_bp.set_attribute("lens_y_size",str(6))
         
-        for i in range(len(locations)):
+        for i in range(len(locations[:5])):
             loc = locations[i]
             R = rotations[i]
 

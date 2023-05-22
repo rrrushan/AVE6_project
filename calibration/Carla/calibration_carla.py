@@ -55,5 +55,5 @@ def write_result(file_name, ret, mtx, dist, shape):
         f.write(f'Distortion:\n')
         f.write(f'{dist}')
 
-filename = 'calibration/Carla/23_05_11'
+filename = 'calibration/Carla/23_05_22'
 write_result(filename, ret, mtx, dist, img.shape)

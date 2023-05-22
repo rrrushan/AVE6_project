@@ -415,6 +415,12 @@ actionlib_DIR:PATH=/opt/ros/noetic/share/actionlib/cmake
 //The directory containing a CMake configuration file for actionlib_msgs.
 actionlib_msgs_DIR:PATH=/opt/ros/noetic/share/actionlib_msgs/cmake
 
+//Value Computed by CMake
+admt_BINARY_DIR:STATIC=/home/carla/AVE6_project/catkin_ws/build/ros-bridge/admt
+
+//Value Computed by CMake
+admt_SOURCE_DIR:STATIC=/home/carla/AVE6_project/catkin_ws/src/ros-bridge/admt
+
 //The directory containing a CMake configuration file for bond.
 bond_DIR:PATH=/opt/ros/noetic/share/bond/cmake
 
@@ -764,6 +770,12 @@ tf_DIR:PATH=/opt/ros/noetic/share/tf/cmake
 //The directory containing a CMake configuration file for topic_tools.
 topic_tools_DIR:PATH=/opt/ros/noetic/share/topic_tools/cmake
 
+//Value Computed by CMake
+traffic_generator_BINARY_DIR:STATIC=/home/carla/AVE6_project/catkin_ws/build/ros-bridge/traffic_generator
+
+//Value Computed by CMake
+traffic_generator_SOURCE_DIR:STATIC=/home/carla/AVE6_project/catkin_ws/src/ros-bridge/traffic_generator
+
 //The directory containing a CMake configuration file for urdf.
 urdf_DIR:PATH=/opt/ros/noetic/share/urdf/cmake
 
@@ -921,7 +933,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=23
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=25
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
