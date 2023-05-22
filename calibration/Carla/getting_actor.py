@@ -71,9 +71,6 @@ def main():
         # # ego_cam = world.spawn_actor(cam_bp,cam_transform,attach_to=vehicle, attachment_type=carla.AttachmentType.Rigid)
         # vehicle = world.get_actor(47)
 
-        # locations = np.load('/home/carla/AVE6_project/calibration/Carla/locations.npy', allow_pickle=True) 
-        # rotations = np.load('/home/carla/AVE6_project/calibration/Carla/rotations.npy', allow_pickle=True)
-
         locations = np.array([[2.0, -1.8, -1.1], [2.0, -1.6, -1.1]])
         rotations = np.array([[0.0, 20.0, 30.0], [0.0, 20.0, 30.0]])
         
