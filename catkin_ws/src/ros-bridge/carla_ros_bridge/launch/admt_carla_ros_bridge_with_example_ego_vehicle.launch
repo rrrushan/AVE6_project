@@ -44,7 +44,10 @@
     <arg name='role_name' value='$(arg role_name)'/>
   </include>
 
-  <!-- <include file="$(find admt)/launch/admt.launch">
-  </include> -->
+  <include file="$(find admt)/launch/admt.launch">
+  </include>
+
+  <include file="$(find traffic_generator)/launch/generate_traffic.launch">
+  </include>
 
 </launch>

@@ -39,8 +39,8 @@ class GenerateTraffic(CompatibleNode):
         super(GenerateTraffic, self).__init__("Traffic Generator")
         self.host = self.get_param("host", "127.0.0.1")
         self.port = int(self.get_param("port", "2000"))
-        self.number_of_vehicles = int(self.get_param("n", "30"))
-        self.number_of_walkers = int(self.get_param("w", "30"))
+        self.number_of_vehicles = int(self.get_param("n", "70"))
+        self.number_of_walkers = int(self.get_param("w", "70"))
         self.safe = bool(self.get_param("safe", "True"))
         self.filterv = self.get_param("filterv", "vehicle.*")
         self.generationv = self.get_param("generationv", "All")
@@ -225,7 +225,16 @@ def main():
         blueprintsWalkers = get_actor_blueprints(world, args.filterw, args.generationw)
 
         if args.safe:
-            blueprints = [x for x in blueprints if x.get_attribute('base_type') == 'car']
+            blueprints = [x for x in blueprints if int(x.get_attribute('number_of_wheels')) == 4]
+            blueprints = [x for x in blueprints if not x.id.endswith('microlino')]
+            blueprints = [x for x in blueprints if not x.id.endswith('carlacola')]
+            blueprints = [x for x in blueprints if not x.id.endswith('cybertruck')]
+            blueprints = [x for x in blueprints if not x.id.endswith('t2')]
+            blueprints = [x for x in blueprints if not x.id.endswith('sprinter')]
+            blueprints = [x for x in blueprints if not x.id.endswith('firetruck')]
+            blueprints = [x for x in blueprints if not x.id.endswith('ambulance')]
+            blueprints = [x for x in blueprints if not x.id.endswith('charger_police')]
+            blueprints = [x for x in blueprints if not x.id.endswith('charger_police_2020')]
 
         blueprints = sorted(blueprints, key=lambda bp: bp.id)
 

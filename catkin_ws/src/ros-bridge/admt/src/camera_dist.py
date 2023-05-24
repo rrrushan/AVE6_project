@@ -97,6 +97,10 @@ class DistImagePub(CompatibleNode):
         img = CvBridge().imgmsg_to_cv2(img_msg, "bgr8")
         dist_img = cv.remap(img, self.mapx, self.mapy, cv.INTER_LINEAR)
 
+        # note
+        # the ripples in the upper left corner of the distorted uncropped image occur due to the way the inverted map is constructed
+        # the appear in the part of the image that should be black
+
         cam_info = self.camera_info
         img_msg = CvBridge().cv2_to_imgmsg(dist_img)
 
