@@ -9,7 +9,13 @@
   <!-- Ego vehicle -->
   <arg name='role_name' default='ego_vehicle'/>
   <arg name="vehicle_filter" default='vehicle.*'/>
-  <arg name="spawn_point" default=""/><!-- use comma separated format "x,y,z,roll,pitch,yaw" -->
+  
+  <!-- <arg name="spawn_point" default=""/> -->
+  <!-- use comma separated format "x,y,z,roll,pitch,yaw" ROS PARAMETERS -->
+  <arg name="spawn_point" default="-178.418198, -124.703583, -0.565420, 0.722900, -0.112186, 33.035389"/>
+  <!-- <arg name="spawn_point" default="0.0, 0.0, 0.0, 0.0, 0.0, 0.0"/> -->
+
+  <!-- Transform(Location(x=-172.418198, y=124.703583, z=-0.565420), Rotation(pitch=-0.112186, yaw=-33.035389, roll=-0.722900)) -->
 
   <!-- Map to load on startup (either a predefined CARLA town (e.g. 'Town01'), or a OpenDRIVE map file) -->
   <arg name="town" default=''/>
@@ -44,10 +50,12 @@
     <arg name='role_name' value='$(arg role_name)'/>
   </include>
 
-  <include file="$(find admt)/launch/admt.launch">
+  <!-- start camera distortion node -->
+  <include file="$(find admt)/launch/camera_dist.launch">
   </include>
 
+  <!-- start traffic generation node
   <include file="$(find traffic_generator)/launch/generate_traffic.launch">
-  </include>
+  </include> -->
 
 </launch>
