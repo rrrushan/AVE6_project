@@ -24,13 +24,19 @@ class DistImagePub(CompatibleNode):
 
         # get intrinsic parameters and calculate distortion maps
         self.camera_intrinsics_file = self.get_param('camera_intrinsics_file', '')
-        self.image_width, self.image_height, self.K, self.distortion = self.get_intrinsics()
+        self.image_width, self.image_height, self.image_width_orig, self.image_height_orig, self.K, self.distortion = self.get_intrinsics()
         self.mapx, self.mapy = self.get_dist_maps()
         # create camera info message
         self.camera_info = self.build_camera_info()
 
+        # # use original image
+        # self.image_subscriber = self.new_subscription(
+        #     Image, "/carla/{}/rgb_front/image".format(self.role_name),
+        #     self.dist_image, qos_profile=10)
+        
+        # use image with additional pixels to get rid of black borders after distortion
         self.image_subscriber = self.new_subscription(
-            Image, "/carla/{}/rgb_front/image".format(self.role_name),
+            Image, "/carla/{}/rgb_front_border/image".format(self.role_name),
             self.dist_image, qos_profile=10)
         
         self.image_publisher = self.new_publisher(
@@ -46,13 +52,15 @@ class DistImagePub(CompatibleNode):
             camera_intrinsics = json.loads(handle.read())
             image_width = camera_intrinsics["image_width"]
             image_height = camera_intrinsics["image_height"]
+            image_width_orig = camera_intrinsics["image_width_orig"]
+            image_height_orig = camera_intrinsics["image_height_orig"]
             intr_values = camera_intrinsics["K"]
             K = np.array(([intr_values["fx"], 0.0, intr_values["cx"]], 
                           [0.0, intr_values["fy"], intr_values["cy"]],
                           [0.0, 0.0, 1.0]), dtype='float64')
             dist_values = camera_intrinsics["dist_coef"]
             distortion = np.array((dist_values["k1"], dist_values["k2"], dist_values["p1"], dist_values["p2"], dist_values["k3"]))    
-        return image_width, image_height, K, distortion
+        return image_width, image_height, image_width_orig, image_height_orig, K, distortion
     
     def get_dist_maps(self):
         # calculates maps to distort an image by inverting undistortion maps
@@ -97,6 +105,10 @@ class DistImagePub(CompatibleNode):
         img = CvBridge().imgmsg_to_cv2(img_msg, "bgr8")
         dist_img = cv.remap(img, self.mapx, self.mapy, cv.INTER_LINEAR)
 
+        border_x = (self.image_width - self.image_width_orig) //2
+        border_y = (self.image_height - self.image_height_orig) //2
+        dist_img = dist_img[border_y:-border_y, border_x:-border_x]
+ 
         # note
         # the ripples in the upper left corner of the distorted uncropped image occur due to the way the inverted map is constructed
         # the appear in the part of the image that should be black
@@ -106,6 +118,7 @@ class DistImagePub(CompatibleNode):
 
         cam_info.header = header
         img_msg.header = header
+        img_msg.header.frame_id = '{}/rgb_front'.format(self.role_name)
 
         self.camera_info_publisher.publish(cam_info)
         self.image_publisher.publish(img_msg)

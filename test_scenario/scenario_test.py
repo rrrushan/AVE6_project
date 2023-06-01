@@ -39,13 +39,13 @@ def main():
     # scenario flags
     rain = False
 
-    # target_type = "pedestrian"
-    target_type = "bicycle"
+    target_type = "pedestrian"
+    # target_type = "bicycle"
     # target_type = "car"
 
     camera_pos_x = 2
     distance = 5 + camera_pos_x # debug value
-    # distance = 28 + camera_pos_x
+    distance = 28 + camera_pos_x
     # distance = 56 + camera_pos_x
     # distance = 84 + camera_pos_x
     # distance = 112 + camera_pos_x
@@ -70,13 +70,11 @@ def main():
         weather.precipitation=100.000000
     world.set_weather(weather)
 
-
-    # spawn a vehicle to enable actor list
-    vehicle_bp = world.get_blueprint_library().find('vehicle.tesla.cybertruck')  #vehicle.tesla.model3
+    # spawn a temporary vehicle to enable actor list
+    vehicle_bp = world.get_blueprint_library().find('vehicle.diamondback.century')  #vehicle.tesla.model3
     vehicle_transform = carla.Transform(carla.Location(-67, -40, 0.6), carla.Rotation(yaw=90))
     vehicle_tesla = world.spawn_actor(vehicle_bp, vehicle_transform)
     time.sleep(1)
-
 
     # destroy previous targets
     actor_list = world.get_actors()
@@ -95,23 +93,6 @@ def main():
 
     # vehicle_tesla.destroy() # destroyed with other vehicles above
 
-    # temporary targets
-    if target_type == "pedestrian": 
-        pass
-        # blueprintsTarget = world.get_blueprint_library().filter("walker.pedestrian.*")
-        # target_bp = random.choice(blueprintsTarget)
-        # target_transform = carla.Transform(carla.Location(distance, 0, 1), carla.Rotation(yaw=90))
-        # world.spawn_actor(target_bp,target_transform, attach_to=ego_vehicle, attachment_type=carla.AttachmentType.Rigid)
-    elif target_type == "bicycle":
-        # load bike
-        pass
-    elif target_type == "car":
-        # load car
-        pass
-    else:
-        print("Wrong target type")
-        exit()
-
     # finding coordiantes of the target on a straight line in front of the vehicle
     vehicle_yaw = ego_vehicle_transform.rotation.yaw * np.pi / 180
     target_vec = np.array([distance, 0, 0])
@@ -125,18 +106,27 @@ def main():
     target_x = vehicle_location.x + target_vec_rot[0]
     target_y = vehicle_location.y + target_vec_rot[1]
     target_location = carla.Location(x=target_x, y=target_y, z=1)
+
+    # temporary targets
+    if target_type == "pedestrian": 
+        target_bp = world.get_blueprint_library().filter("walker.pedestrian.0051")[0]
+        
+    elif target_type == "bicycle":
+        pass
+
+    elif target_type == "car":
+        target_bp =  world.get_blueprint_library().filter("vehicle.carissma_autonomous.ave_6")[0]
  
-    blueprintsTarget = world.get_blueprint_library().filter("vehicle.diamondback.century")
-    blueprintsTarget = world.get_blueprint_library().filter("vehicle.*")
-    target_bp = random.choice(blueprintsTarget)
+    else:
+        print("Wrong target type")
+        exit()
 
-    target_bp = world.get_blueprint_library().filter("walker.pedestrian.0050")[0]
-
-    target_transform = carla.Transform(target_location, carla.Rotation(yaw=vehicle_yaw*180/np.pi + 90))
+    # spawn the target
+    target_transform = carla.Transform(target_location, carla.Rotation(yaw=vehicle_yaw*180/np.pi))
     world.spawn_actor(target_bp,target_transform)
     print("spawned target with transform: ", target_transform)
 
-
+    # change the spectator position
     camera_list = actor_list.filter('sensor.camera.rgb')
     spectator = world.get_spectator()
     spectator.set_transform(camera_list[1].get_transform())
