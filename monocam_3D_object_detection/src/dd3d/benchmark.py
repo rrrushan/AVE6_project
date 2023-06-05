@@ -19,19 +19,19 @@ from detectron2.utils.events import CommonMetricPrinter, get_event_storage
 from tqdm import tqdm
 import sys
 sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
-import tridet.modeling  # pylint: disable=unused-import
-import tridet.utils.comm as comm
-from tridet.data import build_test_dataloader, build_train_dataloader
-from tridet.data.dataset_mappers import get_dataset_mapper
-from tridet.data.datasets import random_sample_dataset_dicts, register_datasets
-from tridet.evaluators import get_evaluator
-from tridet.modeling import build_tta_model
-from tridet.utils.s3 import sync_output_dir_s3
-from tridet.utils.setup import setup
-from tridet.utils.train import get_inference_output_dir, print_test_results
-from tridet.utils.visualization import mosaic, save_vis
-from tridet.utils.wandb import flatten_dict, log_nested_dict
-from tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
+import dd3d.tridet.modeling  # pylint: disable=unused-import
+import dd3d.tridet.utils.comm as comm
+from dd3d.tridet.data import build_test_dataloader, build_train_dataloader
+from dd3d.tridet.data.dataset_mappers import get_dataset_mapper
+from dd3d.tridet.data.datasets import random_sample_dataset_dicts, register_datasets
+from dd3d.tridet.evaluators import get_evaluator
+from dd3d.tridet.modeling import build_tta_model
+from dd3d.tridet.utils.s3 import sync_output_dir_s3
+from dd3d.tridet.utils.setup import setup
+from dd3d.tridet.utils.train import get_inference_output_dir, print_test_results
+from dd3d.tridet.utils.visualization import mosaic, save_vis
+from dd3d.tridet.utils.wandb import flatten_dict, log_nested_dict
+from dd3d.tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
 
 class DD3D:
     def __init__(self, cfg, target_img_res):
@@ -46,7 +46,7 @@ class DD3D:
         # Load trained weights
         if checkpoint_file:
             self.model.load_state_dict(torch.load(checkpoint_file)["model"])
-        summary(self.model) # Print model summary
+        # summary(self.model) # Print model summary
 
         self.model.eval() # Inference mode
 
@@ -69,27 +69,30 @@ class DD3D:
         # self.TARGET_AR_RATIO = 1600 / 900
         # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
         self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 100 # 460
-        # self.TARGET_RESIZE_WIDTH = target_img_res # 1920, 1600, 1280
-        self.TARGET_RESIZE_RES = (960, 726)
+        self.TARGET_RESIZE_WIDTH = target_img_res
+        
 
         self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
         # print(self.required_pad_left_right); exit()
         self.pre_resize_height = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
         self.pre_resize_width = self.required_pad_left_right*2 + self.ORIG_IMG_WIDTH
-        # self.CAM_SCALE_RESIZE = self.TARGET_RESIZE_WIDTH / self.pre_resize_width
+        self.CAM_SCALE_RESIZE = self.TARGET_RESIZE_WIDTH / self.pre_resize_width
 
-        # # Adapting intrinsic mtx
-        # expected_height = self.TARGET_RESIZE_WIDTH / self.TARGET_AR_RATIO
-       
-
+        # Adapting intrinsic mtx
+        expected_height = self.TARGET_RESIZE_WIDTH / self.TARGET_AR_RATIO
         # self.cam_intrinsic_mtx = torch.FloatTensor([
-        #     [self.orig_cam_intrinsic_mtx[0][0] * self.CAM_SCALE_RESIZE, 0.000, (self.orig_cam_intrinsic_mtx[0][2] + self.required_pad_left_right) * self.CAM_SCALE_RESIZE],
-        #     [0.000, self.orig_cam_intrinsic_mtx[1][1] * self.CAM_SCALE_RESIZE, (self.orig_cam_intrinsic_mtx[1][2] - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) * self.CAM_SCALE_RESIZE],
-        #     [0.000, 0.000, 1.000]
+        #     [self.TARGET_FOCUS_SCALING*self.TARGET_RESIZE_WIDTH,   0.0000, self.TARGET_RESIZE_WIDTH/2],
+        #     [  0.0000, self.TARGET_FOCUS_SCALING* (1+(self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP/self.ORIG_IMG_HEIGHT)) *self.TARGET_RESIZE_WIDTH, expected_height/2],
+        #     [  0.0000,   0.0000,   1.0000]
         # ])
-        self.cam_intrinsic_mtx = torch.FloatTensor(self.orig_cam_intrinsic_mtx)
-        self.cam_intrinsic_mtx[0] *= self.TARGET_RESIZE_RES[0]/self.ORIG_IMG_WIDTH
-        self.cam_intrinsic_mtx[1] *= self.TARGET_RESIZE_RES[1]/self.ORIG_IMG_HEIGHT
+        #A_scale_resize = TARGET_RESIZE_WIDTH / pre_resize_width
+
+        self.cam_intrinsic_mtx = torch.FloatTensor([
+            [self.orig_cam_intrinsic_mtx[0][0] * self.CAM_SCALE_RESIZE, 0.000, (self.orig_cam_intrinsic_mtx[0][2] + self.required_pad_left_right) * self.CAM_SCALE_RESIZE],
+            [0.000, self.orig_cam_intrinsic_mtx[1][1] * self.CAM_SCALE_RESIZE, (self.orig_cam_intrinsic_mtx[1][2] - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) * self.CAM_SCALE_RESIZE],
+            [0.000, 0.000, 1.000]
+        ])
+
 
         # Color code for visualizing each class
         # BGR (inverted RGB) color values for classes
@@ -145,7 +148,7 @@ class DD3D:
             cx = (min_x + max_x) / 2
             cy = (min_y + max_y) / 2
             cz = (min_z + max_z) / 2
-            print(cx, cy, cz, single_class)
+
             # Size of BBOX along each axis
             scale_x = max_x - min_x
             scale_y = max_y - min_y
@@ -165,14 +168,13 @@ class DD3D:
 
     def transform_img(self, img):
         # Crop from top
-        # img = img[self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP:img.shape[0], :]
+        img = img[self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP:img.shape[0], :]
 
-        # # Pad black boxes along the width
-        # img = cv2.copyMakeBorder(img, 0, 0, self.required_pad_left_right, self.required_pad_left_right, cv2.BORDER_CONSTANT, None, value = 0)
+        # Pad black boxes along the width
+        img = cv2.copyMakeBorder(img, 0, 0, self.required_pad_left_right, self.required_pad_left_right, cv2.BORDER_CONSTANT, None, value = 0)
 
         # Aspect-Ratio aware resize to required resolution
-        # img = cv2.resize(img, (self.TARGET_RESIZE_WIDTH, int(self.TARGET_RESIZE_WIDTH * self.pre_resize_height/self.pre_resize_width)))
-        img = cv2.resize(img, self.TARGET_RESIZE_RES)
+        img = cv2.resize(img, (self.TARGET_RESIZE_WIDTH, int(self.TARGET_RESIZE_WIDTH * self.pre_resize_height/self.pre_resize_width)))
 
         return img
 
@@ -185,9 +187,9 @@ class DD3D:
         Returns:
             final_box_points (np.array): Modified 3D boxes. Shape: [Batchsize, 8, 2]
         """
-        remove_resize_x, remove_resize_y = boxes[:, :, 0] * 1936 / self.TARGET_RESIZE_RES[0], boxes[:, :, 1] * 1464 / self.TARGET_RESIZE_RES[1]
-        # remove_resize_x = remove_resize_x - self.required_pad_left_right
-        # remove_resize_y = remove_resize_y + self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
+        remove_resize_x, remove_resize_y = boxes[:, :, 0] * self.pre_resize_width / self.TARGET_RESIZE_WIDTH, boxes[:, :, 1] * self.pre_resize_height / int(self.TARGET_RESIZE_WIDTH * self.pre_resize_height/self.pre_resize_width)
+        remove_resize_x = remove_resize_x - self.required_pad_left_right
+        remove_resize_y = remove_resize_y + self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
         final_box_points = np.dstack((remove_resize_x, remove_resize_y)).astype(int)
 
         return final_box_points
@@ -344,75 +346,53 @@ class DD3D:
 
 @hydra.main(config_path="configs/", config_name="defaults")
 def main(cfg):
-    # 1280, 1600, 1920
-    for img_res in [(1280, 968)]:
+    for img_res in [480, 720, 960, 1280, 1600, 1920]:
         dd3d = DD3D(cfg, img_res)
 
         # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
         # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
         IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
-        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ave6_main/AVE6_project/vishal/output"
-        
+        # RESIZE_IMG = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_test.png"
         # total_files = len(os.listdir(IMG_FOLDER_PATH))
-        for file in tqdm(os.listdir(IMG_FOLDER_PATH)):
-            # print(f"Visualizing file: {file_num}/{total_files}")
-            # if not file_num == 60:
-            #     continue
-            # print(file)
+        for file in os.listdir(IMG_FOLDER_PATH):   
             image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
-            transformed_img = dd3d.transform_img(image)
-            # print(transformed_img.shape)
-            # image = cv2.imread(RESIZE_IMG)
-            # image = cv2.resize(image, (1080, 1440))
-            # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
-            predictions = dd3d.inference_on_single_image(transformed_img)
+            
+            
             # Benchmark        
-            # t_total = []
-            # for i in tqdm(range(100)):
-            #     t_start = perf_counter()
-            #     predictions = dd3d.inference_on_single_image(transformed_img)
-            #     t_end = perf_counter()
-            #     if i > 4:
-            #         t_total.append(t_end - t_start)
-            # print(np.mean(t_total))
-            # exit()
-            # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
-            # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
-            # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
-            # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
-            
-            # np.save("../sample_bbox.npy", bbox_3d)
-            # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-            # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-            # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-            
-            # marker_list = dd3d.output2MarkerArray(predictions)
-            # np.save("outputs/marker_list_30.npy", np.array(marker_list))
-            final_image = dd3d.visualize([image], predictions)[0]
-            # print(marker_list)
-            # print(file)
-            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
-            
-            cv2.imwrite(f"outputs/test/{file[:-4] + '_' + str(img_res) + '.png'}", final_image)
-            # cv2.imwrite(f"{IMG_FOLDER_PATH}/out_{file}", final_image)
-            # cv2.imshow("test", final_image)
-            # cv2.waitKey(0)
-        del dd3d
+            t_total = []
+            t_transform = []
+            t_model = []
+            for i in range(100):
+                t_start = perf_counter()
+                transformed_img = dd3d.transform_img(image)
+                cv2.imwrite("outputs/test_transform.png", transformed_img)
+                exit()
+                t_model_start = perf_counter()
+                predictions = dd3d.inference_on_single_image(transformed_img)
+                t_end = perf_counter()
+                if i > 4:
+                    t_transform.append(t_model_start - t_start)
+                    t_model.append(t_end - t_model_start)
 
+            t_model = np.mean(t_model)
+            t_transform = np.mean(t_transform)
+            t_total = t_model + t_transform
+            print(f"Target Img Res: {transformed_img.shape}, total time: {t_total:.3f}s, transform time: {t_transform:.3f}s, model time: {t_model:.3f}s")
+            break
+            
 if __name__ == '__main__':
     ## Uncomment for the required model
     # OmniML
-    # sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
+    sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
+    sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
     
     # DLA34
     # sys.argv.append('+experiments=dd3d_kitti_dla34')
     # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34.pth')
 
     # V99
-    sys.argv.append('+experiments=dd3d_kitti_v99')
-    sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
+    # sys.argv.append('+experiments=dd3d_kitti_v99')
+    # sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
 
     # DLA34 Nuscenes
     # sys.argv.append('+experiments=dd3d_nusc_dla34_custom')

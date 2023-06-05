@@ -1,6 +1,19 @@
+#!/usr/bin/env python3
+
+import rospy
+from sensor_msgs.msg import CameraInfo, Image
+from visualization_msgs.msg import MarkerArray, Marker
+from geometry_msgs.msg import Pose, Vector3
+from std_msgs.msg import ColorRGBA
+
+import numpy as np
+from cv_bridge import CvBridge
+import cv2
+
 import os
 import hydra
 import torch
+
 
 from tqdm import tqdm
 from torchinfo import summary
@@ -15,29 +28,32 @@ from detectron2.evaluation import DatasetEvaluators, inference_on_dataset
 from detectron2.modeling import build_model
 from detectron2.solver import build_lr_scheduler, build_optimizer
 from detectron2.utils.events import CommonMetricPrinter, get_event_storage
-
-from tqdm import tqdm
+import omegaconf
 import sys
-sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
-import tridet.modeling  # pylint: disable=unused-import
-import tridet.utils.comm as comm
-from tridet.data import build_test_dataloader, build_train_dataloader
-from tridet.data.dataset_mappers import get_dataset_mapper
-from tridet.data.datasets import random_sample_dataset_dicts, register_datasets
-from tridet.evaluators import get_evaluator
-from tridet.modeling import build_tta_model
-from tridet.utils.s3 import sync_output_dir_s3
-from tridet.utils.setup import setup
-from tridet.utils.train import get_inference_output_dir, print_test_results
-from tridet.utils.visualization import mosaic, save_vis
-from tridet.utils.wandb import flatten_dict, log_nested_dict
-from tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
+# print(os.getcwd(), os.listdir(os.getcwd()))
+# exit()
+
+import dd3d.tridet.modeling  # pylint: disable=unused-import
+import dd3d.tridet.utils.comm as comm
+from dd3d.tridet.data import build_test_dataloader, build_train_dataloader
+from dd3d.tridet.data.dataset_mappers import get_dataset_mapper
+from dd3d.tridet.data.datasets import random_sample_dataset_dicts, register_datasets
+from dd3d.tridet.evaluators import get_evaluator
+from dd3d.tridet.modeling import build_tta_model
+from dd3d.tridet.utils.s3 import sync_output_dir_s3
+from dd3d.tridet.utils.setup import setup
+from dd3d.tridet.utils.train import get_inference_output_dir, print_test_results
+from dd3d.tridet.utils.visualization import mosaic, save_vis
+from dd3d.tridet.utils.wandb import flatten_dict, log_nested_dict
+from dd3d.tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
 
 class DD3D:
-    def __init__(self, cfg, target_img_res):
+    def __init__(self, cfg):
         # Create model 
-        cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = 0.1
-        cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = 0.3
+        # TODO: Convert to param Caro
+        cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = rospy.get_param('~DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH') # 0.1
+        cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = rospy.get_param('~DD3D.FCOS2D.INFERENCE.NMS_THRESH')         # 0.2 
+        # --
         self.model = build_model(cfg)
         checkpoint_file = cfg.MODEL.CKPT
         
@@ -50,46 +66,13 @@ class DD3D:
 
         self.model.eval() # Inference mode
 
-        # Camera Intrinsic Matrix -> Using KiTTi's default values here
-        # self.cam_intrinsic_mtx = torch.FloatTensor([
-        #     [738.9661,   0.0000, 624.2830],
-        #     [  0.0000, 738.8547, 177.0025],
-        #     [  0.0000,   0.0000,   1.0000]
-        # ])
-        self.orig_cam_intrinsic_mtx = torch.FloatTensor([
-            [1676.625,   0.0000, 968.0],
-            [  0.0000, 1676.625, 732.0],
-            [  0.0000,   0.0000,   1.0000]
-        ])
 
         # Params for cropping and rescaling
-        self.ORIG_IMG_HEIGHT = 1464
-        self.ORIG_IMG_WIDTH = 1936
-        self.TARGET_AR_RATIO = 1242 / 375 # 3.312
-        # self.TARGET_AR_RATIO = 1600 / 900
-        # self.TARGET_FOCUS_SCALING = 1676.625 / 1936 # 0.866
-        self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 100 # 460
-        # self.TARGET_RESIZE_WIDTH = target_img_res # 1920, 1600, 1280
-        self.TARGET_RESIZE_RES = (960, 726)
-
-        self.required_pad_left_right = int((self.TARGET_AR_RATIO * (self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) - self.ORIG_IMG_WIDTH)/ 2)
-        # print(self.required_pad_left_right); exit()
-        self.pre_resize_height = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
-        self.pre_resize_width = self.required_pad_left_right*2 + self.ORIG_IMG_WIDTH
-        # self.CAM_SCALE_RESIZE = self.TARGET_RESIZE_WIDTH / self.pre_resize_width
-
-        # # Adapting intrinsic mtx
-        # expected_height = self.TARGET_RESIZE_WIDTH / self.TARGET_AR_RATIO
-       
-
-        # self.cam_intrinsic_mtx = torch.FloatTensor([
-        #     [self.orig_cam_intrinsic_mtx[0][0] * self.CAM_SCALE_RESIZE, 0.000, (self.orig_cam_intrinsic_mtx[0][2] + self.required_pad_left_right) * self.CAM_SCALE_RESIZE],
-        #     [0.000, self.orig_cam_intrinsic_mtx[1][1] * self.CAM_SCALE_RESIZE, (self.orig_cam_intrinsic_mtx[1][2] - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP) * self.CAM_SCALE_RESIZE],
-        #     [0.000, 0.000, 1.000]
-        # ])
-        self.cam_intrinsic_mtx = torch.FloatTensor(self.orig_cam_intrinsic_mtx)
-        self.cam_intrinsic_mtx[0] *= self.TARGET_RESIZE_RES[0]/self.ORIG_IMG_WIDTH
-        self.cam_intrinsic_mtx[1] *= self.TARGET_RESIZE_RES[1]/self.ORIG_IMG_HEIGHT
+        self.ORIG_IMG_HEIGHT = rospy.get_param('~ORIG_IMG_HEIGHT')  # 1464 
+        self.ORIG_IMG_WIDTH = rospy.get_param('~ORIG_IMG_WIDTH')    # 1936 
+        
+        self.TARGET_RESIZE_RES = (rospy.get_param('~TARGET_RESIZE_WIDTH'), rospy.get_param('~TARGET_RESIZE_HEIGHT'))    # (960, 726)
+        # --
 
         # Color code for visualizing each class
         # BGR (inverted RGB) color values for classes
@@ -102,7 +85,19 @@ class DD3D:
             5: ((0, 0, 0), "Unknown")        # Unknown: Black
         }
 
-    def output2MarkerArray(self, predictions):
+    def load_cam_mtx(self, cam_mtx):
+        """Load camera matrix from /camera_info topic and modify with required padding/resizing
+
+        Args:
+            cam_mtx (torch.FloatTensor): Original Camera matrix
+        """
+
+        self.orig_cam_intrinsic_mtx = cam_mtx
+        cam_mtx[0] *= self.TARGET_RESIZE_RES[0]/self.ORIG_IMG_WIDTH
+        cam_mtx[1] *= self.TARGET_RESIZE_RES[1]/self.ORIG_IMG_HEIGHT
+        self.cam_intrinsic_mtx = torch.FloatTensor(cam_mtx)
+
+    def output2MarkerArray(self, predictions, header):
         """Converts model outputs to marker array format for RVIZ
 
         Args:
@@ -111,7 +106,17 @@ class DD3D:
         Returns:
             marker_list (list): List of Markers for RVIZ
         """
-        
+        def quaternion_multiply(quaternion1, quaternion0):
+            x0, y0, z0, w0 = quaternion0
+            x1, y1, z1, w1 = quaternion1
+            return np.array([
+                x1 * y0 - y1 * x0 + z1 * w0 + w1 * z0,
+                -x1 * x0 - y1 * y0 - z1 * z0 + w1 * w0,
+                x1 * w0 + y1 * z0 - z1 * y0 + w1 * x0,
+                -x1 * z0 + y1 * w0 + z1 * x0 + w1 * y0,
+            ], dtype=np.float64
+            )
+
         def get_quaternion_from_euler(roll, pitch, yaw):
             """
             Convert an Euler angle to a quaternion.
@@ -133,45 +138,79 @@ class DD3D:
 
         bboxes_per_image = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
         classes_per_image = predictions[0]["instances"].pred_classes.detach().cpu().numpy()
-        marker_list = []
+        marker_list = MarkerArray() # []
+        
+        vis_num = 0 
+        for index, (single_bbox, single_class) in enumerate(zip(bboxes_per_image, classes_per_image)):
+            class_id = int(single_class)
+            if class_id > 1:
+                continue
+            vis_num += 1
 
-        for single_bbox, single_class in zip(bboxes_per_image, classes_per_image):
+            marker_msg = Marker()
             # BBOX is stored as (8, 3) -> where last_index is (y, z, x)
-            min_x, max_x = np.min(single_bbox[:, 2]), np.max(single_bbox[:, 2])
-            min_y, max_y = np.min(single_bbox[:, 0]), np.max(single_bbox[:, 0])
-            min_z, max_z = np.min(single_bbox[:, 1]), np.max(single_bbox[:, 1])
+            min_x, max_x = np.min(single_bbox[:, 0]), np.max(single_bbox[:, 0])
+            min_y, max_y = np.min(single_bbox[:, 1]), np.max(single_bbox[:, 1])
+            min_z, max_z = np.min(single_bbox[:, 2]), np.max(single_bbox[:, 2])
 
             # Center points of BBOX along each axis
             cx = (min_x + max_x) / 2
             cy = (min_y + max_y) / 2
             cz = (min_z + max_z) / 2
-            print(cx, cy, cz, single_class)
+            
+
             # Size of BBOX along each axis
-            scale_x = max_x - min_x
+            scale_x = 2.0 # max_x - min_x
             scale_y = max_y - min_y
             scale_z = max_z - min_z
 
+            if cz <= 1.5:
+                continue
+
             # Rotation of BBOX along each axis
-            yaw_angle = np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))
-            roll_angle = np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
-            pitch_angle = np.math.atan2((single_bbox[4, 2] - single_bbox[0, 2]), (single_bbox[4, 1] - single_bbox[0, 1])) + 1.578
+            roll_angle = 0.0 # np.math.atan2((single_bbox[4, 1] - single_bbox[0, 1]), (single_bbox[4, 2] - single_bbox[0, 2]),) # pitch in camera
+            yaw_angle = 0.0 # np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
+            pitch_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0])) # yaw in camera.
             
             # TODO:marker_list Right now appending values to a list, 
             # later insert values in right places in marker array. DON'T forget class output !!
             qx, qy, qz, qw = get_quaternion_from_euler(roll_angle, pitch_angle, yaw_angle)
-            marker_list.append((cx, cy, cz, scale_x, scale_y, scale_z, qx, qy, qz, qw))
+            
+            # qx, qy, qz, qw = quaternion_multiply((0.5, -0.5, 0.5, -0.5), (qx, qy, qz, qw))
+
+            marker_msg.type = Marker.CUBE
+            marker_msg.header.stamp = header.stamp
+            marker_msg.header.frame_id = "ego_vehicle/rgb_front"
+            
+            marker_msg.pose.position.x = cx     # in camera frame: y
+            marker_msg.pose.position.y = cy     # in camera frame: z
+            marker_msg.pose.position.z = cz     # in camera frame: x 
+            marker_msg.pose.orientation.x = qx # qx #- 0.5
+            marker_msg.pose.orientation.y = qy # qy #+ 0.5
+            marker_msg.pose.orientation.z = qz # qz #- 0.5
+            marker_msg.pose.orientation.w = qw # qw #+ 0.5
+            
+            marker_msg.scale.x = scale_x
+            marker_msg.scale.y = scale_y
+            marker_msg.scale.z = scale_z
+
+            color = self.color_mapping[class_id][0]
+            marker_msg.color.r = color[2]
+            marker_msg.color.g = color[1]
+            marker_msg.color.b = color[0]
+            marker_msg.color.a = 0.5
+            marker_msg.id = index
+
+            marker_msg.lifetime = rospy.Duration(0, 3 * 10E7)
+            
+            marker_list.markers.append(marker_msg)
+            #####################################
+    
 
         return marker_list
 
     def transform_img(self, img):
-        # Crop from top
-        # img = img[self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP:img.shape[0], :]
-
-        # # Pad black boxes along the width
-        # img = cv2.copyMakeBorder(img, 0, 0, self.required_pad_left_right, self.required_pad_left_right, cv2.BORDER_CONSTANT, None, value = 0)
-
-        # Aspect-Ratio aware resize to required resolution
-        # img = cv2.resize(img, (self.TARGET_RESIZE_WIDTH, int(self.TARGET_RESIZE_WIDTH * self.pre_resize_height/self.pre_resize_width)))
+        # Resize Image to target resolution
         img = cv2.resize(img, self.TARGET_RESIZE_RES)
 
         return img
@@ -185,9 +224,8 @@ class DD3D:
         Returns:
             final_box_points (np.array): Modified 3D boxes. Shape: [Batchsize, 8, 2]
         """
-        remove_resize_x, remove_resize_y = boxes[:, :, 0] * 1936 / self.TARGET_RESIZE_RES[0], boxes[:, :, 1] * 1464 / self.TARGET_RESIZE_RES[1]
-        # remove_resize_x = remove_resize_x - self.required_pad_left_right
-        # remove_resize_y = remove_resize_y + self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
+       
+        remove_resize_x, remove_resize_y = boxes[:, :, 0] * self.ORIG_IMG_WIDTH / self.TARGET_RESIZE_RES[0], boxes[:, :, 1] * self.ORIG_IMG_HEIGHT / self.TARGET_RESIZE_RES[1]
         final_box_points = np.dstack((remove_resize_x, remove_resize_y)).astype(int)
 
         return final_box_points
@@ -213,7 +251,6 @@ class DD3D:
         """
         final_images = []
         for single_output, image in zip(batched_model_output, batched_images):
-            # pred_bbox2d = single_output["instances"].pred_boxes.tensor.detach().cpu().numpy()
             pred_classes = single_output["instances"].pred_classes.detach().cpu().numpy() # ClassIDs of detections
             pred_scores = single_output["instances"].scores_3d.detach().cpu().numpy() # Confidence scores
             pred_bbox3d = single_output["instances"].pred_boxes3d.corners.detach().cpu().numpy() # 3D corners
@@ -251,12 +288,6 @@ class DD3D:
                             image, start_point, end_point, 
                             class_color, 2, cv2.LINE_AA
                         )
-
-                    # DEBUG Display points
-                    # for index, point in enumerate(box):
-                    #     point_xy = (int(point[0]), int(point[1]))
-                    #     text = f"{index}"
-                    #     cv2.putText(image, text, point_xy, cv2.FONT_HERSHEY_COMPLEX_SMALL, 2, (255, 255, 255))
                     
                     # Plot class name and score
                     baseLabel = f'{class_name} {round(conf_score*100)}%'
@@ -336,85 +367,63 @@ class DD3D:
 
         with torch.cuda.amp.autocast():
             output = self.model.predict(transformed_img[None, :], [self.cam_intrinsic_mtx])
-        
-        # output = self.model.predict(transformed_img[None, :], [self.cam_intrinsic_mtx])
-        # output = self.model._forward({"image": transformed_img[None, :], "intrinsics": [self.cam_intrinsic_mtx]})
+
         return output
 
+class obj_detection:
+    def __init__(self):
+        rospy.init_node("img_subscriber", anonymous= True)
+        # sys.argv.append('+experiments=dd3d_kitti_dla34')
+        # sys.argv.append('MODEL.CKPT=/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth')
 
-@hydra.main(config_path="configs/", config_name="defaults")
-def main(cfg):
-    # 1280, 1600, 1920
-    for img_res in [(1280, 968)]:
-        dd3d = DD3D(cfg, img_res)
-
-        # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
-        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
-        IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
-        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ave6_main/AVE6_project/vishal/output"
+        # cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla.yaml")
+        # cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth"
         
-        # total_files = len(os.listdir(IMG_FOLDER_PATH))
-        for file in tqdm(os.listdir(IMG_FOLDER_PATH)):
-            # print(f"Visualizing file: {file_num}/{total_files}")
-            # if not file_num == 60:
-            #     continue
-            # print(file)
-            image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
-            transformed_img = dd3d.transform_img(image)
-            # print(transformed_img.shape)
-            # image = cv2.imread(RESIZE_IMG)
-            # image = cv2.resize(image, (1080, 1440))
-            # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
-            predictions = dd3d.inference_on_single_image(transformed_img)
-            # Benchmark        
-            # t_total = []
-            # for i in tqdm(range(100)):
-            #     t_start = perf_counter()
-            #     predictions = dd3d.inference_on_single_image(transformed_img)
-            #     t_end = perf_counter()
-            #     if i > 4:
-            #         t_total.append(t_end - t_start)
-            # print(np.mean(t_total))
-            # exit()
-            # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
-            # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
-            # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
-            # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
-            
-            # np.save("../sample_bbox.npy", bbox_3d)
-            # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-            # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-            # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-            
-            # marker_list = dd3d.output2MarkerArray(predictions)
-            # np.save("outputs/marker_list_30.npy", np.array(marker_list))
-            final_image = dd3d.visualize([image], predictions)[0]
-            # print(marker_list)
-            # print(file)
-            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
-            
-            cv2.imwrite(f"outputs/test/{file[:-4] + '_' + str(img_res) + '.png'}", final_image)
-            # cv2.imwrite(f"{IMG_FOLDER_PATH}/out_{file}", final_image)
-            # cv2.imshow("test", final_image)
-            # cv2.waitKey(0)
-        del dd3d
+        # TODO: Convert to param Caro
+        # name_path = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml"
+        #cfg = omegaconf.OmegaConf.load(name_path)
+        #cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml") # v99.yaml
+        cfg = omegaconf.OmegaConf.load(rospy.get_param('~name_path'))
+
+        #cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth" # v99.pth
+        cfg.MODEL.CKPT = rospy.get_param('~MODEL.CKPT')
+        self.dd3d = DD3D(cfg)
+        # --
+
+        # Wait for camera intrinsic data
+        rospy.loginfo("Waiting for /camera_info topic")
+        cam_info_data = rospy.wait_for_message('/carla/ego_vehicle/rgb_front/camera_info', CameraInfo)
+        cam_intrinsic_mtx = np.reshape(np.array(cam_info_data.K), (3,3))
+        self.dd3d.load_cam_mtx(cam_intrinsic_mtx)
+
+        sub_image = rospy.Subscriber("/carla/ego_vehicle/rgb_front/image", Image, callback=self.callback_image)
+        self.marker_pub = rospy.Publisher("rgb_front/markers", MarkerArray, queue_size=10)
+        self.vis_image_pub = rospy.Publisher("rgb_front/vis_image", Image, queue_size=10)
+        rospy.loginfo("img_sub has been created")
+        
+        self.cam_intrinsic_mtx = None
+        self.cvbridge = CvBridge()
+
+        rospy.spin()
+
+
+    def callback_image(self, msg: Image):
+        header_info = msg.header
+        t_1 = perf_counter()
+        self.cvbridge.compressed_imgmsg_to_cv2
+        cv_image = self.cvbridge.imgmsg_to_cv2(msg, "bgr8")
+        transform_img = self.dd3d.transform_img(cv_image)
+        t_2 = perf_counter()
+        predictions = self.dd3d.inference_on_single_image(transform_img)
+        t_3 = perf_counter()
+        marker_list = self.dd3d.output2MarkerArray(predictions, header_info)
+        self.marker_pub.publish(marker_list)
+        t_4 = perf_counter()
+        # final_image = self.dd3d.visualize([cv_image], predictions)[0]
+        # ros_img = self.cvbridge.cv2_to_imgmsg(final_image)
+        # self.vis_image_pub.publish(ros_img)
+  
+        rospy.loginfo(f"Time log| Total: {(t_4 - t_1)*1000:.2f}ms, Img_Tf: {(t_2 - t_1)*1000:.2f}ms, Inference: {(t_3 - t_2)*1000:.2f}ms, conv_toMarker: {(t_4 - t_3)*1000:.2f}ms")
 
 if __name__ == '__main__':
-    ## Uncomment for the required model
-    # OmniML
-    # sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
-    
-    # DLA34
-    # sys.argv.append('+experiments=dd3d_kitti_dla34')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34.pth')
-
-    # V99
-    sys.argv.append('+experiments=dd3d_kitti_v99')
-    sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
-
-    # DLA34 Nuscenes
-    # sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step6k.pth')
-    main()  # pylint: disable=no-value-for-parameter_description_
+    random_obj = obj_detection()

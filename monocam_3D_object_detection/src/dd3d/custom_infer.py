@@ -19,19 +19,19 @@ from detectron2.utils.events import CommonMetricPrinter, get_event_storage
 from tqdm import tqdm
 import sys
 sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
-import tridet.modeling  # pylint: disable=unused-import
-import tridet.utils.comm as comm
-from tridet.data import build_test_dataloader, build_train_dataloader
-from tridet.data.dataset_mappers import get_dataset_mapper
-from tridet.data.datasets import random_sample_dataset_dicts, register_datasets
-from tridet.evaluators import get_evaluator
-from tridet.modeling import build_tta_model
-from tridet.utils.s3 import sync_output_dir_s3
-from tridet.utils.setup import setup
-from tridet.utils.train import get_inference_output_dir, print_test_results
-from tridet.utils.visualization import mosaic, save_vis
-from tridet.utils.wandb import flatten_dict, log_nested_dict
-from tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
+import dd3d.tridet.modeling  # pylint: disable=unused-import
+import dd3d.tridet.utils.comm as comm
+from dd3d.tridet.data import build_test_dataloader, build_train_dataloader
+from dd3d.tridet.data.dataset_mappers import get_dataset_mapper
+from dd3d.tridet.data.datasets import random_sample_dataset_dicts, register_datasets
+from dd3d.tridet.evaluators import get_evaluator
+from dd3d.tridet.modeling import build_tta_model
+from dd3d.tridet.utils.s3 import sync_output_dir_s3
+from dd3d.tridet.utils.setup import setup
+from dd3d.tridet.utils.train import get_inference_output_dir, print_test_results
+from dd3d.tridet.utils.visualization import mosaic, save_vis
+from dd3d.tridet.utils.wandb import flatten_dict, log_nested_dict
+from dd3d.tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
 
 class DD3D:
     def __init__(self, cfg, target_img_res):

@@ -1,1 +1,0 @@
-[05/04 15:16:23] tridet.utils.hydra.callbacks INFO: Rank of current process: 0. World size: 1

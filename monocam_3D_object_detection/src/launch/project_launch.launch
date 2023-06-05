@@ -1,0 +1,19 @@
+<launch>
+	<node name="img_subscriber" pkg="monocam_3D_object_detection" type="img_subscriber.py" output="screen">
+		<param name="DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH" type="double" value="0.1"/>
+		<param name="DD3D.FCOS2D.INFERENCE.NMS_THRESH" type="double" value="0.2"/>
+		<param name="ORIG_IMG_HEIGHT" type="int" value="1464"/>
+		<param name="ORIG_IMG_WIDTH" type="int" value="1936"/>
+		
+		<param name="TARGET_RESIZE_WIDTH" type="int" value="640"/> <!-- (960, 726), (640, 484)-->
+		<param name="TARGET_RESIZE_HEIGHT" type="int" value="484"/>
+		<param name="name_path" type="String" value="/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml"/>
+		<param name="MODEL.CKPT" type="String" value="/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"/>
+
+		<param name="TARGET_AR_RATIO" type="double" value="3.312"/> 					<!-- Original width/ original height: 1242/375 -->
+		<param name="TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP" type="int" value="200"/> 
+	</node>
+	<node type="rviz" name="rviz" pkg="rviz" args="-d /home/carla/admt_student/team3_ss23/AVE6_project/rgb_camera_point_cloud_marker.rviz"/>
+	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/ROS_1/bags/23_05_24/2023-05-24-17-13-48.bag -r 0.1 --duration 55 -l"/>
+</launch>
+
