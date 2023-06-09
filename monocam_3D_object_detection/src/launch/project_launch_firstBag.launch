@@ -1,0 +1,40 @@
+<launch>
+	<node name="img_subscriber" pkg="monocam_3D_object_detection" type="img_subscriber.py" output="screen">
+		<!-- Model parameters -->
+		<param name="config_path" type="String" value="/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml"/>
+		<param name="model_checkpoint_path" type="String" value="/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"/>
+		<param name="pre_nms_thresh" type="double" value="0.1"/>
+		<param name="nms_thresh" type="double" value="0.2"/>
+		
+		<!-- Image parameters-->
+		<param name="ORIG_IMG_HEIGHT"      type="int" value="1464"/>
+		<param name="ORIG_IMG_WIDTH"       type="int" value="1936"/>
+		<param name="TARGET_RESIZE_WIDTH"  type="int" value="960"/> <!-- (640, 484), (320, 242), (960, 726), (640, 484)-->
+		<param name="TARGET_RESIZE_HEIGHT" type="int" value="726"/>
+
+		<!-- Node parameters-->
+		<param name="camera_info_topic" type="String" value="/carla/ego_vehicle/rgb_front/camera_info"/>
+		<param name="camera_img_topic" type="String" value="/carla/ego_vehicle/rgb_front/image"/>
+		<param name="use_compressed_image" type="bool" value="false"/>
+		<param name="marker_output_topic" type="String" value="rgb_front/markers"/>
+		<param name="debug_enable_intern_vis" type="bool" value="true"/>
+
+		<!-- Vehicle filtering parameters-->
+		<param name="min_trackwidth" type="double" value="1.3"/>
+		<param name="max_trackwidth" type="double" value="2.5"/>
+		<param name="min_wheelbase"  type="double" value="3.5"/>
+		<param name="max_wheelbase"  type="double" value="5.8"/>
+		<param name="min_height"     type="double" value="0.5"/>
+		<param name="max_height"     type="double" value="2.5"/>
+
+		<!-- Pedestrian filtering parameters-->
+		<param name="max_base"   type="double" value="2.5"/>
+		<param name="min_height" type="double" value="1.2"/>
+		<param name="max_height" type="double" value="2.2"/>
+		
+	</node>
+	<node type="rviz" name="rviz" pkg="rviz" args="-d /home/carla/admt_student/team3_ss23/AVE6_project/rgb_camera_point_cloud_marker.rviz"/>
+	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/ROS_1/bags/2023-04-14-21-04-50.bag -r 0.09 --duration 55 -l"/>
+	 
+</launch>
+
