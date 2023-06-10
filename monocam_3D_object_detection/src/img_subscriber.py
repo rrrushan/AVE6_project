@@ -85,8 +85,8 @@ class DD3D:
         self.car_max_trackwidth = rospy.get_param('~max_trackwidth')
         self.car_min_wheelbase  = rospy.get_param('~min_wheelbase')
         self.car_max_wheelbase  = rospy.get_param('~max_wheelbase')
-        self.car_min_height     = rospy.get_param('~min_height')
-        self.car_max_height     = rospy.get_param('~max_height')
+        self.car_min_height     = rospy.get_param('~car_min_height')
+        self.car_max_height     = rospy.get_param('~car_max_height')
 
         self.ped_max_base   = rospy.get_param('~max_base')
         self.ped_min_height = rospy.get_param('~min_height')
@@ -164,6 +164,7 @@ class DD3D:
             # Limiting size of BBOX in each axis according parameters in ROS Launch
             if class_id == 0: # Car
                 scale_x = np.clip(abs(single_bbox[0, 0] - single_bbox[1, 0]), self.car_min_trackwidth, self.car_max_trackwidth) 
+                # scale_x = np.clip(abs(max_x - min_x), self.car_min_trackwidth, self.car_max_trackwidth) 
                 scale_y = np.clip(max_y - min_y, self.car_min_height, self.car_max_height)
                 scale_z = np.clip(max_z - min_z, self.car_min_wheelbase, self.car_max_wheelbase)
 
@@ -221,7 +222,7 @@ class DD3D:
             marker_msg.color.b  = color[0]
             marker_msg.color.a  = 0.5
             marker_msg.id       = vis_num
-            marker_msg.lifetime = rospy.Duration(0, 3 * 10E7)
+            marker_msg.lifetime = rospy.Duration()
             
             marker_list.markers.append(marker_msg)
 
