@@ -462,7 +462,6 @@ class obj_detection:
             sub_image = rospy.Subscriber(rospy.get_param('~camera_img_topic'), Image, callback=self.callback_image)
             self.ros2cv2 = self.cvbridge.imgmsg_to_cv2
             self.ros2cv2_arg = "bgr8"
-            
         
         rospy.spin()
 

@@ -9,6 +9,7 @@ import cv2
 from time import time, perf_counter
 import sys
 
+print("--- DD3D Inference on single images ---")
 import omegaconf
 import detectron2.utils.comm as d2_comm
 from detectron2.data import MetadataCatalog
@@ -60,18 +61,26 @@ class DD3D:
         cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = PRE_NMS_THRESH # 0.1
         cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = NMS_THRESH  # 0.2 
         # --
-        self.model = build_model(cfg)
+        try:
+            self.model = build_model(cfg)
+        except:
+            print("ERRO in loading model .cfg. Check path !!")
+            exit()
+        print("Model config .cfg loaded successfully")
         checkpoint_file = cfg.MODEL.CKPT
         
         os.chdir("../../..") # Moving cwd from dd3d/outputs/date/time to dd3d/
         
         # Load trained weights
-        if checkpoint_file:
-            self.model.load_state_dict(torch.load(checkpoint_file)["model"])
-        summary(self.model) # Print model summary
-
+        try: 
+            if checkpoint_file:
+                self.model.load_state_dict(torch.load(checkpoint_file)["model"])
+            summary(self.model) # Print model summary
+        except:
+            print("ERROR in loading model checkpoint .pth. Check path !!")
+            exit()
+        print("Model checkpoint  pth loaded successfully")
         self.model.eval() # Inference mode
-
 
         # Params for cropping and rescaling
         self.ORIG_IMG_HEIGHT = ORIG_IMG_HEIGHT  # 1464 
@@ -119,6 +128,7 @@ class DD3D:
         cam_mtx[1] *= self.aspect_ratio
         self.cam_intrinsic_mtx = torch.FloatTensor(cam_mtx)
 
+    # NOTE: Commented out since only relevant for ROS
     # def output2MarkerArray(self, predictions, header):
     #     """Converts model outputs to marker array format for RVIZ
 
@@ -405,63 +415,6 @@ class DD3D:
 
         return output
 
-def main(cfg):
-    # 1280, 1600, 1920
-    for img_res in [(1280, 968)]:
-        dd3d = DD3D(cfg, img_res)
-
-        # IMG_PATH = "/home/carla/admt_student/team3_ss23/dd3d/media/input_img_2.png"
-        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/data/KITTI3D/testing/image_2"
-        IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
-        # IMG_FOLDER_PATH = "/home/carla/admt_student/team3_ss23/ave6_main/AVE6_project/vishal/output"
-        
-        # total_files = len(os.listdir(IMG_FOLDER_PATH))
-        for file in tqdm(os.listdir(IMG_FOLDER_PATH)):
-            # print(f"Visualizing file: {file_num}/{total_files}")
-            # if not file_num == 60:
-            #     continue
-            # print(file)
-            image = cv2.imread(os.path.join(IMG_FOLDER_PATH, file))
-            transformed_img = dd3d.transform_img(image)
-            # print(transformed_img.shape)
-            # image = cv2.imread(RESIZE_IMG)
-            # image = cv2.resize(image, (1080, 1440))
-            # image = image[int((image.shape[0] - total_width)/2):int((image.shape[0] + total_width)/2), :]
-            predictions = dd3d.inference_on_single_image(transformed_img)
-            # Benchmark        
-            # t_total = []
-            # for i in tqdm(range(100)):
-            #     t_start = perf_counter()
-            #     predictions = dd3d.inference_on_single_image(transformed_img)
-            #     t_end = perf_counter()
-            #     if i > 4:
-            #         t_total.append(t_end - t_start)
-            # print(np.mean(t_total))
-            # exit()
-            # bbox_3d = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
-            # min_x, max_x = np.min(bbox_3d[:, :, 0]), np.max(bbox_3d[:, :, 0])
-            # min_y, max_y = np.min(bbox_3d[:, :, 1]), np.max(bbox_3d[:, :, 1])
-            # min_z, max_z = np.min(bbox_3d[:, :, 2]), np.max(bbox_3d[:, :, 2])
-            
-            # np.save("../sample_bbox.npy", bbox_3d)
-            # np.save("../sample_class.npy", predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-            # print(predictions[0]["instances"].pred_classes.detach().cpu().numpy())
-            # print(predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy())
-            
-            # marker_list = dd3d.output2MarkerArray(predictions)
-            # np.save("outputs/marker_list_30.npy", np.array(marker_list))
-            final_image = dd3d.visualize([image], predictions)[0]
-            # print(marker_list)
-            # print(file)
-            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/resize_infer_v99pre.png", final_image)
-            # cv2.imwrite(f"/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_infer_dla_nusc/{file}", final_image)
-            
-            cv2.imwrite(f"outputs/test/{file[:-4] + '_' + str(img_res) + '.png'}", final_image)
-            # cv2.imwrite(f"{IMG_FOLDER_PATH}/out_{file}", final_image)
-            # cv2.imshow("test", final_image)
-            # cv2.waitKey(0)
-        del dd3d
-
 def bench(cfg_path, ckpt_path):
     cfg = omegaconf.OmegaConf.load(cfg_path)
 
@@ -499,7 +452,6 @@ def bench(cfg_path, ckpt_path):
     for out_str in output_strings:
         print(out_str)
     
-
 def infer_on_img_folder(cfg_path, ckpt_path, img_folder, output_folder, res=1452):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
@@ -522,34 +474,18 @@ def infer_on_img_folder(cfg_path, ckpt_path, img_folder, output_folder, res=1452
             
             cv2.imwrite(os.path.join(output_folder, file_path), final_img)
 
-
     print("Finished visualizing images")
         
 if __name__ == '__main__':
-    ## Uncomment for the required model
-    # OmniML
-    # sys.argv.append('+experiments=dd3d_kitti_omninets_custom')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/omniml.pth')
     
-    # DLA34
-    # sys.argv.append('+experiments=dd3d_kitti_dla34')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34.pth')
-
-    # V99
-    # sys.argv.append('+experiments=dd3d_kitti_v99')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/v99.pth')
-
-    # DLA34 Nuscenes
-    # sys.argv.append('+experiments=dd3d_nusc_dla34_custom')
-    # sys.argv.append('MODEL.CKPT=trained_final_weights/dla34_nusc_step6k.pth')
-    # main()  # pylint: disable=no-value-for-parameter_description_
-    # bench("./trained_final_weights/v99.yaml", "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth")
-
     # img_folder_path = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
     img_folder_path = "/home/carla/admt_student/team3_ss23/data/phone_pics"
-    output_folder_path = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/outputs/v99_im1280_phonePics"
+    output_folder_path = os.path.abspath("./dd3d/outputs/v99_im1280_phonePics")
+    cfg_path = "./dd3d/trained_final_weights/v99.yaml"
+    checkpoint_path = os.path.abspath("./dd3d/trained_final_weights/v99.pth")
+    
     infer_on_img_folder(
-        "./dd3d/trained_final_weights/v99.yaml", 
-        "/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/v99.pth", 
+        cfg_path, 
+        checkpoint_path, 
         img_folder_path, output_folder_path, 1280
     )

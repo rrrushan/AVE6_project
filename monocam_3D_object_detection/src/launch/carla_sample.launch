@@ -1,8 +1,8 @@
 <launch>
 	<node name="img_subscriber" pkg="monocam_3D_object_detection" type="img_subscriber.py" output="screen">
 		<!-- Model parameters -->
-		<param name="config_path"           type="String" value="/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml"/>
-		<param name="model_checkpoint_path" type="String" value="/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth"/>
+		<param name="config_path"           type="String" value="/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/v99.yaml"/>
+		<param name="model_checkpoint_path" type="String" value="/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/v99.pth"/>
 		<param name="pre_nms_thresh"        type="double" value="0.1"/>
 		<param name="nms_thresh"            type="double" value="0.2"/>
 		
@@ -34,7 +34,7 @@
 		<param name="min_height" type="double" value="1.2"/>
 		<param name="max_height" type="double" value="2.2"/>		
 	</node>
-	<node type="rviz" name="rviz" pkg="rviz" args="-d /home/carla/admt_student/team3_ss23/AVE6_project/rgb_camera_point_cloud_marker.rviz"/>
+	<node type="rviz" name="rviz" pkg="rviz" args="-d /home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/rviz/carla_sample.rviz"/>
 	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/ROS_1/bags/23_05_24/2023-05-24-17-13-48.bag -r 0.07 --duration 55 -l"/>
 	<?ignore
 	?>
