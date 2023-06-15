@@ -27,6 +27,7 @@ class DistImagePub(CompatibleNode):
         self.image_width, self.image_height, self.image_width_orig, self.image_height_orig, self.K, self.distortion = self.get_intrinsics()
         self.mapx, self.mapy = self.get_dist_maps()
         # create camera info message
+        self.border_x, self.border_y = self.get_crop_pixels()
         self.camera_info = self.build_camera_info()
 
         # # use original image
@@ -91,11 +92,17 @@ class DistImagePub(CompatibleNode):
         camera_info.width = self.image_width
         camera_info.height = self.image_height
         fx, _, cx, _, fy, cy, _, _, _ = self.K.ravel()
-        camera_info.K = [fx, 0.0, cx, 0.0, fy, cy, 0.0, 0.0, 1.0]
-        print(type(camera_info.K[0]))
+        cx_crop = cx - self.border_x
+        cy_crop = cy - self.border_y
+        camera_info.K = [fx, 0.0, cx_crop, 0.0, fy, cy_crop, 0.0, 0.0, 1.0]
         camera_info.distortion_model = "brown"
         camera_info.D = self.distortion.tolist()
         return camera_info
+    
+    def get_crop_pixels(self):
+        border_x = (self.image_width - self.image_width_orig) //2
+        border_y = (self.image_height - self.image_height_orig) //2
+        return border_x, border_y
     
     def dist_image(self, img_msg):
         """
@@ -104,17 +111,13 @@ class DistImagePub(CompatibleNode):
         header = img_msg.header
         img = CvBridge().imgmsg_to_cv2(img_msg, "bgr8")
         dist_img = cv.remap(img, self.mapx, self.mapy, cv.INTER_LINEAR)
-
-        border_x = (self.image_width - self.image_width_orig) //2
-        border_y = (self.image_height - self.image_height_orig) //2
-        dist_img = dist_img[border_y:-border_y, border_x:-border_x]
- 
         # note
         # the ripples in the upper left corner of the distorted uncropped image occur due to the way the inverted map is constructed
         # the appear in the part of the image that should be black
 
+        dist_img = dist_img[self.border_y:-self.border_y, self.border_x:-self.border_x]
         cam_info = self.camera_info
-        img_msg = CvBridge().cv2_to_imgmsg(dist_img)
+        img_msg = CvBridge().cv2_to_imgmsg(dist_img, "bgr8")
 
         cam_info.header = header
         img_msg.header = header

@@ -53,28 +53,19 @@ def main():
 
     # weather settings
     weather = world.get_weather()
-    weather.cloudiness=0.000000
+    # weather.cloudiness=20.000000
     # weather.precipitation=0.000000
     # weather.precipitation_deposits=0.000000
     # weather.wind_intensity=0.000000
-    weather.sun_azimuth_angle=361.000000
-    weather.sun_altitude_angle=10.000000
-    weather.fog_density=0.000000
+    # weather.sun_azimuth_angle=360.000000
+    # weather.sun_altitude_angle=90.000000
+    # weather.fog_density=2.000000
     # weather.fog_distance=0.750000
     # weather.fog_falloff=0.100000
     # weather.wetness=0.000000
-    weather.scattering_intensity=1.000000
-    # weather.mie_scattering_scale=-0.50000
-    # weather.rayleigh_scattering_scale=0.030000
-
-    if target_type == 'pedestrian':
-        weather.cloudiness=0.000000
-        weather.sun_azimuth_angle=352.000000
-        weather.sun_altitude_angle=15.000000
-        weather.fog_density=0.000000
-        weather.scattering_intensity=1.000000
-    # elif target_type == 'car':
-
+    # weather.scattering_intensity=1.000000
+    # weather.mie_scattering_scale=0.030000
+    # weather.rayleigh_scattering_scale=0.033100
     if rain:
         weather.precipitation=100.000000
         weather.cloudiness=30.000000
@@ -89,11 +80,14 @@ def main():
 
     # destroy previous targets
     actor_list = world.get_actors()
-    for walker in actor_list.filter('walker.*'):
-        walker.destroy()
-    for vehicle in actor_list.filter('vehicle.*'):
-        if vehicle.type_id != 'vehicle.tesla.model3':
-            vehicle.destroy()
+    # for walker in actor_list.filter('walker.*'):
+    #     walker.destroy()
+    # for vehicle in actor_list.filter('vehicle.*'):
+    #     if vehicle.type_id != 'vehicle.tesla.model3':
+    #         vehicle.destroy()
+    for object in actor_list.filter('sensor.camera.rgb'):
+        print(object.get_transform())
+    exit()
 
     # get the ros bridge vehicle
     for vehicle in actor_list.filter('vehicle.*'):

@@ -38,6 +38,7 @@ def main():
         if i.type_id == 'vehicle.tesla.model3':
             world.get_actor(i.id).destroy()
 
+
     vehicle_bp = world.get_blueprint_library().find('vehicle.tesla.model3')
 
     color = random.choice(vehicle_bp.get_attribute('color').recommended_values)
