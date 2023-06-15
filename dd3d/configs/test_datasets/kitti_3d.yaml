@@ -1,4 +1,0 @@
-defaults:
-  - base_test_dataset
-
-NAME: kitti_3d_val

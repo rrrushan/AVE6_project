@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import rospy
-from sensor_msgs.msg import CameraInfo, Image
+from sensor_msgs.msg import CameraInfo, Image, CompressedImage
 from visualization_msgs.msg import MarkerArray, Marker
 
 import numpy as np
@@ -42,22 +42,31 @@ from dd3d.tridet.visualizers import get_dataloader_visualizer, get_predictions_v
 class DD3D:
     def __init__(self, cfg):
         # Create model 
-        # TODO: Convert to param Caro
-        cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = rospy.get_param('~pre_nms_thresh') # 0.1
-        cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = rospy.get_param('~nms_thresh')         # 0.2 
+        try:
+            cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = rospy.get_param('~pre_nms_thresh') # 0.1
+            cfg.DD3D.FCOS2D.INFERENCE.NMS_THRESH = rospy.get_param('~nms_thresh')         # 0.2 
+            
+            self.model = build_model(cfg)
+            checkpoint_file = cfg.MODEL.CKPT
+            
+            os.chdir("../../..") # Moving cwd from dd3d/outputs/date/time to dd3d/
+            
+            # Load trained weights
+            if checkpoint_file:
+                self.model.load_state_dict(torch.load(checkpoint_file)["model"])
+            summary(self.model) # Print model summary
+
+            self.model.eval() # Inference mode
+        except:
+            rospy.logerr("MonoCam3D Obj.Det| You had one job.....CHECK THE MODEL .cfg and .pth (checkpoint) PATHS !!!!")
+            rospy.signal_shutdown()
         # --
-        self.model = build_model(cfg)
-        checkpoint_file = cfg.MODEL.CKPT
-        
-        os.chdir("../../..") # Moving cwd from dd3d/outputs/date/time to dd3d/
-        
-        # Load trained weights
-        if checkpoint_file:
-            self.model.load_state_dict(torch.load(checkpoint_file)["model"])
-        summary(self.model) # Print model summary
 
-        self.model.eval() # Inference mode
-
+        # Specific params to differentiate real_camera .rosbags and carla .rosbags
+        self.rviz_cam_output_frame = rospy.get_param('~rviz_cam_output_frame')
+        self.realcam_capture = rospy.get_param('~realcam_capture')
+        self.debug_enable_visualization = rospy.get_param("~debug_enable_intern_vis")
+        self.rviz_marker_retain_duration = rospy.get_param('~rviz_marker_retain_duration')
 
         # Params for cropping and rescaling
         self.ORIG_IMG_HEIGHT = rospy.get_param('~ORIG_IMG_HEIGHT')  # 1464 
@@ -66,9 +75,7 @@ class DD3D:
         self.CROPPED_IMG_HEIGHT = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
         target_resize_width = rospy.get_param('~TARGET_RESIZE_WIDTH')
         self.aspect_ratio = target_resize_width / self.ORIG_IMG_WIDTH
-
         self.TARGET_RESIZE_RES = (target_resize_width, int(self.aspect_ratio*self.CROPPED_IMG_HEIGHT))
-        # --
 
         # Color code for visualizing each class
         # BGR (inverted RGB) color values for classes
@@ -81,6 +88,9 @@ class DD3D:
             5: ((0, 0, 0), "Unknown")        # Unknown: Black
         }
 
+
+        ## Object filteration parameters - Objects lying beyond this range are not visualized
+        # Car
         self.car_min_trackwidth = rospy.get_param('~min_trackwidth')
         self.car_max_trackwidth = rospy.get_param('~max_trackwidth')
         self.car_min_wheelbase  = rospy.get_param('~min_wheelbase')
@@ -88,6 +98,7 @@ class DD3D:
         self.car_min_height     = rospy.get_param('~car_min_height')
         self.car_max_height     = rospy.get_param('~car_max_height')
 
+        # Pedestrian and Cyclist
         self.ped_max_base   = rospy.get_param('~max_base')
         self.ped_min_height = rospy.get_param('~min_height')
         self.ped_max_height = rospy.get_param('~max_height')
@@ -142,7 +153,7 @@ class DD3D:
         vis_num = 0 
         for index, (single_bbox, single_class) in enumerate(zip(bboxes_per_image, classes_per_image)):
             class_id = int(single_class)
-            if class_id > 1: # Car class: 0, Pedestrian class: 1. Ignoring all the other classes
+            if class_id > 2: # Car class: 0, Pedestrian class: 1, Bike class: 2. Ignoring all the other classes
                 continue
 
             vis_num += 1
@@ -158,7 +169,7 @@ class DD3D:
             cy = (min_y + max_y) / 2
             cz = (min_z + max_z) / 2
             
-            if cz <= 1.5:
+            if cz <= 1.5: # For noisy boxes under the ground
                 continue
 
             # Limiting size of BBOX in each axis according parameters in ROS Launch
@@ -172,6 +183,11 @@ class DD3D:
                 scale_x = np.clip(abs(max_x - min_x), 0.0, self.ped_max_base) 
                 scale_y = np.clip(max_y - min_y, self.ped_min_height, self.ped_max_height)
                 scale_z = np.clip(max_z - min_z, 0.0, self.ped_max_base)
+
+            elif class_id == 2: # Cyclist
+                scale_x = np.clip(abs(max_x - min_x), 0.0, self.ped_max_base*2) 
+                scale_y = np.clip(max_y - min_y, self.ped_min_height, self.ped_max_height)
+                scale_z = np.clip(max_z - min_z, 0.0, self.ped_max_base*2)
             
 
             ## Rotation of BBOX along each axis
@@ -181,11 +197,15 @@ class DD3D:
             roll_angle = 0.0 # np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
             yaw_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0])) # yaw in camera.
             
-            qx, qy, qz, qw = get_quaternion_from_euler(pitch_angle, yaw_angle, roll_angle)
-            
+            if self.realcam_capture:
+                # Different rotations for real camera capture
+                qx, qy, qz, qw = get_quaternion_from_euler(yaw_angle, 0.0, 1.57)
+            else:
+                qx, qy, qz, qw = get_quaternion_from_euler(pitch_angle, yaw_angle, roll_angle)
+
             marker_msg.type = Marker.CUBE
             marker_msg.header.stamp = header.stamp
-            marker_msg.header.frame_id = "ego_vehicle/rgb_front"
+            marker_msg.header.frame_id = self.rviz_cam_output_frame # "arena_camera" #"ego_vehicle/rgb_front"
             
             marker_msg.pose.position.x = cx     # in camera frame: y, left-right
             marker_msg.pose.position.y = cy     # in camera frame: z, height
@@ -200,21 +220,6 @@ class DD3D:
             marker_msg.scale.y = scale_y # Height
             marker_msg.scale.z = scale_z # Wheelbase
             
-            """
-            # first angle -> pitch, yaw, roll
-            qx, qy, qz, qw = get_quaternion_from_euler(np.deg2rad(0.0), np.deg2rad(0.0), np.deg2rad(10.0))
-            marker_msg.pose.position.x = 3.0     # in camera frame: y, left-right
-            marker_msg.pose.position.y = 1.0     # in camera frame: z. height
-            marker_msg.pose.position.z = 10.0    # in camera frame: x, depth
-            marker_msg.pose.orientation.x = qx #- 0.5
-            marker_msg.pose.orientation.y = qy #+ 0.5
-            marker_msg.pose.orientation.z = qz #- 0.5
-            marker_msg.pose.orientation.w = qw #+ 0.5
-            
-            marker_msg.scale.x = 2.0 # scale_x, trackwidth
-            marker_msg.scale.y = 1.0 # scale_y. height of the car
-            marker_msg.scale.z = 4.0 # scale_z, wheelbase
-            """
 
             color               = self.color_mapping[class_id][0]
             marker_msg.color.r  = color[2]
@@ -222,23 +227,48 @@ class DD3D:
             marker_msg.color.b  = color[0]
             marker_msg.color.a  = 0.5
             marker_msg.id       = vis_num
-            marker_msg.lifetime = rospy.Duration()
+            marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)
             
             marker_list.markers.append(marker_msg)
 
-            marker_msg = Marker()
+            if self.debug_enable_visualization:
+                # --- Text marker ---
+                vis_num += 1
+                marker_msg = Marker()
+                marker_msg.type = Marker.TEXT_VIEW_FACING
+                
+                marker_msg.header.stamp = header.stamp
+                marker_msg.header.frame_id = self.rviz_cam_output_frame
+                
+                marker_msg.pose.position.x = cx     # in camera frame: y, left-right
+                marker_msg.pose.position.y = cy     # in camera frame: z, height
+                marker_msg.pose.position.z = cz     # in camera frame: x, depth         
+                marker_msg.pose.orientation.x = 0.0 
+                marker_msg.pose.orientation.y = 0.0 
+                marker_msg.pose.orientation.z = 0.0
+                marker_msg.pose.orientation.w = 1.0 
+                distance_of_object = np.linalg.norm([cx, cz])
+                marker_msg.scale.z = 0.4 # Size of text
+                marker_msg.text = f"{round(distance_of_object, 2)}m. {round(np.rad2deg(-yaw_angle), 2)}deg"
+                marker_msg.action = Marker.ADD
+                marker_msg.color.r  = 255
+                marker_msg.color.g  = 255
+                marker_msg.color.b  = 255
+                marker_msg.color.a  = 1.0
+                marker_msg.id       = vis_num
+                marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)
+                
+                marker_list.markers.append(marker_msg)
             
         return marker_list
 
     def transform_img(self, img):
         # Crop off top pixels to remove unnecessary image
-        # cv2.imwrite("/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/Orign_img.png", img)
+        # NOTE: No crop is being used, 3D box coordinates are more incorrect when used
         img = img[self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP:img.shape[0], :]
-        # cv2.imwrite("/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/Cropped_img.png", img)
         # Resize Image to target resolution
         img = cv2.resize(img, self.TARGET_RESIZE_RES)
-        # cv2.imwrite("/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/Resized_img.png", img)
-        # exit()
+    
         return img
 
     def rescale_boxes(self, boxes):
@@ -400,52 +430,47 @@ class DD3D:
 class obj_detection:
     def __init__(self):
         rospy.init_node("img_subscriber", anonymous= True)
-        # sys.argv.append('+experiments=dd3d_kitti_dla34')
-        # sys.argv.append('MODEL.CKPT=/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth')
 
-        # cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla.yaml")
-        # cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/dla34.pth"
-
-        # name_path = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml"
-        #cfg = omegaconf.OmegaConf.load(name_path)
-        #cfg = omegaconf.OmegaConf.load("/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.yaml") # v99.yaml
+        # Load Model
         cfg = omegaconf.OmegaConf.load(rospy.get_param('~config_path'))
-
-        #cfg.MODEL.CKPT = "/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/trained_final_weights/v99.pth" # v99.pth
         cfg.MODEL.CKPT = rospy.get_param('~model_checkpoint_path')
         self.dd3d = DD3D(cfg)
-        # --
-
-        
-
-        # Wait for camera intrinsic data
-        rospy.loginfo("Waiting for /camera_info topic")
-        cam_info_data = rospy.wait_for_message(rospy.get_param('~camera_info_topic'), CameraInfo)
+    
+        # Wait for camera intrinsic data and load it
+        cam_info_topic_name = rospy.get_param('~camera_info_topic')
+        rospy.loginfo(f"MonoCam3D Obj.Det| Waiting for {cam_info_topic_name} topic")
+        cam_info_data = rospy.wait_for_message(cam_info_topic_name, CameraInfo)
+        rospy.loginfo(f"MonoCam3D Obj.Det| Success. {cam_info_topic_name} topic received !")
         cam_intrinsic_mtx = np.reshape(np.array(cam_info_data.K), (3,3))
         self.dd3d.load_cam_mtx(cam_intrinsic_mtx)
 
-        sub_image = rospy.Subscriber(rospy.get_param('~camera_img_topic'), Image, callback=self.callback_image)
+        # Output publishers
         self.marker_pub = rospy.Publisher(rospy.get_param('~marker_output_topic'), MarkerArray, queue_size=10)
-        
         self.vis_image_pub = rospy.Publisher("rgb_front/vis_image", Image, queue_size=10)
-        rospy.loginfo("img_sub has been created")
+        
+        rospy.loginfo("MonoCam3D Obj.Det| Success. Publishers has been created !")
         
         self.cam_intrinsic_mtx = None
         self.cvbridge = CvBridge()
 
         # Checking for compressed ROS image (used by camera recorded rosbags, not for carla)
-        if rospy.get_param("~use_compressed_image"):
+        if self.dd3d.realcam_capture:
+            sub_image = rospy.Subscriber(rospy.get_param('~camera_img_topic'), CompressedImage, callback=self.callback_image)
             self.ros2cv2 = self.cvbridge.compressed_imgmsg_to_cv2
+            self.ros2cv2_arg = "passthrough"
         else:
+            sub_image = rospy.Subscriber(rospy.get_param('~camera_img_topic'), Image, callback=self.callback_image)
             self.ros2cv2 = self.cvbridge.imgmsg_to_cv2
-        self.enable_visualization = rospy.get_param("~debug_enable_intern_vis")
+            self.ros2cv2_arg = "bgr8"
+            
+        
         rospy.spin()
 
 
     def callback_image(self, msg: Image):
         header_info = msg.header
         t_1 = perf_counter()
-        cv_image = self.ros2cv2(msg, "bgr8")
+        cv_image = self.ros2cv2(msg, self.ros2cv2_arg)
         transform_img = self.dd3d.transform_img(cv_image)
         t_2 = perf_counter()
         predictions = self.dd3d.inference_on_single_image(transform_img)
@@ -455,14 +480,14 @@ class obj_detection:
         t_4 = perf_counter()
 
         total_time = (t_4 - t_1)*1000
-        if self.enable_visualization:
+        if self.dd3d.debug_enable_visualization:
             final_image = self.dd3d.visualize([cv_image], predictions)[0]
             ros_img = self.cvbridge.cv2_to_imgmsg(final_image)
 
             self.vis_image_pub.publish(ros_img)
-            rospy.loginfo(f"MonoCam3D Obj.Det| Shape: {self.dd3d.TARGET_RESIZE_RES}, Time log| Total: {total_time:.2f}ms, Img_Tf: {(t_2 - t_1)*1000:.2f}ms, Inference: {(t_3 - t_2)*1000:.2f}ms, conv_toMarker: {(t_4 - t_3)*1000:.2f}ms")
+            rospy.loginfo(f"MonoCam3D Obj.Det| Num_objects: {len(marker_list.markers)}, Shape: {self.dd3d.TARGET_RESIZE_RES}, Time log| Total: {total_time:.2f}ms, Img_Tf: {(t_2 - t_1)*1000:.2f}ms, Inference: {(t_3 - t_2)*1000:.2f}ms, conv_toMarker: {(t_4 - t_3)*1000:.2f}ms")
         else:
-            rospy.loginfo(f"MonoCam3D Obj.Det| Time per frame: {total_time:.2f}ms, {1000/total_time :.2f}fps")
+            rospy.loginfo(f"MonoCam3D Obj.Det| Num_objects: {len(marker_list.markers)}, Time per frame: {total_time:.2f}ms, {1000/total_time :.2f}fps")
 
 if __name__ == '__main__':
     random_obj = obj_detection()
