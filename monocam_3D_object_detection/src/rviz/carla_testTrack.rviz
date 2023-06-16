@@ -5,9 +5,8 @@ Panels:
     Property Tree Widget:
       Expanded:
         - /Global Options1
-        - /Grid1
+        - /Camera1
         - /Camera1/Visibility1
-        - /TF1
         - /TF1/Frames1
         - /Image1
       Splitter Ratio: 0.3990384638309479
@@ -126,6 +125,8 @@ Visualization Manager:
           Value: true
         ego_vehicle/rgb_front:
           Value: true
+        ego_vehicle/rgb_front_border:
+          Value: true
         ego_vehicle/rgb_view:
           Value: true
         ego_vehicle/semantic_lidar:
@@ -159,6 +160,8 @@ Visualization Manager:
               {}
             ego_vehicle/rgb_front:
               {}
+            ego_vehicle/rgb_front_border:
+              {}
             ego_vehicle/rgb_view:
               {}
             ego_vehicle/semantic_lidar:
@@ -172,7 +175,7 @@ Visualization Manager:
       Marker Topic: /rgb_front/markers
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Class: rviz/Image
@@ -215,7 +218,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 36.65250015258789
+      Distance: 6.956300735473633
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -223,17 +226,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 11.877947807312012
-        Y: -0.07961983233690262
-        Z: -3.4517195224761963
+        X: 16.782733917236328
+        Y: -0.8252425789833069
+        Z: 3.440797805786133
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 1.3697965145111084
+      Pitch: 0.33979666233062744
       Target Frame: <Fixed Frame>
-      Yaw: 3.155381202697754
+      Yaw: 3.2053844928741455
     Saved: ~
 Window Geometry:
   Camera:

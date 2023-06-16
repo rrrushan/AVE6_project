@@ -1,16 +1,17 @@
 <launch>
-	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/data/carissma/Data_collection/02_bike/01_day/01_clear_weather/01_28m/90deg_camera.bag -l"/>
-	<node name="img_subscriber" pkg="monocam_3D_object_detection" type="img_subscriber.py" output="screen">
+	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/data/carissma/Data_collection/03_car/01_day/02_rain/01_10mm/01_28m/45deg_camera.bag -l"/>
+	<node name="mono3d_det_node" pkg="monocam_3D_object_detection" type="mono3d_det_node.py" output="screen">
 		<!-- Model parameters -->
-		<param name="config_path"          type="String" value="/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/v99.yaml"/>
-		<param name="model_checkpoint_path" type="String" value="/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/v99.pth"/>
+		<param name="config_path"          type="String" value="/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/dla.yaml"/>
+		<param name="model_checkpoint_path" type="String" value="/home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/dd3d/trained_final_weights/dla.pth"/>
 		<param name="pre_nms_thresh"        type="double" value="0.1"/>
 		<param name="nms_thresh"            type="double" value="0.2"/>
 		
 		<!-- Image parameters-->
+		<param name="cam_pitch_tilt"       type="double" value="4.8"/>
 		<param name="ORIG_IMG_WIDTH"       type="int" value="1936"/>
 		<param name="ORIG_IMG_HEIGHT"      type="int" value="1464"/>
-		<param name="TARGET_RESIZE_WIDTH"  type="int" value="1200"/> <!-- 1452, 968, 640 -->
+		<param name="TARGET_RESIZE_WIDTH"  type="int" value="1600"/> <!-- For v99, use 1452 or 1200. For DLA: 1920, 1600. Other res: 1452, 968, 640 -->
 		<param name="TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP" type="int" value="0"/>
 		
 		<!-- Node parameters-->

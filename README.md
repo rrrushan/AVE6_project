@@ -5,7 +5,38 @@ Using CARLA and ROS1 Noetic
 ## DD3D (3D Object Detection)
 ### Installation
 - Install python3.8 in system (python3.9 didnt have appropriate wheels for pytorch3D)
-- Follow docker file [Dockerfile](dd3d/docker/Dockerfile-cu111)
+- Install [Nvidia drivers](https://www.cyberciti.biz/faq/ubuntu-linux-install-nvidia-driver-latest-proprietary-driver/). The testing system has Quadro RTX 5000 (16G) with driver version 520.56.06 with CUDA 11.8.
+- The main component instruction follows the docker file [Dockerfile](monocam_3D_object_detection/src/dd3d/docker/Dockerfile-cu111). Here is a simplified version of it:
+    - ```bash
+      apt-get update && apt-get install -y \
+      # essential
+      build-essential \
+      cmake \
+      ffmpeg \
+      g++-4.8 \
+      git \
+      curl \
+      docker.io \
+      vim \
+      wget \
+      unzip \
+      htop \
+      libjpeg-dev \
+      libpng-dev \
+      libavdevice-dev \
+      pkg-config \
+      # python
+      python${PYTHON_VERSION} \
+      python${PYTHON_VERSION}-dev \
+      python3-tk \
+      python${PYTHON_VERSION}-distutils \
+      # opencv
+      python3-opencv \
+      # set python
+      && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python \
+      && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 \
+      && rm -rf /var/lib/apt/lists/*
+      ```
 - Downgrade protobuf: 
     ```python
     pip uninstall protobuf

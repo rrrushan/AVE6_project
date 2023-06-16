@@ -80,7 +80,7 @@ class TF_CamInfo_Carissma:
     def callback_camera(self, msg):
         br = tf.TransformBroadcaster()
         msg.header.stamp = rospy.Time.now()
-        quat = [-0.52, 0.52, -0.47, 0.47] # These quartenions were observed from "ego_vehicle/rgb_front" from carla
+        quat =  [-0.52, 0.52, -0.47, 0.47] # These quartenions were observed from "ego_vehicle/rgb_front" from carla
         quat = quat / np.linalg.norm(quat)
         br.sendTransform((0.0, 0.0, -0.45), # It has to be actually (0, 0, 1.0) but to neutralize offset, it has been adjusted accordingly
                         quat, 
