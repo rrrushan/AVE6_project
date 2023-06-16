@@ -40,8 +40,8 @@ def main():
     rain = False
 
     # target_type = "pedestrian"
-    # target_type = "bicycle"
-    target_type = "car"
+    target_type = "bicycle"
+    # target_type = "car"
 
     camera_pos_x = 2
     # distance = 5 + camera_pos_x # debug value
@@ -53,32 +53,103 @@ def main():
 
     # weather settings
     weather = world.get_weather()
-    weather.cloudiness=0.000000
-    # weather.precipitation=0.000000
-    # weather.precipitation_deposits=0.000000
+
     # weather.wind_intensity=0.000000
-    weather.sun_azimuth_angle=361.000000
-    weather.sun_altitude_angle=10.000000
-    weather.fog_density=0.000000
+    # weather.sun_azimuth_angle=361.000000
+    # weather.sun_altitude_angle=10.000000
+    # weather.fog_density=0.000000
     # weather.fog_distance=0.750000
     # weather.fog_falloff=0.100000
     # weather.wetness=0.000000
-    weather.scattering_intensity=1.000000
+    # weather.scattering_intensity=1.000000
     # weather.mie_scattering_scale=-0.50000
     # weather.rayleigh_scattering_scale=0.030000
 
-    if target_type == 'pedestrian':
-        weather.cloudiness=0.000000
-        weather.sun_azimuth_angle=352.000000
-        weather.sun_altitude_angle=15.000000
-        weather.fog_density=0.000000
-        weather.scattering_intensity=1.000000
-    # elif target_type == 'car':
+    weather.cloudiness=0.000000
+    weather.precipitation=0.000000
+    weather.fog_density=0.000000
+    weather.scattering_intensity=1.000000
 
     if rain:
-        weather.precipitation=100.000000
-        weather.cloudiness=30.000000
-        weather.precipitation_deposits=100.000000
+        weather.precipitation=50.000000
+        weather.cloudiness=5.000000
+        weather.precipitation_deposits=75.000000
+
+        if target_type == 'pedestrian':
+            if distance == 28 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=15.000000
+            elif distance == 56 + camera_pos_x: 
+                weather.sun_azimuth_angle=355.000000
+                weather.sun_altitude_angle=16.000000 
+            elif distance == 84 + camera_pos_x or distance == 112 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=10.000000
+        if target_type == 'bicycle':
+            if distance == 28 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=15.000000
+            elif distance == 56 + camera_pos_x or distance == 84 + camera_pos_x:
+                weather.sun_azimuth_angle=350.000000
+                weather.sun_altitude_angle=10.000000
+            elif distance == 112 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=10.000000
+
+        elif target_type == 'car':
+            if distance == 28 + camera_pos_x or distance == 56 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=20.000000
+            elif distance == 84 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=7.000000
+            elif distance == 112 + camera_pos_x:
+                weather.sun_azimuth_angle=345.000000
+                weather.sun_altitude_angle=8.000000
+
+    else:
+        if target_type == 'pedestrian':
+            if distance == 28 + camera_pos_x:
+                weather.sun_azimuth_angle=352.000000
+                weather.sun_altitude_angle=15.000000
+            elif distance == 56 + camera_pos_x or distance == 84 + camera_pos_x:
+                weather.sun_azimuth_angle=355.000000
+                weather.sun_altitude_angle=16.000000
+            elif distance == 112 + camera_pos_x:
+                weather.sun_azimuth_angle=5.000000
+                weather.sun_altitude_angle=25.000000
+
+        if target_type == 'bicycle':
+            if distance == 28 + camera_pos_x:
+                weather.sun_azimuth_angle=20.000000
+                weather.sun_altitude_angle=14.000000
+            elif distance == 56 + camera_pos_x:
+                weather.sun_azimuth_angle=11.000000
+                weather.sun_altitude_angle=17.000000
+            elif distance == 84 + camera_pos_x:
+                weather.sun_azimuth_angle=9.000000
+                weather.sun_altitude_angle=18.000000
+            elif distance == 112 + camera_pos_x:
+                weather.sun_azimuth_angle=9.000000
+                weather.sun_altitude_angle=12.000000
+
+        elif target_type == 'car':
+            if distance == 28 + camera_pos_x:
+                weather.sun_azimuth_angle=360.000000
+                weather.sun_altitude_angle=10.000000
+            elif distance == 56 + camera_pos_x:
+                weather.sun_azimuth_angle=360.000000
+                weather.sun_altitude_angle=9.000000
+            elif distance == 84 + camera_pos_x:
+                weather.sun_azimuth_angle=4.000000
+                weather.sun_altitude_angle=10.000000
+            elif distance == 112 + camera_pos_x:
+                weather.sun_azimuth_angle=4.000000
+                weather.sun_altitude_angle=9.000000
+
+      
+
+
     world.set_weather(weather)
 
     # spawn a temporary vehicle to enable actor list
