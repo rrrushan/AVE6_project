@@ -49,21 +49,21 @@ This is a ROS Package with all DD3D files in [src/dd3d](monocam_3D_object_detect
       rm get-pip.py
       ```
     - Install Python packages
-      ```python
-      pip install -r requirements.txt
+      ```bash
+      python3.8 -m pip install -r requirements.txt
       ```
     - Install PyTorch and other detection related packages
-      ```python
-      pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html \
-      pip install -U 'git+https://github.com/facebookresearch/fvcore'
-      pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
-      pip install pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py38_cu111_pyt190/download.html
+      ```bash
+      python3.8 -m pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html
+      python3.8 -m pip install -U 'git+https://github.com/facebookresearch/fvcore'
+      python3.8 -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
+      python3.8 -m pip install pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py38_cu111_pyt190/download.html
       ```
     
 - Downgrade protobuf: 
     ```python
-    pip uninstall protobuf
-    pip install protobuf==3.20.1
+    python3.8 -m pip uninstall protobuf
+    python3.8 -m pip install protobuf==3.20.1
     ```
 
 ### Commands

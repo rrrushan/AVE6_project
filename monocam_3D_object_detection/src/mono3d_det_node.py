@@ -39,7 +39,6 @@ from dd3d.tridet.utils.train import get_inference_output_dir, print_test_results
 from dd3d.tridet.utils.visualization import mosaic, save_vis
 from dd3d.tridet.utils.wandb import flatten_dict, log_nested_dict
 from dd3d.tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
-
 class DD3D:
     def __init__(self, cfg):
         # Create model 
@@ -153,88 +152,73 @@ class DD3D:
             
             return qx, qy, qz, qw
 
+        # Create a marker object
+        edges = [
+            (0, 1), (1, 2), (2, 3), (3, 0),
+            (4, 5), (5, 6), (6, 7), (7, 4),
+            (0, 4), (1, 5), (2, 6), (3, 7),
+            (0, 2), (1, 3)
+        ]
         bboxes_per_image = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
         classes_per_image = predictions[0]["instances"].pred_classes.detach().cpu().numpy()
         marker_list = MarkerArray() # []
         
         vis_num = 0
-        for index, (single_bbox, single_class) in enumerate(zip(bboxes_per_image, classes_per_image)):
+        for single_bbox, single_class in zip(bboxes_per_image, classes_per_image):
             class_id = int(single_class)
             if class_id > 2: # Car class: 0, Pedestrian class: 1, Bike class: 2. Ignoring all the other classes
                 continue
 
             vis_num += 1
-
             marker_msg = Marker()
+            
             # BBOX is stored as (8, 3) -> where last_index is (y, z, x). For cam coord: (0, 1, 2), (2, 0, 1)
             min_x, max_x = np.min(single_bbox[:, 0]), np.max(single_bbox[:, 0])
             min_y, max_y = np.min(single_bbox[:, 1]), np.max(single_bbox[:, 1])
             min_z, max_z = np.min(single_bbox[:, 2]), np.max(single_bbox[:, 2])
 
             # Center points of BBOX along each axis
-            cx = (min_x + max_x) / 2 # + 2
-            cy = (min_y + max_y) / 2 
-            cz = (min_z + max_z) / 2 # + 3.0
+            cx = (min_x + max_x) / 2 # Height from the ground
+            cy = (min_y + max_y) / 2 # Left-right distance from camera
+            cz = (min_z + max_z) / 2 # Depth of the object straightahead
             
-            if cz <= 1.5: # For noisy boxes under the ground
+            yaw_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))
+            if cz <= 1.5: # For boxes too close to the camera
                 continue
+            
+            vis_num += 1
+            marker = Marker()
+            marker.header.frame_id = self.rviz_cam_output_frame
+            marker.header.stamp = header.stamp
+            marker.ns = self.color_mapping[class_id][1]
+            marker.id = vis_num
+            marker.type = Marker.LINE_LIST
+            marker.action = Marker.ADD
+            marker.scale.x = 0.1 # Line width
 
-            # Limiting size of BBOX in each axis according parameters in ROS Launch
-            if class_id == 0: # Car
-                scale_x = np.clip(abs(single_bbox[0, 0] - single_bbox[1, 0]), self.car_min_trackwidth, self.car_max_trackwidth) 
-                # scale_x = np.clip(abs(max_x - min_x), self.car_min_trackwidth, self.car_max_trackwidth) 
-                scale_y = np.clip(max_y - min_y, self.car_min_height, self.car_max_height)
-                scale_z = np.clip(max_z - min_z, self.car_min_wheelbase, self.car_max_wheelbase)
+            color          = self.color_mapping[class_id][0]
+            marker.color.r = color[2] / 255.0
+            marker.color.g = color[1] / 255.0
+            marker.color.b = color[0] / 255.0
+            marker.color.a = 1.0
 
-            elif class_id == 1: # Pedestrian
-                scale_x = np.clip(abs(max_x - min_x), 0.0, self.ped_max_base) 
-                scale_y = np.clip(max_y - min_y, self.ped_min_height, self.ped_max_height)
-                scale_z = np.clip(max_z - min_z, 0.0, self.ped_max_base)
+            # Add the each pair of consecutive points to form an edge
+            for edge in edges:
+                point = Point()
+                point.x = single_bbox[edge[0]][0]
+                point.y = single_bbox[edge[0]][1]
+                point.z = single_bbox[edge[0]][2]
+                marker.points.append(point)
 
-            elif class_id == 2: # Cyclist
-                scale_x = np.clip(abs(max_x - min_x), 0.0, self.ped_max_base*2) 
-                scale_y = np.clip(max_y - min_y, self.ped_min_height, self.ped_max_height)
-                scale_z = np.clip(max_z - min_z, 0.0, self.ped_max_base*2)
+                point = Point()
+                point.x = single_bbox[edge[1]][0]
+                point.y = single_bbox[edge[1]][1]
+                point.z = single_bbox[edge[1]][2]
+                marker.points.append(point)
 
-            ## Rotation of BBOX along each axis
-            # Setting Roll and Pitch angle to 0.0 as they the vehicles are considered to be on flat surface.
-            # To further reduce noisy bbox positions/scales
-            # pitch_angle = np.math.atan2((single_bbox[4, 1] - single_bbox[0, 1]), (single_bbox[4, 2] - single_bbox[0, 2]),) # pitch in camera # yaw in camera.
-            # roll_angle = np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0])) #+ np.deg2rad(20) 
-            # yaw_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))  
-
-            # NOTE: Use orientation as mentioned in below statements. Roll & Pitch is disabled by default, only pitch compensation for tilting of cameras
-            pitch_angle = np.deg2rad(-self.cam_pitch_tilt) # np.math.atan2((single_bbox[1, 1] - single_bbox[0, 1]), (single_bbox[1, 0] - single_bbox[0, 0]))
-            roll_angle = 1.57
-            yaw_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))   
-            
-            qx, qy, qz, qw = get_quaternion_from_euler(yaw_angle, pitch_angle, roll_angle)
-            
-            marker_msg.type = Marker.CUBE
-            marker_msg.header.stamp = header.stamp
-            marker_msg.header.frame_id = self.rviz_cam_output_frame # "arena_camera" #"ego_vehicle/rgb_front"
-            
-            marker_msg.pose.position.x    = cx     # in camera frame: y, left-right
-            marker_msg.pose.position.y    = cy     # in camera frame: z, height
-            marker_msg.pose.position.z    = cz     # in camera frame: x, depth 
-            marker_msg.pose.orientation.x = qx 
-            marker_msg.pose.orientation.y = qy 
-            marker_msg.pose.orientation.z = qz 
-            marker_msg.pose.orientation.w = qw      
-            
-            marker_msg.scale.x = scale_x # Trackwidth
-            marker_msg.scale.y = scale_y # Height
-            marker_msg.scale.z = scale_z # Wheelbase
-            
-            color               = self.color_mapping[class_id][0]
-            marker_msg.color.r  = color[2]
-            marker_msg.color.g  = color[1]
-            marker_msg.color.b  = color[0]
-            marker_msg.color.a  = 0.5
-            marker_msg.id       = vis_num
-            marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)
-            
-            marker_list.markers.append(marker_msg)
+            # Connect the corners to form edges of the box
+            marker.pose.orientation.w = 1.0
+            marker_list.markers.append(marker)
 
             if self.debug_enable_visualization:
                 # --- Text marker ---
@@ -266,50 +250,79 @@ class DD3D:
                 marker_msg.id       = vis_num
                 marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)       
                 marker_list.markers.append(marker_msg)
+                """
+                # --- Corners of BBOX marker ---
+                for index, box_points in enumerate(single_bbox):
+                    vis_num += 1
+                    marker_msg = Marker()
+                    marker_msg.type = Marker.TEXT_VIEW_FACING
+                    
+                    marker_msg.header.stamp = header.stamp
+                    marker_msg.header.frame_id = self.rviz_cam_output_frame
+                    
+                    marker_msg.pose.position.x = box_points[0]     # in camera frame: y, left-right
+                    marker_msg.pose.position.y = box_points[1]     # in camera frame: z, height
+                    marker_msg.pose.position.z = box_points[2]      # in camera frame: x, depth         
+                    marker_msg.pose.orientation.x = 0.0 
+                    marker_msg.pose.orientation.y = 0.0 
+                    marker_msg.pose.orientation.z = 0.0
+                    marker_msg.pose.orientation.w = 1.0 
 
+                    marker_msg.scale.z = 0.4 # Size of text
+                    marker_msg.text = f"{index}"
+                    
+                    marker_msg.action = Marker.ADD  
+                    marker_msg.color.r  = 255
+                    marker_msg.color.g  = 255
+                    marker_msg.color.b  = 255
+                    marker_msg.color.a  = 1.0
+                    marker_msg.id       = vis_num
+                    marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)             
+      
+                    marker_list.markers.append(marker_msg)
+                
                 # --- Axes marker ---
                 # NOTE: Used for debugging orientation of boxes for different sensor setup
                 # X-Axis: Orange, Y-Axis: Green, Z-Axis: Blue
-                # for add_point, rgb_color in zip([[2, 0, 0], [0, 2, 0], [0, 0, 2]], [(1.0, 1.0, 0), (0, 1.0, 0), (0, 0, 1.0)]):
-                #     vis_num += 1
-                #     marker_msg = Marker()
-                #     marker_msg.type = Marker.LINE_STRIP
+                for add_point, rgb_color in zip([[2, 0, 0], [0, 2, 0], [0, 0, 2]], [(1.0, 1.0, 0), (0, 1.0, 0), (0, 0, 1.0)]):
+                    vis_num += 1
+                    marker_msg = Marker()
+                    marker_msg.type = Marker.LINE_STRIP
                     
-                #     marker_msg.header.stamp = header.stamp
-                #     marker_msg.header.frame_id = self.rviz_cam_output_frame
+                    marker_msg.header.stamp = header.stamp
+                    marker_msg.header.frame_id = self.rviz_cam_output_frame
                          
-                #     marker_msg.pose.orientation.x = 0.0 
-                #     marker_msg.pose.orientation.y = 0.0 
-                #     marker_msg.pose.orientation.z = 0.0
-                #     marker_msg.pose.orientation.w = 1.0 
+                    marker_msg.pose.orientation.x = 0.0 
+                    marker_msg.pose.orientation.y = 0.0 
+                    marker_msg.pose.orientation.z = 0.0
+                    marker_msg.pose.orientation.w = 1.0 
                     
-                #     marker_msg.scale.x = 0.04 # Size of text
+                    marker_msg.scale.x = 0.04 # Size of text
                     
-                #     marker_msg.action = Marker.ADD
-                #     marker_msg.color.r  = rgb_color[0]
-                #     marker_msg.color.g  = rgb_color[1]
-                #     marker_msg.color.b  = rgb_color[2]
-                #     marker_msg.color.a  = 1.0
-                #     marker_msg.id       = vis_num
-                #     marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)   
+                    marker_msg.action = Marker.ADD
+                    marker_msg.color.r  = rgb_color[0]
+                    marker_msg.color.g  = rgb_color[1]
+                    marker_msg.color.b  = rgb_color[2]
+                    marker_msg.color.a  = 1.0
+                    marker_msg.id       = vis_num
+                    marker_msg.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)   
 
-                #     marker_msg.points = []
-                #     p1 = Point()
-                #     p1.x = cx
-                #     p1.y = cy
-                #     p1.z = cz
+                    marker_msg.points = []
+                    p1 = Point()
+                    p1.x = cx
+                    p1.y = cy
+                    p1.z = cz
 
-                #     p2 = Point()
-                #     p2.x = cx + add_point[0]
-                #     p2.y = cy + add_point[1]
-                #     p2.z = cz + add_point[2]
+                    p2 = Point()
+                    p2.x = cx + add_point[0]
+                    p2.y = cy + add_point[1]
+                    p2.z = cz + add_point[2]
 
-                #     marker_msg.points.append(p1)
-                #     marker_msg.points.append(p2)
+                    marker_msg.points.append(p1)
+                    marker_msg.points.append(p2)
 
-                #     marker_list.markers.append(marker_msg)
-                        
-            
+                    marker_list.markers.append(marker_msg)
+                    """
         return marker_list
 
     def transform_img(self, img):
@@ -380,7 +393,7 @@ class DD3D:
                 img_alpha = image.copy()
 
                 for box, classID, conf_score in zip(pred_bbox3d_img, pred_classes, pred_scores):
-                    if classID > 1: # Only car and pedestrian class
+                    if classID > 2: # Only car and pedestrian class
                         continue
 
                     class_color = self.color_mapping[int(classID)][0]
