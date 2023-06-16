@@ -67,6 +67,7 @@ This is a ROS Package with all DD3D files in [src/dd3d](monocam_3D_object_detect
     ```
 
 ### Commands
+Model weights are too big to be pushed in GitHub, so they should locally copied into [trained_final_weights folder](monocam_3D_object_detection/src/dd3d/trained_final_weights/) and [depth_pretrained_weights folder](monocam_3D_object_detection/src/dd3d/depth_pretrained_weights)
 - **Run Inference on single images in a folder**
     - Open [run_inference.py](monocam_3D_object_detection/src/run_inference.py) and change the variables in __main__() function
     - Run it: `cd monocam_3D_object_detection/src && python run_inference.py`
