@@ -61,13 +61,12 @@ class DD3D:
             if checkpoint_file:
                 self.model.load_state_dict(torch.load(checkpoint_file)["model"])
         except:
-            rospy.logerr("MonoCam3D Obj.Det| No beuno.....CHECK THE MODEL .pth (checkpoint) PATHS !!!!")
+            rospy.logerr("MonoCam3D Obj.Det| No bueno.....CHECK THE MODEL .pth (checkpoint) PATHS !!!!")
             rospy.signal_shutdown()
         rospy.loginfo("MonoCam3D Obj.Det| Model checkpoint (.pth) loaded successfully")
 
         summary(self.model) # Print model summary
         self.model.eval() # Inference mode
-        
         # --
 
         # Specific params to differentiate real_camera .rosbags and carla .rosbags
@@ -197,10 +196,6 @@ class DD3D:
                 scale_y = np.clip(max_y - min_y, self.ped_min_height, self.ped_max_height)
                 scale_z = np.clip(max_z - min_z, 0.0, self.ped_max_base*2)
 
-            # scale_x = abs(single_bbox[0, 0] - single_bbox[1, 0])
-            # scale_y = max_y - min_y
-            # scale_z = max_z - min_z 
-
             ## Rotation of BBOX along each axis
             # Setting Roll and Pitch angle to 0.0 as they the vehicles are considered to be on flat surface.
             # To further reduce noisy bbox positions/scales
@@ -214,10 +209,7 @@ class DD3D:
             yaw_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))   
             
             qx, qy, qz, qw = get_quaternion_from_euler(yaw_angle, pitch_angle, roll_angle)
-            # if self.realcam_capture:
-            #     print(self.cam_pitch_tilt, np.deg2rad(-self.cam_pitch_tilt), np.deg2rad(-4.8))
-            #     qx, qy, qz, qw = get_quaternion_from_euler(yaw_angle, np.deg2rad(-4.8), roll_angle)
-
+            
             marker_msg.type = Marker.CUBE
             marker_msg.header.stamp = header.stamp
             marker_msg.header.frame_id = self.rviz_cam_output_frame # "arena_camera" #"ego_vehicle/rgb_front"
@@ -519,7 +511,6 @@ class obj_detection:
             sub_image = rospy.Subscriber(rospy.get_param('~camera_img_topic'), Image, callback=self.callback_image)
             self.ros2cv2 = self.cvbridge.imgmsg_to_cv2
             self.ros2cv2_arg = "bgr8"
-        
         rospy.spin()
 
 

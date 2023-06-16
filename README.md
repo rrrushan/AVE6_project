@@ -2,13 +2,14 @@
 ---
 Using CARLA and ROS1 Noetic
 
-## DD3D (3D Object Detection)
+## Monocamera 3D Object detection using DD3D
 ### Installation
-- Install python3.8 in system (python3.9 didnt have appropriate wheels for pytorch3D)
+This is a ROS Package with all DD3D files in [src/dd3d](monocam_3D_object_detection/src/dd3d/). So create a catkin workspace and clone this branch in the src/ folder of the workspace:
+- Install python3.8 in system (python3.9 didnt have appropriate wheels for pytorch3D, is installed when you follow the below installation commands)
 - Install [Nvidia drivers](https://www.cyberciti.biz/faq/ubuntu-linux-install-nvidia-driver-latest-proprietary-driver/). The testing system has Quadro RTX 5000 (16G) with driver version 520.56.06 with CUDA 11.8.
 - The main component instruction follows the docker file [Dockerfile](monocam_3D_object_detection/src/dd3d/docker/Dockerfile-cu111). Here is a simplified version of it:
     - ```bash
-      apt-get update && apt-get install -y \
+      sudo apt-get update && apt-get install -y \
       # essential
       build-essential \
       cmake \
@@ -26,29 +27,60 @@ Using CARLA and ROS1 Noetic
       libavdevice-dev \
       pkg-config \
       # python
-      python${PYTHON_VERSION} \
-      python${PYTHON_VERSION}-dev \
+      python3.8 \
+      python3.8-dev \
       python3-tk \
-      python${PYTHON_VERSION}-distutils \
+      python3.8-distutils \
       # opencv
       python3-opencv \
       # set python
-      && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python \
-      && ln -sf /usr/bin/python${PYTHON_VERSION} /usr/bin/python3 \
+      && ln -sf /usr/bin/python3.8 /usr/bin/python \
+      && ln -sf /usr/bin/python3.8 /usr/bin/python3 \
       && rm -rf /var/lib/apt/lists/*
       ```
+    - Install SSH Server
+      ```bash
+      sudo apt-get update && apt-get install -y --no-install-recommends openssh-client \ openssh-server && mkdir -p /var/run/sshd
+      ```
+    - Update pip
+      ```bash
+      curl -O https://bootstrap.pypa.io/get-pip.py && \
+      python get-pip.py && \
+      rm get-pip.py
+      ```
+    - Install Python packages
+      ```python
+      pip install -r requirements.txt
+      ```
+    - Install PyTorch and other detection related packages
+      ```python
+      pip install torch==1.9.0+cu111 torchvision==0.10.0+cu111 -f https://download.pytorch.org/whl/torch_stable.html \
+      pip install -U 'git+https://github.com/facebookresearch/fvcore'
+      pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
+      pip install pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py38_cu111_pyt190/download.html
+      ```
+    
 - Downgrade protobuf: 
     ```python
     pip uninstall protobuf
     pip install protobuf==3.20.1
     ```
-- Install torchinfo (For clean model summaries)
-    ```python
-    pip install torchinfo
-    ```
+
 ### Commands
+- **Run Inference on single images in a folder**
+    - Open [run_inference.py](monocam_3D_object_detection/src/run_inference.py) and change the variables in __main__() function
+    - Run it: `cd monocam_3D_object_detection/src && python run_inference.py`
+- **Run ROS:**
+    - Create a catkin workspace and build it
+    - Duplicate anyone [launch file](monocam_3D_object_detection/src/launch/) and modify as necessary. Three presets are available:
+        - carissma.launch for real-world carissma data with RGB and ouster LiDAR
+        - carla_sample.launch for sample carla .rosbags
+        - carla_testTrack.launch for carla .rosbags actually used for evaluating Digital Twin
+    - **Carefully modify the paths and parameters as required in the .launch file. For both detection node and `rosbag play` node**
+    - To run: `roslaunch monocam_3D_object_detection <file_name>.launch`
 - Training commands:
     ```bash
+    cd monocam_3D_object_detection/src/dd3d
     python scripts/train.py +experiments=dd3d_kitti_dla34 EVAL_ONLY=True MODEL.CKPT=../dla34_exp.pth TEST.IMS_PER_BATCH=8
 
     python scripts/train.py +experiments=dd3d_nusc_dla34_custom MODEL.CKPT=/home/carla/admt_student/team3_ss23/AVE6_project/dd3d/depth_pretrained_weights/depth_pretrained_dla34-2lnfuzr1.pth
@@ -57,39 +89,10 @@ Using CARLA and ROS1 Noetic
     ```bash
     ffmpeg -i /home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_v99_evgresize/%01d.png -r 30 -c:v h264_nvenc out_v99_evg.mp4
     ```
-- ROS commands: 
-    ```bash
-    roscore
-    rosbag play ~/admt_student/team3_ss23/ROS_1/bags/2023-04-14-21-04-50.bag -r 0.1 -l
-    rosrun rviz rviz
-    rosrun my_robot_controller img_subscriber.py
-    ```
+
 ## Benchmark
 Time for transform + inference in FP16
-- V99
-Target Img Res: (144, 480, 3), total time: 0.063s, transform time: 0.002s, model time: 0.061s
-Target Img Res: (217, 720, 3), total time: 0.066s, transform time: 0.003s, model time: 0.063s
-Target Img Res: (289, 960, 3), total time: 0.069s, transform time: 0.003s, model time: 0.066s
-Target Img Res: (386, 1280, 3), total time: 0.082s, transform time: 0.003s, model time: 0.079s
-Target Img Res: (483, 1600, 3), total time: 0.101s, transform time: 0.003s, model time: 0.098s
-Target Img Res: (579, 1920, 3), total time: 0.134s, transform time: 0.003s, model time: 0.131s
-
-- DLA34
-Target Img Res: (144, 480, 3), total time: 0.046s, transform time: 0.002s, model time: 0.044s
-Target Img Res: (217, 720, 3), total time: 0.046s, transform time: 0.003s, model time: 0.043s
-Target Img Res: (289, 960, 3), total time: 0.048s, transform time: 0.003s, model time: 0.045s
-Target Img Res: (386, 1280, 3), total time: 0.048s, transform time: 0.003s, model time: 0.045s
-Target Img Res: (483, 1600, 3), total time: 0.049s, transform time: 0.003s, model time: 0.047s
-Target Img Res: (579, 1920, 3), total time: 0.059s, transform time: 0.003s, model time: 0.056s
-
-- OmniML
-Target Img Res: (144, 480, 3), total time: 0.050s, transform time: 0.002s, model time: 0.047s
-Target Img Res: (217, 720, 3), total time: 0.053s, transform time: 0.003s, model time: 0.050s
-Target Img Res: (289, 960, 3), total time: 0.053s, transform time: 0.003s, model time: 0.050s
-Target Img Res: (386, 1280, 3), total time: 0.054s, transform time: 0.003s, model time: 0.052s
-Target Img Res: (483, 1600, 3), total time: 0.056s, transform time: 0.003s, model time: 0.053s
-Target Img Res: (579, 1920, 3), total time: 0.054s, transform time: 0.003s, model time: 0.051s
-
+-> Insert from Vishal PC
 ## Reference
 [DD3D Original Repo](https://github.com/TRI-ML/dd3d)
 ```

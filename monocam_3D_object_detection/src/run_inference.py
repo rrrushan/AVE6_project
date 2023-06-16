@@ -1,13 +1,9 @@
 import os
-import hydra
 import torch
-
 from tqdm import tqdm
-from torchinfo import summary
 import numpy as np
 import cv2
 from time import time, perf_counter
-import sys
 
 print("--- DD3D Inference on single images ---")
 import omegaconf
@@ -18,9 +14,6 @@ from detectron2.modeling import build_model
 from detectron2.solver import build_lr_scheduler, build_optimizer
 from detectron2.utils.events import CommonMetricPrinter, get_event_storage
 
-from tqdm import tqdm
-import sys
-# sys.path.append('/home/carla/admt_student/team3_ss23/dd3d')
 import dd3d.tridet.modeling  # pylint: disable=unused-import
 import dd3d.tridet.utils.comm as comm
 from dd3d.tridet.data import build_test_dataloader, build_train_dataloader
@@ -35,13 +28,10 @@ from dd3d.tridet.utils.visualization import mosaic, save_vis
 from dd3d.tridet.utils.wandb import flatten_dict, log_nested_dict
 from dd3d.tridet.visualizers import get_dataloader_visualizer, get_predictions_visualizer
 
-
+# --- Global variables (defined for ROS in .roslaunch files) ---
 PRE_NMS_THRESH = 0.1
 NMS_THRESH = 0.2
-ORIG_IMG_HEIGHT = 1464
-ORIG_IMG_WIDTH = 1936
 TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = 0
-# TARGET_RESIZE_WIDTH = 968
 
 MIN_TRACKWIDTH = 1.3
 MAX_TRACKWIDTH = 2.5
@@ -53,9 +43,10 @@ MAX_HEIGHT = 2.5
 PED_MAX_BASE = 2.5
 PED_MIN_HEIGHT = 1.2
 PED_MAX_HEIGHT = 2.2
+# ---
 
 class DD3D:
-    def __init__(self, cfg, res):
+    def __init__(self, cfg, input_img_res, res):
         # Create model 
         # TODO: Convert to param Caro
         cfg.DD3D.FCOS2D.INFERENCE.PRE_NMS_THRESH = PRE_NMS_THRESH # 0.1
@@ -75,16 +66,17 @@ class DD3D:
         try: 
             if checkpoint_file:
                 self.model.load_state_dict(torch.load(checkpoint_file)["model"])
-            summary(self.model) # Print model summary
+            # summary(self.model) # Print model summary
         except:
             print("ERROR in loading model checkpoint .pth. Check path !!")
             exit()
         print("Model checkpoint  pth loaded successfully")
         self.model.eval() # Inference mode
 
+        print(input_img_res)
         # Params for cropping and rescaling
-        self.ORIG_IMG_HEIGHT = ORIG_IMG_HEIGHT  # 1464 
-        self.ORIG_IMG_WIDTH = ORIG_IMG_WIDTH    # 1936 
+        self.ORIG_IMG_HEIGHT = input_img_res[1]  # 1464 
+        self.ORIG_IMG_WIDTH = input_img_res[0]    # 1936 
         self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
         self.CROPPED_IMG_HEIGHT = self.ORIG_IMG_HEIGHT - self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP
         target_resize_width = res
@@ -452,16 +444,15 @@ def bench(cfg_path, ckpt_path):
     for out_str in output_strings:
         print(out_str)
     
-def infer_on_img_folder(cfg_path, ckpt_path, img_folder, output_folder, res=1452):
+def infer_on_img_folder(cfg_path, ckpt_path, img_folder, output_folder, cam_mtx, input_img_res, output_res=1452):
     if not os.path.exists(output_folder):
         os.makedirs(output_folder)
+    print(f"\n\nSaving output images in folder: {output_folder}")
     
     cfg = omegaconf.OmegaConf.load(cfg_path)
     cfg.MODEL.CKPT = ckpt_path
-    cam_mtx = np.array([1676.6251817266734, 0.0, 968.0, 0.0, 1676.6251817266734, 732.0, 0.0, 0.0, 1.0]).reshape(3, 3)    
-    # cam_mtx = np.array([4000.0, 0.0, 2000.0, 0.0, 4000.0, 1500.0, 0.0, 0.0, 1.0]).reshape(3, 3)    
     
-    dd3d = DD3D(cfg, res)
+    dd3d = DD3D(cfg, input_img_res, output_res)
     dd3d.load_cam_mtx(cam_mtx)
     
     for file_path in tqdm(os.listdir(img_folder)):
@@ -474,18 +465,27 @@ def infer_on_img_folder(cfg_path, ckpt_path, img_folder, output_folder, res=1452
             
             cv2.imwrite(os.path.join(output_folder, file_path), final_img)
 
-    print("Finished visualizing images")
+    print("--- Finished visualizing images ---")
         
 if __name__ == '__main__':
+    # --- Change the below 6 variables ---
+    orig_img_height = 1464
+    orig_img_width = 1936
+    cam_mtx = np.array([1676.6251817266734, 0.0, 968.0, 0.0, 1676.6251817266734, 732.0, 0.0, 0.0, 1.0]).reshape(3, 3)    
+    # NOTE: If you dont know camera matrix, use the below code to approximate. Maynot be accurate
+    # cam_mtx = np.array([orig_img_width, 0.0, orig_img_width/2, 0.0, orig_img_width, orig_img_height/2, 0.0, 0.0, 1.0]).reshape(3, 3)    
     
-    # img_folder_path = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
-    img_folder_path = "/home/carla/admt_student/team3_ss23/data/phone_pics"
-    output_folder_path = os.path.abspath("./dd3d/outputs/v99_im1280_phonePics")
-    cfg_path = "./dd3d/trained_final_weights/v99.yaml"
-    checkpoint_path = os.path.abspath("./dd3d/trained_final_weights/v99.pth")
+    output_img_res = 1280 # Use less than 1600. Too big res might not fit in GPU
+    model = "v99" # v99 or dla
+    img_folder_path = "/home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/selected_imgs"
+    # ---
+    
+    cfg_path = f"./dd3d/trained_final_weights/{model}.yaml"
+    checkpoint_path = os.path.abspath(f"./dd3d/trained_final_weights/{model}.pth")
+    output_folder_path = os.path.abspath(f"./dd3d/outputs/{model}_im{output_img_res}_{img_folder_path.split('/')[-1]}")
     
     infer_on_img_folder(
-        cfg_path, 
-        checkpoint_path, 
-        img_folder_path, output_folder_path, 1280
+        cfg_path, checkpoint_path, 
+        img_folder_path, output_folder_path, 
+        cam_mtx, (orig_img_width, orig_img_height), output_img_res
     )
