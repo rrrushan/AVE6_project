@@ -75,7 +75,6 @@ class DD3D:
         self.rviz_marker_retain_duration = rospy.get_param('~rviz_marker_retain_duration')
 
         # Params for cropping and rescaling
-        self.cam_pitch_tilt = rospy.get_param('~cam_pitch_tilt')
         self.ORIG_IMG_HEIGHT = rospy.get_param('~ORIG_IMG_HEIGHT')  # 1464 
         self.ORIG_IMG_WIDTH = rospy.get_param('~ORIG_IMG_WIDTH')    # 1936 
         self.TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP = rospy.get_param('~TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP')
@@ -218,6 +217,7 @@ class DD3D:
 
             # Connect the corners to form edges of the box
             marker.pose.orientation.w = 1.0
+            marker.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)       
             marker_list.markers.append(marker)
 
             if self.debug_enable_visualization:

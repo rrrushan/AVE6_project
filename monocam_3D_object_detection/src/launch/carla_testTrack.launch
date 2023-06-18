@@ -7,7 +7,6 @@
 		<param name="nms_thresh"            type="double" value="0.2"/>
 		
 		<!-- Image parameters-->
-		<param name="cam_pitch_tilt"       type="double" value="5.5"/>
 		<param name="ORIG_IMG_WIDTH"       type="int" value="1936"/>
 		<param name="ORIG_IMG_HEIGHT"      type="int" value="1464"/>
 		<param name="TARGET_RESIZE_WIDTH"  type="int" value="640"/> <!-- For v99, use 1452 or 1200. For DLA: 1920, 1600. Other res: 1452, 968, 640 -->
@@ -36,10 +35,9 @@
 		<param name="max_height" type="double" value="2.2"/>		
 	</node>
 	<node type="rviz" name="rviz" pkg="rviz" args="-d /home/carla/admt_student/team3_ss23/ROS_Project/src/monocam_3D_object_detection/src/rviz/carla_testTrack.rviz"/>
-	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/ROS_1/bags/2023-06-16-13-35-52.bag -r 0.07 -l"/>
+	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/ROS_1/bags/2023-06-16-14-22-37.bag -r 0.07 -l"/>
 	
 	<?ignore
-	/home/carla/admt_student/team3_ss23/ROS_1/bags
 	
 	# with 5.5 deg pitch box
 	<node pkg="rosbag" type="play" name="player" args="/home/carla/admt_student/team3_ss23/ROS_1/bags/2023-06-15-21-20-33.bag -r 0.07 -l"/>

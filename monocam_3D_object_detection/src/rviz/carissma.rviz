@@ -132,7 +132,7 @@ Visualization Manager:
       Marker Topic: /rgb_front/markers
       Name: MarkerArray
       Namespaces:
-        {}
+        "": true
       Queue Size: 100
       Value: true
     - Class: rviz/Image
@@ -175,7 +175,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 6.702711582183838
+      Distance: 28.74809455871582
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
@@ -183,17 +183,17 @@ Visualization Manager:
         Value: false
       Field of View: 0.7853981852531433
       Focal Point:
-        X: 27.295621871948242
-        Y: -0.4552132785320282
-        Z: 1.0400710105895996
+        X: 41.26424789428711
+        Y: 1.172367811203003
+        Z: 0.05497705191373825
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.04479791969060898
+      Pitch: 0.1447988748550415
       Target Frame: <Fixed Frame>
-      Yaw: 4.400400638580322
+      Yaw: 3.2603983879089355
     Saved: ~
 Window Geometry:
   Camera:

@@ -7,10 +7,9 @@
 		<param name="nms_thresh"            type="double" value="0.2"/>
 		
 		<!-- Image parameters-->
-		<param name="cam_pitch_tilt"       type="double" value="0.0"/>
 		<param name="ORIG_IMG_WIDTH"       type="int" value="1936"/>
 		<param name="ORIG_IMG_HEIGHT"      type="int" value="1464"/>
-		<param name="TARGET_RESIZE_WIDTH"  type="int" value="968"/> <!-- For v99, use 1452 or 1200. For DLA: 1920, 1600. Other res: 1452, 968, 640 -->
+		<param name="TARGET_RESIZE_WIDTH"  type="int" value="1452"/> <!-- For v99, use 1452 or 1200. For DLA: 1920, 1600. Other res: 1452, 968, 640 -->
 		<param name="TARGET_HEIGHT_IGNORANCE_PIXELS_FROM_TOP" type="int" value="0"/>
 		
 		<!-- Node parameters-->
