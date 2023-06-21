@@ -1,5 +1,6 @@
 .DS_Store
 *.bag
+bags/
 
 catkin_ws/build/
 catkin_ws/devel/
