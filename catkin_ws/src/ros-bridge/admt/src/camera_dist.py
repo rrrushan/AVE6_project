@@ -16,6 +16,16 @@ from ros_compatibility.qos import QoSProfile, DurabilityPolicy
 from sensor_msgs.msg import CameraInfo, Image
 from cv_bridge import CvBridge
 
+'''
+This ROS bridge compatible node performs the distortion of the images by calculating the inverse of the distortion map 
+calculated by OpenCV initUndistortRectifyMap() function. The camera intrinsic parameters and the distortion parameters 
+are read from a configuration file. The node subscribes to the topic publishing the image with extended field of view 
+and extended image resolution, which is used in order to avoid the missing information in the corners of the resulting 
+distorted image. After the distortion, the image is cropped to remove black borders and published. The node also publishes 
+the necessary camera info of distorted and cropped image, including the distortion parameters, which might be necessary 
+for image rectification.
+'''
+
 
 class DistImagePub(CompatibleNode):
     def __init__(self):
@@ -40,9 +50,9 @@ class DistImagePub(CompatibleNode):
             Image, "/carla/{}/rgb_front_border/image".format(self.role_name),
             self.dist_image, qos_profile=10)
         
-        self.image_publisher = self.new_publisher(
-            Image,"/carla/{}/rgb_front/image_dist".format(self.role_name),
-            qos_profile=10)
+        # self.image_publisher = self.new_publisher(
+        #     Image,"/carla/{}/rgb_front/image_dist".format(self.role_name),
+        #     qos_profile=10)
         
         self.camera_info_publisher = self.new_publisher(
             CameraInfo,"/carla/{}/rgb_front/camera_info_dist".format(self.role_name),
