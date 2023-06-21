@@ -100,8 +100,13 @@ Model weights are too big to be pushed in GitHub, so they should locally copied 
     ```
 
 ## Benchmark
-Time for transform + inference in FP16
--> Insert from Vishal PC
+Inference time per image (im ms) - Different DD3D models
+| Resolution | V99 | DLA34 |
+| --- | --- | --- |
+| 1452 | 156 ms | 64 ms
+| 968  | 108 ms | 44 ms
+| 640  | 64 ms  | 44 ms
+
 ## Reference
 [DD3D Original Repo](https://github.com/TRI-ML/dd3d)
 ```
