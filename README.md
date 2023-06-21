@@ -5,10 +5,10 @@ Using CARLA and ROS1 Noetic
 ## Monocamera 3D Object detection using DD3D
 ROS Package to run monocamera object detection and output MarkerArray to visualize on RVIZ
 
-Sample output with Carla Sample
-<center><img src="./gifs/carla_sample_diff.gif" width="400" height="250"/></center>
-Sample output with Carissma Sample
-<center><img src="./gifs/carissma_sample_diff.gif" width="400" height="250"/></center>
+Sample output with Carla Sample in RVIZ
+<center><img src="./gifs/carla_cropped_480p.gif" width="400" height="250"/></center>
+Sample output with Carissma Sample in RVIZ
+<center><img src="./gifs/carissma_cropped_480p.gif" width="400" height="250"/></center>
 
 ### Installation
 This is a ROS Package with all DD3D files in [src/dd3d](monocam_3D_object_detection/src/dd3d/). So create a catkin workspace and clone this branch in the src/ folder of the workspace:
