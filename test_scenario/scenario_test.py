@@ -25,45 +25,23 @@ def main():
     client.set_timeout(10.0)
     world = client.get_world()
 
-    # debug = world.debug
-    # spawn_points = world.get_map().get_spawn_points()
-    # print(len(spawn_points))
-    # for sp in spawn_points:
-    #     # debug.draw_point(sp.location, size=0.1, color = carla.Color(0, 255, 0), life_time=-1.0)
-    #     print(sp.location)
-    #     # print(sp.rotation)
-    #     # print('__')
-
-    # exit()
-
     # scenario flags
-    rain = False
+    rain = True
 
     # target_type = "pedestrian"
-    target_type = "bicycle"
-    # target_type = "car"
+    # target_type = "bicycle"
+    target_type = "car"
 
     camera_pos_x = 2
     # distance = 5 + camera_pos_x # debug value
-    distance = 28 + camera_pos_x
+    # distance = 28 + camera_pos_x
     # distance = 56 + camera_pos_x
     # distance = 84 + camera_pos_x
-    # distance = 112 + camera_pos_x
+    distance = 112 + camera_pos_x
 
 
     # weather settings
     weather = world.get_weather()
-
-    # weather.wind_intensity=0.000000
-    # weather.sun_azimuth_angle=361.000000
-    # weather.sun_altitude_angle=10.000000
-    # weather.fog_density=0.000000
-    # weather.fog_distance=0.750000
-    # weather.fog_falloff=0.100000
-    # weather.wetness=0.000000
-    # weather.scattering_intensity=1.000000
-    # weather.mie_scattering_scale=-0.50000
-    # weather.rayleigh_scattering_scale=0.030000
 
     weather.cloudiness=0.000000
     weather.precipitation=0.000000
@@ -146,9 +124,6 @@ def main():
             elif distance == 112 + camera_pos_x:
                 weather.sun_azimuth_angle=4.000000
                 weather.sun_altitude_angle=9.000000
-
-      
-
 
     world.set_weather(weather)
 
