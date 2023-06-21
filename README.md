@@ -7,6 +7,7 @@ ROS Package to run monocamera object detection and output MarkerArray to visuali
 
 **Output with Carla Sample in RVIZ**
 <center><img src="./gifs/carla_960p.gif" width="600" height="350"/></center>
+
 **Output with Carissma Sample in RVIZ**
 <center><img src="./gifs/carissma_960p.gif" width="600" height="400"/></center>
 
