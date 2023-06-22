@@ -1,3 +1,9 @@
+'''
+This script performs calibration using the standard OpenCV approach 
+https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+and writes results into a .txt file
+'''
+
 import numpy as np
 import cv2 as cv
 import glob

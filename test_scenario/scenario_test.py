@@ -6,6 +6,14 @@ import sys
 import random
 import numpy as np
 
+'''
+This script adjusts the weather conditions and spawns a target at a specified distance
+on a straight line directly in front of the sensors. The weather conditions, the type of the 
+target and the distance to the target are controlled with flags. The script locates the ego 
+vehicle in CARLA ROS bridge and calculates the desired coordinates to place the target in front 
+of it by performing a vector rotation.
+'''
+
 
 try:
     sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
@@ -148,7 +156,7 @@ def main():
             ego_vehicle_transform = vehicle.get_transform()
             print("ego vehicle transform: ", ego_vehicle_transform)
 
-    # finding coordiantes of the target on a straight line in front of the vehicle
+    # finding coordinates of the target on a straight line in front of the vehicle
     vehicle_yaw = ego_vehicle_transform.rotation.yaw * np.pi / 180
     target_vec = np.array([distance, 0, 0])
     rotation_mat = np.array([[np.cos(vehicle_yaw), -np.sin(vehicle_yaw), 0], 

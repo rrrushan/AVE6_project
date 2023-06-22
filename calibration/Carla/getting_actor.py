@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
 
+'''
+This script was used to generate images of a calibration target in CARLA. 
+
+The script computes the positions and orientations of the camera with respect to 
+a stationary calibration target, which are necessary to acquire a diverse set of 
+images for calibration. 
+
+Afterwards, it spawns a vehicle in front of the target in CARLA, attaches the 
+camera to it multiple times using computed camera poses and records an image
+for each pose. 
+'''
 
 import glob
 import os
@@ -9,13 +20,6 @@ from PIL import Image
 import shutil
 import random
 import cv2 as cv
-
-
-# locations = np.load('/home/carla/AVE6_project/calibration/Carla/locations.npy', allow_pickle=True) 
-# rotations = np.load('/home/carla/AVE6_project/calibration/Carla/rotations.npy', allow_pickle=True) 
-        
-# print(locations, rotations)
-# exit()
 
 try:
     sys.path.append(glob.glob('../carla/dist/carla-*%d.%d-%s.egg' % (
@@ -33,10 +37,6 @@ file_path = './output'
     
 if os.path.exists(file_path):
     shutil.rmtree(file_path)
-
-# def cam_callback(img):
-#     cv.imshow("test", img)
-#     cv.waitKey(0)
 
 
 def main():
@@ -99,7 +99,7 @@ def main():
                 for z_offset in np.linspace(z_lim[0], z_lim[1], number_of_steps):
                     locations.append([loc[0], loc[1]+y_offset, loc[2]+z_offset])
                     rotations.append([np.random.uniform(-rot_x_lim, rot_x_lim), rot[1], rot[2]])
-        print(len(locations))
+        # print(len(locations))
 
         for i in world.get_actors():
             if i.type_id == 'vehicle.tesla.model3':
@@ -152,5 +152,4 @@ def main():
 
 
 if __name__ == '__main__':
-
     main()

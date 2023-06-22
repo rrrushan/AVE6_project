@@ -1,5 +1,12 @@
 #!/usr/bin/env python3
 
+'''
+This script finds the sensors attached to the vehicle in CARLA ROS bridge and displays
+their coordinates within the map. The script was used to confirm that the sensors were 
+placed in the correct coordinates, corresponding to coordinates of the real sensors in
+the real tests.
+'''
+
 import glob
 import os
 import sys
