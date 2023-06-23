@@ -1,4 +1,4 @@
-# Automated Driving in Mixed Traffic (CARISSMA)
+# Automated Driving in Mixed Traffic SoSe 23(CARISSMA)
 ---
 Using CARLA and ROS1 Noetic
 
@@ -66,8 +66,7 @@ This is a ROS Package with all DD3D files in [src/dd3d](monocam_3D_object_detect
       python3.8 -m pip install -U 'git+https://github.com/facebookresearch/fvcore'
       python3.8 -m pip install detectron2 -f https://dl.fbaipublicfiles.com/detectron2/wheels/cu111/torch1.9/index.html
       python3.8 -m pip install pytorch3d -f https://dl.fbaipublicfiles.com/pytorch3d/packaging/wheels/py38_cu111_pyt190/download.html
-      ```
-    
+      ```  
 - Downgrade protobuf: 
     ```python
     python3.8 -m pip uninstall protobuf
@@ -100,9 +99,8 @@ Model weights are too big to be pushed in GitHub, so they should locally copied 
     ```
 - Run multi-system ROS demo
   ```bash
-  export ROS_MASTER_URI=http://10.84.80.3:11311 && roslaunch monocam_3D_object_detection carla_testTrack_demo.launch 
+  export ROS_MASTER_URI=http://<ip>:11311 && roslaunch monocam_3D_object_detection carla_testTrack_demo.launch 
   ```
-
 ## Benchmark
 Inference time per image (im ms) - Different DD3D models
 | Resolution | V99 | DLA34 |
