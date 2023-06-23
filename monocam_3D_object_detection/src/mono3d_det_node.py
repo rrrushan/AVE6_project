@@ -161,7 +161,7 @@ class DD3D:
         bboxes_per_image = predictions[0]["instances"].pred_boxes3d.corners.detach().cpu().numpy()
         classes_per_image = predictions[0]["instances"].pred_classes.detach().cpu().numpy()
         marker_list = MarkerArray() # []
-        
+
         vis_num = 0
         for single_bbox, single_class in zip(bboxes_per_image, classes_per_image):
             class_id = int(single_class)
@@ -180,9 +180,10 @@ class DD3D:
             cx = (min_x + max_x) / 2 # Height from the ground
             cy = (min_y + max_y) / 2 # Left-right distance from camera
             cz = (min_z + max_z) / 2 # Depth of the object straightahead
+            distance_of_object = np.linalg.norm([cx, cz])
             
             yaw_angle = -np.math.atan2((single_bbox[1, 2] - single_bbox[0, 2]), (single_bbox[1, 0] - single_bbox[0, 0]))
-            if cz <= 1.5: # For boxes too close to the camera
+            if distance_of_object <= 1.5: # For boxes too close to the camera
                 continue
             
             vis_num += 1
@@ -216,8 +217,8 @@ class DD3D:
                 marker.points.append(point)
 
             # Connect the corners to form edges of the box
+            marker.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)
             marker.pose.orientation.w = 1.0
-            marker.lifetime = rospy.Duration(0, self.rviz_marker_retain_duration*10E6)       
             marker_list.markers.append(marker)
 
             if self.debug_enable_visualization:
@@ -237,7 +238,6 @@ class DD3D:
                 marker_msg.pose.orientation.z = 0.0
                 marker_msg.pose.orientation.w = 1.0 
 
-                distance_of_object = np.linalg.norm([cx, cz])
                 marker_msg.scale.z = 0.4 # Size of text
                 marker_msg.text = f"{round(distance_of_object, 2)}m. {round(np.rad2deg(-yaw_angle), 2)}deg"
                 
@@ -536,15 +536,17 @@ class obj_detection:
         predictions = self.dd3d.inference_on_single_image(transform_img)
         t_3 = perf_counter()
         marker_list = self.dd3d.output2MarkerArray(predictions, header_info)
+
         self.marker_pub.publish(marker_list)
         t_4 = perf_counter()
 
         total_time = (t_4 - t_1)*1000
         if self.dd3d.debug_enable_visualization:
-            final_image = self.dd3d.visualize([cv_image], predictions)[0]
-            ros_img = self.cvbridge.cv2_to_imgmsg(final_image)
+            # NOTE: For debug purposes, not needed anymore
+            # final_image = self.dd3d.visualize([cv_image], predictions)[0]
+            # ros_img = self.cvbridge.cv2_to_imgmsg(final_image)
 
-            self.vis_image_pub.publish(ros_img)
+            # self.vis_image_pub.publish(ros_img)
             rospy.loginfo(f"MonoCam3D Obj.Det| Num_objects: {len(marker_list.markers)}, Shape: {self.dd3d.TARGET_RESIZE_RES}, Time log| Total: {total_time:.2f}ms, Img_Tf: {(t_2 - t_1)*1000:.2f}ms, Inference: {(t_3 - t_2)*1000:.2f}ms, conv_toMarker: {(t_4 - t_3)*1000:.2f}ms")
         else:
             rospy.loginfo(f"MonoCam3D Obj.Det| Num_objects: {len(marker_list.markers)}, Time per frame: {total_time:.2f}ms, {1000/total_time :.2f}fps")

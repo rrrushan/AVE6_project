@@ -98,6 +98,10 @@ Model weights are too big to be pushed in GitHub, so they should locally copied 
     ```bash
     ffmpeg -i /home/carla/admt_student/team3_ss23/ROS_1/bag_imgs/manual_v99_evgresize/%01d.png -r 30 -c:v h264_nvenc out_v99_evg.mp4
     ```
+- Run multi-system ROS demo
+  ```bash
+  export ROS_MASTER_URI=http://10.84.80.3:11311 && roslaunch monocam_3D_object_detection carla_testTrack_demo.launch 
+  ```
 
 ## Benchmark
 Inference time per image (im ms) - Different DD3D models
