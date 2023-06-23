@@ -1,5 +1,0 @@
-rosbag record /carla/ego_vehicle/rgb_front/camera_info /carla/ego_vehicle/rgb_front/image /carla/ego_vehicle/lidar_ouster_os1 /tf
-
-
-rosbag record /carla/ego_vehicle/rgb_front/camera_info /carla/ego_vehicle/rgb_front/image /carla/ego_vehicle/rgb_front/camera_info_dist /carla/ego_vehicle/rgb_front/image_dist /carla/ego_vehicle/lidar_ouster_os1 /tf --duration=20
-
