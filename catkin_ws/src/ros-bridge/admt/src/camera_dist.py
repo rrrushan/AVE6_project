@@ -50,9 +50,9 @@ class DistImagePub(CompatibleNode):
             Image, "/carla/{}/rgb_front_border/image".format(self.role_name),
             self.dist_image, qos_profile=10)
         
-        # self.image_publisher = self.new_publisher(
-        #     Image,"/carla/{}/rgb_front/image_dist".format(self.role_name),
-        #     qos_profile=10)
+        self.image_publisher = self.new_publisher(
+            Image,"/carla/{}/rgb_front/image_dist".format(self.role_name),
+            qos_profile=10)
         
         self.camera_info_publisher = self.new_publisher(
             CameraInfo,"/carla/{}/rgb_front/camera_info_dist".format(self.role_name),

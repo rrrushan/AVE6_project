@@ -34,7 +34,7 @@ def main():
     world = client.get_world()
 
     # scenario flags
-    rain = True
+    rain = False
 
     # target_type = "pedestrian"
     # target_type = "bicycle"
@@ -42,10 +42,10 @@ def main():
 
     camera_pos_x = 2
     # distance = 5 + camera_pos_x # debug value
-    # distance = 28 + camera_pos_x
+    distance = 28 + camera_pos_x
     # distance = 56 + camera_pos_x
     # distance = 84 + camera_pos_x
-    distance = 112 + camera_pos_x
+    # distance = 112 + camera_pos_x
 
 
     # weather settings
