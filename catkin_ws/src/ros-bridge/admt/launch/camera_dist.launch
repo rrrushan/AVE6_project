@@ -1,8 +1,0 @@
-<!-- -->
-<launch>
-  <arg name="camera_intrinsics_file" default='$(find admt)/config/camera_intrinsics.json'/>
-  
-  <node pkg="admt" type="camera_dist.py" name="$(anon admt)" output="screen">
-    <param name="camera_intrinsics_file" value="$(arg camera_intrinsics_file)" />
-  </node>
-</launch>

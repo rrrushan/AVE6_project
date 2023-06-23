@@ -1,8 +1,0 @@
-prefix=/home/carla/AVE6_project/catkin_ws/devel
-
-Name: carla_ackermann_control
-Description: Description of carla_ackermann_control
-Version: 0.0.0
-Cflags: -I/home/carla/AVE6_project/catkin_ws/devel/include
-Libs: -L${prefix}/lib 
-Requires: 
