@@ -12,7 +12,10 @@ To use this package the following is required:
 - CARLA 0.9.13 or later
 - ROS Noetic
 - CARLA ROS bridge: https://carla.readthedocs.io/projects/ros-bridge/en/latest/ros_installation_ros1/
-- This branch has to be pulled in the same folder as the ROS Bridge
+- This branch has to be pulled in the same folder as the ROS Bridge, using the following command:
+```
+git clone -b ros_bridge https://github.com/rrrushan/AVE6_project .
+```
 
 ## Modifications
 This branch includes the following modifications to ROS bridge:
