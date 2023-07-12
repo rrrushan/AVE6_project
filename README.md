@@ -30,7 +30,7 @@ roslaunch carla_ros_bridge admt_carla_ros_bridge_with_example_ego_vehicle.launch
 ```
 With a CARLA server running on a different PC:
 ```
-roslaunch carla_ros_bridge admt_carla_ros_bridge_with_example_ego_vehicle.launch host:=10.116.80.2
+roslaunch carla_ros_bridge admt_carla_ros_bridge_with_example_ego_vehicle.launch host:=host_ip
 ```
 
 The launch file launches the ROS bridge itself, spawns an ego vehicle at a specified spawn point and with the set of sensors listed in the `ros-bridge/carla_spawn_objects/config/objects_admt.json` file, and starts the manual control node. Additionally, it optionally starts the image distortion node and the traffic generation node.
